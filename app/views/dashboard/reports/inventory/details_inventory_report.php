@@ -64,10 +64,10 @@
                         </thead>
                         <tbody>
                         <?php
+                            $i=1;
+                            $tDebit=0;
+                            $tCredit=0;
                              if(!empty($info)){
-                                 $i=1;
-                                 $tDebit=0;
-                                 $tCredit=0;
                                 foreach($info as $row){
                                     ?>
                                     <tr>
@@ -133,8 +133,10 @@
                             </tr>
                             <tr>
                                 <td colspan="3">Balances</td>
-                                <td colspan="4"><span class="badge bg-yellow"><?php echo !empty($tDebit-$tCredit)
-                                            ?$tDebit-$tCredit:'0'; ?></span></td>
+                                <td colspan="4"><span class="badge bg-yellow"><?php
+                                        $balance=(!empty($tDebit)?$tDebit:'0')-(!empty($tCredit)?$tCredit:'0');
+                                        echo !empty($balance)
+                                            ?$balance:'0'; ?></span></td>
                             </tr>
 
                         </tfoot>
