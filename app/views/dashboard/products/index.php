@@ -1,0 +1,187 @@
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-body" id="alert" style="display: none;"> <div class="callout callout-info"><span
+                                id="show_message"></span></div></div>
+                <div class="box-header">
+                    <h3 class="box-title"><?php echo (!empty($title)?$title:'') ?> </h3>
+                    <button class="btn btn-info  pull-right" data-toggle="modal" onclick="addProductInfo()"
+                            data-target="#productModal"><i class="glyphicon glyphicon-plus"></i> Add</button>
+                </div>
+                <div class="box-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <label>Band</label>
+                                <div class="clearfix"></div>
+                                <select id="bandID" class="form-control" required style="width: 100%;">
+                                    <option value="">Select Band</option>
+                                    <?php if(!empty($bandInfo)){ foreach ($bandInfo as $band) { ?>
+                                        <option value="<?php echo $band->id; ?>"><?php echo
+                                            $band->title; ?></option>
+                                    <?php } }?>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <label>Source</label>
+                                <div class="clearfix"></div>
+                                <select id="sourceID" class="form-control" required style="width: 100%;">
+                                    <option value="">Select Source</option>
+                                    <?php if(!empty($sourceInfo)){ foreach ($sourceInfo as $source) { ?>
+                                        <option value="<?php echo $source->id; ?>"><?php echo
+                                            $source->title; ?></option>
+                                    <?php } } ?>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <label>Type</label>
+                                <div class="clearfix"></div>
+                                <select id="typeID" class="form-control" required style="width: 100%;">
+                                    <option value="">Select Type</option>
+                                    <?php if(!empty($typeInfo)){ foreach ($typeInfo as $type) { ?>
+                                        <option value="<?php echo $type->id; ?>"><?php echo $type->title; ?></option>
+                                    <?php } } ?>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>Product Name</label>
+                                <div class="clearfix"></div>
+                                <input type="text" id="productName" class="form-control" placeholder="Enter Product Name">
+                            </div>
+                        </div>
+                    </div>
+                    <table id='ProductInfo' class='display dataTable table table-bordered table-hover' >
+                        <thead>
+                            <tr>
+                                <th>S/L</th>
+                                <th>Name</th>
+                                <th>Product Code</th>
+                                <th>Brand</th>
+                                <th>Source</th>
+                                <th>Type</th>
+                                <th>Unit</th>
+                                <th>Sale Price</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="productModal" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Products  Details</h4>
+            </div>
+            <form action="<?php echo base_url('products/store'); ?>"  id="productInfoForm" class="form-horizontal"
+                  enctype="multipart/form-data"
+                  method="post">
+                <div class="modal-body">
+                    <div class="form-group has-feedback">
+                        <label class="col-sm-3 text-right">Product Code</label>
+                        <div class=" col-sm-9 ">
+                            <input required="" id="productCode" type="text" name="productCode"
+                                   placeholder="Product Code" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <label class="col-sm-3 text-right"> Name</label>
+                        <div class=" col-sm-9 ">
+                            <input id="productNameShow" name="productName" class="form-control" placeholder="Product Name">
+                        </div>
+                    </div>
+
+                     <div class="form-group">
+                         <label class="col-sm-3 text-right"> Brand</label>
+                         <div class=" col-sm-9 ">
+                            <select name="productBrand" id="productBrand" class="form-control" required style="width: 100%;">
+                                <option value="">Select Band</option>
+                                <?php if(!empty($bandInfo)){ foreach ($bandInfo as $band) { ?>
+                                    <option value="<?php echo $band->id; ?>"><?php echo
+                                        $band->title; ?></option>
+                                <?php } }?>
+                            </select>
+                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 text-right"> Source</label>
+                        <div class=" col-sm-9">
+                            <select name="productSource" id="productSource" class="form-control" >
+                                <option value="">Select Source</option>
+                                <?php if(!empty($sourceInfo)){ foreach ($sourceInfo as $source) { ?>
+                                    <option value="<?php echo $source->id; ?>"><?php echo
+                                        $source->title; ?></option>
+                                <?php } } ?>
+
+                            </select>
+                        </div>
+                    </div>
+                     <div class="form-group">
+                         <label class="col-sm-3 text-right"> Type</label>
+                         <div class=" col-sm-9 ">
+                            <select name="productType" id="productType" class="form-control" required >
+                                <option value="">Select Type</option>
+                                <?php if(!empty($typeInfo)){ foreach ($typeInfo as $type) { ?>
+                                    <option value="<?php echo $type->id; ?>"><?php echo $type->title; ?></option>
+                                <?php } } ?>
+
+                            </select>
+                         </div>
+                    </div>
+                    <div class="form-group">
+                         <label class="col-sm-3 text-right">Unit</label>
+                         <div class=" col-sm-9 ">
+                            <select name="productUnit" id="productUnit" class="form-control" required >
+                                <option value="">Select Unit</option>
+                                <?php if(!empty($unitInfo)){ foreach ($unitInfo as $unit) { ?>
+                                    <option value="<?php echo $unit->id; ?>"><?php echo $unit->title; ?></option>
+                                <?php } } ?>
+
+                            </select>
+                         </div>
+                    </div>
+                     <div class="form-group has-feedback">
+                        <label class="col-sm-3 text-right"> Sales Price</label>
+                        <div class=" col-sm-9 ">
+                            <input id="productPrice" name="productPrice" class="form-control"
+                                   placeholder="Product Sales Price">
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label class="col-sm-3 text-right">Status</label>
+                        <div class=" col-sm-9 ">
+                            <select name="status" id="status" class="form-control">
+                                <option value="1">Active</option>
+                                <option value="2">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-sm-12 text-left">
+                        <div class="box-body" id="alert_error" style="display: none;"> <div class="callout
+                        callout-danger"><span id="show_error_save"></span></div></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-sm-12">
+                        <input type="hidden" name="upId" id="upId" >
+                        <button type="button" onclick="saveProductInfo()" name="saveBtn" id="saveBtn" class="btn
+                                btn-success submit_btn"><i class="glyphicon glyphicon-ok-sign"></i> <span id="show_label"></span></button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="glyphicon
+                        glyphicon-remove"></i> Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
