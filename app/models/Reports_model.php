@@ -75,9 +75,17 @@ class Reports_model extends CI_Model {
         }
     }
 
-    function sales_report($where=NULL,$outletID=NULL){
-        //return 'hello';
+    function sales_report($where=NULL){
         $this->db->select('product_info.id as productID,product_info.name,product_info.productCode,product_info.is_active,band.title as bandTitle,source.title as sourceTitle,productType.title as ProductTypeTitle,unitInfo.title as unitTitle,stock_info.id as stockID,stock_info.unit_price,total_item,total_price,purchaseAmtForSales,sales_info.id as salesID,(total_price-(total_item*purchaseAmtForSales)) as profileAmount,customer_shipment_member_info.name as customerName,mobile,sales_info.sales_date,sales_info.invoice_no',true);
+        if(!empty($where['firstDate'])){
+            $this->db->where("sales_date >=", $where['firstDate']);
+            $this->db->where("sales_date <=", $where['toDate']);
+            unset($where['firstDate']);
+            unset($where['toDate']);
+        }else{
+            $this->db->where("sales_date >=", date('Y-m-d'));
+            $this->db->where("sales_date <=", date('Y-m-d'));
+        }
         if(!empty($where)) {
             $this->db->where($where);
         }
@@ -91,7 +99,6 @@ class Reports_model extends CI_Model {
         $this->db->join('customer_shipment_member_info', 'sales_info.customer_id = customer_shipment_member_info.id', 'left');
         $this->db->order_by("sales_date", "ASC");
         $records = $this->db->get('sales_info');
-
         if($records->num_rows()>0) {
             $result = $records->result();
             return $result;

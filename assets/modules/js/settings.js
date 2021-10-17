@@ -1550,4 +1550,18 @@ function purchaseTotalCal() {
     });
 }
 
+function searchingSalesReport () {
+    //$(".submit_btn").attr("disabled", true);
+    $.ajax({
+        url:  base_url +"reports/searching_sales_report/",
+        data: $('#salesReportForm').serialize(),
+        type: "POST",
+        success: function (response) {
+            $(".submit_btn").attr("disabled", false);
+            if(response!=''){
+                $("#stock_info_data").html(response);
+            }
+        }
+    });
+}
 

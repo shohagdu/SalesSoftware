@@ -60,7 +60,6 @@ class Reports extends CI_Controller {
         }
         $data['info']=$this->REPORT->inventory_report($param,$outlet_id);
         return   $this->load->view('dashboard/reports/inventory/searcning_inventory_report', $data);
-
     }
 
     function details_inventory_report($id) {
@@ -104,6 +103,27 @@ class Reports extends CI_Controller {
         $data['info']=$this->REPORT->sales_report('',$outlet_id);
         $view['content'] = $this->load->view('dashboard/reports/sales/salesReport', $data, TRUE);
         $this->load->view('dashboard/index', $view);
+    }
+    function searching_sales_report() {
+        extract($_POST);
+        $data = array();
+        $param=[];
+        if(empty($outletID)) {
+            $outlet_id = $this->outletID;
+        }else{
+            $outlet_id =$outletID;
+        }
+
+        $date=$this->input->post('searchingDate');
+        if($date!=''){
+            $exp_date=explode("-",$date);
+            $param['firstDate']      =    $exp_date[0];
+            $param['toDate']         =    $exp_date[1];
+        }else{
+            return "Date is required.";
+        }
+        $data['info']=$this->REPORT->sales_report($param);
+        return   $this->load->view('dashboard/reports/sales/searchingSalesReport', $data);
     }
 
 

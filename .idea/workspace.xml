@@ -20,21 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="75985e65-6934-4007-b8a9-33ae6f98f3e4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/views/dashboard/reports/sales/salesReport.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/db/dbUpdateQuery.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/views/dashboard/reports/sales/searchingSalesReport.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/Pos.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/Pos.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/Products.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/Products.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/Purchases.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/Purchases.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/controllers/Reports.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/Reports.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/Pos_model.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/Pos_model.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/Reports_model.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/Reports_model.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/dashboard/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/dashboard/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/dashboard/navigation.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/dashboard/navigation.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/dashboard/products/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/dashboard/products/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/dashboard/purchases/create.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/dashboard/purchases/create.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/dashboard/purchases/update.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/dashboard/purchases/update.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/dashboard/purchases/view_purchage_info.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/dashboard/purchases/view_purchage_info.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/dashboard/reports/sales/salesReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/dashboard/reports/sales/salesReport.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/modules/js/settings.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/modules/js/settings.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -91,7 +81,8 @@
       <workItem from="1629518273767" duration="199000" />
       <workItem from="1632550518165" duration="541000" />
       <workItem from="1634177434310" duration="313000" />
-      <workItem from="1634398838359" duration="16231000" />
+      <workItem from="1634398838359" duration="17032000" />
+      <workItem from="1634488573728" duration="4599000" />
     </task>
     <servers />
   </component>
