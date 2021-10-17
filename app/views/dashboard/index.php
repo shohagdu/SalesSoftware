@@ -120,4 +120,4 @@
 <script src="<?php echo base_url(); ?>assets/dist/js/demo.js"></script>
 
 <!--custome js-->
-<script src="<?php echo base_url(); ?>assets/modules/js/settings.js"></script>
+<script src="<?php echo base_url(); ?>assets/modules/js/settings.js?v=<?php echo rand(999,10000) ?>"></script>

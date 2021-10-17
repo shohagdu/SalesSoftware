@@ -61,8 +61,10 @@
                                     <tr>
                                         <th style="width: 3%;">Sl.</th>
                                         <th>Product Name</th>
-                                        <th style="width: 10%;">Quantity</th>
-                            
+                                        <th style="width: 15%;">Quantity</th>
+                                        <th style="width: 15%;">Unit Price</th>
+                                        <th style="width: 15%;">Total Price</th>
+
                                         <th style="width: 6%;">#</th>
                                     </tr>
                                 </thead>
@@ -73,15 +75,24 @@
                                             <input type="text" id="productName_1" required data-type="productName" placeholder="Product Name" class="productName form-control">
                                             <input type="hidden" name="productID[]" id="productID_1" class="form-control">
                                         </td>
-                                        <td><input type="text" required name="quantity[]" id="quantity_1" placeholder="Quantity" class="quant form-control only-number"></td>
-                                    
+                                        <td><input type="text" required name="quantity[]" id="quantity_1" placeholder="Quantity" class="quantPurchase form-control only-number"></td>
+                                        <td><input type="text" required name="unitPrice[]" id="unitPrice_1" placeholder="Unit Price" class="unitPrice form-control only-number"></td>
+                                        <td><input type="text" required name="totalPrice[]" id="totalPrice_1" placeholder="Total Price" class="totalPrice form-control only-number"></td>
+
+
+
                                         <td><a href="javascript:void(0);" id="deleteRow_1"  class="deleteRow btn btn-danger  btn-sm"><i class="glyphicon glyphicon-remove"></i></a></td>
                                     </tr>
 
                                 </tbody>
                                 <tfoot>
                                     <tr >
-                                        <td colspan="4"><a href="javascript:void(0);" id="addRowStockIn" class="btn btn-info btn-flat btn-sm"><i class="glyphicon glyphicon-plus"></i> Add Product</a></td>
+                                        <td colspan="3"><a href="javascript:void(0);" id="addRowStockIn" class="btn btn-info btn-flat btn-sm"><i class="glyphicon glyphicon-plus"></i> Add Product</a></td>
+                                        <th class="text-right">Total Amount</th>
+                                        <td>
+                                            <input type="text" required name="net_purchase_amount" id="net_purchase_amount" readonly placeholder="Net Purchase Amount" class=" form-control only-number">
+
+                                        </td>
                                     </tr>
                                 </tfoot>
 
@@ -98,7 +109,7 @@
                         </div>
                         <div class="col-sm-6">
                             <input type="hidden" name="update_id">
-                            <button type="button" id="submit_btn"  class="btn btn-success btn-flat"  onclick="savePurchaseInfo()"><i class="glyphicon glyphicon-ok-sign"></i> Save Stock In</button>
+                            <button type="button" id="submit_btn"  class="btn btn-success btn-flat"  onclick="savePurchaseInfo()"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
                         </div>
                     </div>
                 </form>

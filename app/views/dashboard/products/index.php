@@ -157,6 +157,14 @@
                         </div>
                     </div>
                     <div class="form-group has-feedback">
+                        <label class="col-sm-3 text-right"> Purchase Price</label>
+                        <div class=" col-sm-9 ">
+                            <input id="productPurchasePrice" name="productPurchasePrice" class="form-control"
+                                   placeholder="Product Purchase Price">
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback">
                         <label class="col-sm-3 text-right">Status</label>
                         <div class=" col-sm-9 ">
                             <select name="status" id="status" class="form-control">

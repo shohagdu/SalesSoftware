@@ -54,15 +54,18 @@
                 <table class="table-style"  style="width:100%;">
                     <thead>
                     <tr>
-                        <th colspan="6" style="text-align: left;font-size:16px;padding: 2px;">Product Information</th>
+                        <th colspan="8" style="text-align: left;font-size:16px;padding: 2px;">Product Information</th>
                     </tr>
                         <tr>
                             <th style="width:5%;">SL</th>
                             <th class="text-left" >Product Name</th>
-                            <th class="text-left" style="width:10%;">Brand</th>
-                            <th class="text-left" style="width:10%;">Source</th>
-                            <th style="width:10%;">Qty</th>
+                            <th class="text-left" style="width:15%;">Brand</th>
+                            <th class="text-left" style="width:15%;">Source</th>
                             <th style="width:10%;">Unit</th>
+                            <th style="width:10%;">Qty</th>
+                            <th style="width:10%;">Unit Price</th>
+                            <th style="width:10%;">Total Price</th>
+
                          </tr>
                     </thead>
                     <tbody>
@@ -76,8 +79,11 @@
                                 <td class="text-left"><?php echo $row->product_name." [".$row->productCode."]"; ?></td>
                                 <td class="text-left" ><?php echo (!empty($row->bandTitle)?$row->bandTitle:''); ?></td>
                                 <td class="text-left" ><?php echo (!empty($row->sourceTitle)?$row->sourceTitle:''); ?></td>
-                                <td><?php echo (!empty($row->total_item)?$row->total_item:''); ?></td>
                                 <td><?php echo (!empty($row->unitTitle)?$row->unitTitle:''); ?></td>
+                                <td><?php echo (!empty($row->total_item)?$row->total_item:''); ?></td>
+                                <td><?php echo (!empty($row->unit_price)?$row->unit_price:''); ?></td>
+                                <td><?php echo (!empty($row->total_price)?$row->total_price:''); ?></td>
+
                               
                             </tr>	
                         <?php }} } ?>

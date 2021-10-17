@@ -81,7 +81,12 @@ class Products extends CI_Controller {
         }
         if(empty($productPrice)){
             echo json_encode(['status'=>'error','message'=>'Product Price is required','data'=>'']);exit;
-        }if(empty($status)){
+        }
+        if(empty($productPurchasePrice)){
+            echo json_encode(['status'=>'error','message'=>'Product Purchase Price is required','data'=>'']);exit;
+        }
+
+        if(empty($status)){
             echo json_encode(['status'=>'error','message'=>'Status is required','data'=>'']);exit;
         }
 
@@ -94,6 +99,7 @@ class Products extends CI_Controller {
                 'product_type' => $productType,
                 'unit_id' => $productUnit,
                 'unit_sale_price' => $productPrice,
+                'purchase_price' => $productPurchasePrice,
                 'is_active' => $status,
                 'created_by' => $this->userId,
                 'created_time' => $this->dateTime,
@@ -110,6 +116,7 @@ class Products extends CI_Controller {
                 'product_type' => $productType,
                 'unit_id' => $productUnit,
                 'unit_sale_price' => $productPrice,
+                'purchase_price' => $productPurchasePrice,
                 'is_active' => $status,
                 'updated_by' => $this->userId,
                 'updated_time' => $this->dateTime,

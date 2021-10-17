@@ -89,17 +89,23 @@ class Pos extends CI_Controller
            // $insert_id=1;
             if(!empty($productID)){
                 foreach($productID as $key=>$product){
+                    $purchaseAmtForSales = $this->PRODUCTS->get_single_product_info(['product_info.id'=>$product]);
+
+                   // print_r($purchaseAmtForSales);
                     $stock_info[]=[
-                        'stock_type'=>  2,
-                        'product_id'=>  $product,
-                        'sales_id'=>  $insert_id,
-                        'total_item'=>  $qty[$key],
-                        'unit_price'=>  $price[$key],
-                        'total_price'=>  $sub_total[$key],
-                        'credit_outlet'=>  $this->outletID,
-                        'created_by'=>  $this->userId,
-                        'created_time'=>$this->dateTime,
-                        'created_ip'=>  $this->ipAddress,
+                        'stock_type'            =>  2,
+                        'product_id'            =>  $product,
+                        'sales_id'              =>  $insert_id,
+                        'total_item'            =>  $qty[$key],
+                        'unit_price'            =>  $price[$key],
+                        'total_price'           =>  $sub_total[$key],
+
+                        'purchaseAmtForSales'   =>  (!empty($purchaseAmtForSales->purchase_price)?$purchaseAmtForSales->purchase_price:'0.00'),
+
+                        'credit_outlet'         =>  $this->outletID,
+                        'created_by'            =>  $this->userId,
+                        'created_time'          =>  $this->dateTime,
+                        'created_ip'            =>  $this->ipAddress,
                     ];
                 }
                 $this->db->insert_batch("stock_info",$stock_info);
@@ -107,25 +113,25 @@ class Pos extends CI_Controller
 
             if(!empty($totalAmount)){
                 $total_transaction=[
-                    'customer_member_id'  =>  $customer,
-                    'sales_id'  =>  $insert_id,
-                    'payment_by'  =>  NULL,
-                    'debit_amount'  =>  $totalAmount,
-                    'created_by'=>  $this->userId,
-                    'created_time'=>$this->dateTime,
-                    'created_ip'=>  $this->ipAddress,
+                    'customer_member_id'    =>  $customer,
+                    'sales_id'              =>  $insert_id,
+                    'payment_by'            =>  NULL,
+                    'debit_amount'          =>  $totalAmount,
+                    'created_by'            =>  $this->userId,
+                    'created_time'          =>  $this->dateTime,
+                    'created_ip'            =>  $this->ipAddress,
                 ];
                 $this->db->insert("transaction_info",$total_transaction);
             }
             if(!empty($paidNow)){
                 $payment_transaction=[
-                    'customer_member_id'  =>  $customer,
-                    'sales_id'  =>  $insert_id,
-                    'payment_by'  =>  (!empty($payment_byInfo)?json_encode($payment_byInfo):''),
-                    'credit_amount'  =>  $paidNow,
-                    'created_by'=>  $this->userId,
-                    'created_time'=>$this->dateTime,
-                    'created_ip'=>  $this->ipAddress,
+                    'customer_member_id'        =>  $customer,
+                    'sales_id'                  =>  $insert_id,
+                    'payment_by'                =>  (!empty($payment_byInfo)?json_encode($payment_byInfo):''),
+                    'credit_amount'             =>  $paidNow,
+                    'created_by'                =>  $this->userId,
+                    'created_time'              =>  $this->dateTime,
+                    'created_ip'                =>  $this->ipAddress,
                 ];
                 $this->db->insert("transaction_info",$payment_transaction);
             }

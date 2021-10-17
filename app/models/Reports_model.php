@@ -75,7 +75,30 @@ class Reports_model extends CI_Model {
         }
     }
 
+    function sales_report($where=NULL,$outletID=NULL){
+        //return 'hello';
+        $this->db->select('product_info.id as productID,product_info.name,product_info.productCode,product_info.is_active,band.title as bandTitle,source.title as sourceTitle,productType.title as ProductTypeTitle,unitInfo.title as unitTitle,stock_info.id as stockID,stock_info.unit_price,total_item,total_price,purchaseAmtForSales,sales_info.id as salesID,(total_price-(total_item*purchaseAmtForSales)) as profileAmount,customer_shipment_member_info.name as customerName,mobile,sales_info.sales_date,sales_info.invoice_no',true);
+        if(!empty($where)) {
+            $this->db->where($where);
+        }
+        $this->db->where('product_info.is_active', 1);
+        $this->db->join('stock_info', 'stock_info.sales_id = sales_info.id AND stock_info.stock_type=2 ', 'left');
+        $this->db->join('product_info', 'product_info.id = stock_info.product_id', 'left');
+        $this->db->join('all_settings_info as band', 'band.id = product_info.band_id', 'left');
+        $this->db->join('all_settings_info as source', 'source.id = product_info.source_id', 'left');
+        $this->db->join('all_settings_info as productType', 'productType.id = product_info.product_type', 'left');
+        $this->db->join('all_settings_info as unitInfo', 'unitInfo.id = product_info.unit_id', 'left');
+        $this->db->join('customer_shipment_member_info', 'sales_info.customer_id = customer_shipment_member_info.id', 'left');
+        $this->db->order_by("sales_date", "ASC");
+        $records = $this->db->get('sales_info');
 
+        if($records->num_rows()>0) {
+            $result = $records->result();
+            return $result;
+        }else{
+            return false;
+        }
+    }
 
 
 }

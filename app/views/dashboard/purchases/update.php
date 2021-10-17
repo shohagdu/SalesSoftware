@@ -65,6 +65,8 @@
                                         <th style="width: 3%;">Sl.</th>
                                         <th>Product Name</th>
                                         <th style="width: 10%;">Quantity</th>
+                                        <th style="width:15%;">Unit Price</th>
+                                        <th style="width:15%;">Total Price</th>
                             
                                         <th style="width: 6%;">#</th>
                                     </tr>
@@ -73,7 +75,9 @@
                                     <?php
                                     if(!empty($details)){
                                         $i=1;
+                                        $total=0;
                                         foreach ($details as $row){
+                                            $total+=$row->total_price;
                                            $prodouct_value= $row->product_name . ' [' . $row->productCode . '] '
                                             .$row->bandTitle.'-'.$row->sourceTitle.'-'
                                             .$row->ProductTypeTitle
@@ -82,7 +86,7 @@
                                     <tr>
                                         <td><?php echo $i++; ?></td>
                                         <td>
-                                            <input type="text" id="productName_1" value="<?php echo $prodouct_value; ?>" required
+                                            <input type="text" id="productName_<?php echo $row->id; ?>" value="<?php echo $prodouct_value; ?>" required
                                                    data-type="productName" placeholder="Product Name" class="productName form-control">
                                             <input type="hidden" value="<?php echo $row->product_id; ?>" name="productID[]"
                                                    id="productID_<?php echo $row->id; ?>"
@@ -94,6 +98,8 @@
                                         </td>
                                         <td><input type="text" required name="quantity[]" value="<?php echo $row->total_item ?>"
                                         id="quantity_<?php echo $row->id; ?>" placeholder="Quantity" class="quant form-control only-number"></td>
+                                        <td><input type="text" required name="unitPrice[]" id="unitPrice_<?php echo $row->id; ?>" value="<?php echo $row->unit_price ?>" placeholder="Unit Price" class="unitPrice form-control only-number"></td>
+                                        <td><input type="text" required name="totalPrice[]" id="totalPrice_<?php echo $row->id; ?>" value="<?php echo $row->total_price ?>" placeholder="Total Price" class="totalPrice form-control only-number"></td>
                                     
                                         <td><a href="javascript:void(0);" id="deleteRow_<?php echo $row->id; ?>"  class="deleteRow btn btn-danger  btn-sm"><i class="glyphicon glyphicon-remove"></i></a></td>
                                     </tr>
@@ -105,7 +111,12 @@
                                 </tbody>
                                 <tfoot>
                                     <tr >
-                                        <td colspan="4"><a href="javascript:void(0);" id="addRowStockIn" class="btn btn-info btn-flat btn-sm"><i class="glyphicon glyphicon-plus"></i> Add Product</a></td>
+                                        <td colspan="3"><a href="javascript:void(0);" id="addRowStockIn" class="btn btn-info btn-flat btn-sm"><i class="glyphicon glyphicon-plus"></i> Add Product</a></td>
+                                        <th class="text-right">Total Amount</th>
+                                        <td>
+                                            <input type="text" required name="net_purchase_amount" id="net_purchase_amount" value="<?php echo number_format($total,2); ?>" readonly placeholder="Net Purchase Amount" class=" form-control only-number">
+
+                                        </td>
                                     </tr>
                                 </tfoot>
 
@@ -117,7 +128,7 @@
                     </div>
                     <div class="box-footer text-right">
                         <input type="hidden" name="update_id" value="<?php echo ((!empty($info->id))?$info->id:'') ?>">
-                        <button type="button" id="submit_btn"  class="btn btn-success btn-flat"  onclick="savePurchaseInfo()"><i class="glyphicon glyphicon-ok-sign"></i> Save Stock In</button>
+                        <button type="button" id="submit_btn"  class="btn btn-success btn-flat"  onclick="savePurchaseInfo()"><i class="glyphicon glyphicon-ok-sign"></i> Update</button>
                     </div>
                 </form>
             </div>

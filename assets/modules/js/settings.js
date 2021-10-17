@@ -182,6 +182,7 @@ function updateProductInfo(productid) {
         success: function (response) {
             if(response.status=='success'){
                 var data=response.data;
+                console.log(data);
                 $("#productCode").val(data.productCode);
                 $("#productNameShow").val(data.name);
                 $("#productBrand").val(data.band_id);
@@ -189,6 +190,7 @@ function updateProductInfo(productid) {
                 $("#productType").val(data.product_type);
                 $("#productUnit").val(data.unit_id);
                 $("#productPrice").val(data.unit_sale_price);
+                $("#productPurchasePrice").val(data.purchase_price);
                 $("#status").val(data.is_active);
                 $("#upId").val(data.id);
             }
@@ -775,8 +777,9 @@ function saveOutletInfo() {
             <input type="text" id="productName_${iStockIN}" required data-type="productName" placeholder="Product Name" class="productName form-control">
             <input type="hidden" name="productID[]" id="productID_${iStockIN}" class="form-control">
         </td>
-        <td><input type="text" required name="quantity[]" id="quantity_${iStockIN}" placeholder="Quantity" class="quant form-control only-number"></td>
-    
+        <td><input type="text" required name="quantity[]" id="quantity_${iStockIN}" placeholder="Quantity" class="quantPurchase form-control only-number"></td>
+         <td><input type="text" required name="unitPrice[]" id="unitPrice_${iStockIN}" placeholder="Unit Price" class="unitPrice form-control only-number"></td>
+         <td><input type="text" required name="totalPrice[]" id="totalPrice_${iStockIN}" placeholder="Total Price" class="totalPrice form-control only-number"></td>
         <td><a href="javascript:void(0);" id="deleteRow_${iStockIN}"  class="deleteRow btn btn-danger  btn-sm"><i class="glyphicon glyphicon-remove"></i></a></td>
     </tr>`).appendTo(scntDiv);
 
@@ -1511,6 +1514,40 @@ function deleteDueCollection(id) {
             }
         });
     }
+}
+
+
+$(document).on("keyup", ".quantPurchase,.unitPrice ", function (event) {
+    var element_id = get_element_id($(this).attr('id'));
+    var price = parseFloat($("#unitPrice_" + element_id).val());
+    var quantity = parseFloat($("#quantity_" + element_id).val());
+    if(isNaN(price)){ var priceAmt=0;   }else{  var priceAmt=price; }
+    if(isNaN(quantity)){var quantityAmt=0; }else{ var quantityAmt=quantity;}
+
+    if (!isNaN(priceAmt) && !isNaN(quantityAmt)) {
+        var sub_total=(priceAmt * quantityAmt);
+        $("#totalPrice_" + element_id).val((sub_total).toFixed(2));
+        purchaseTotalCal();
+
+    }else{
+        $("#totalPrice_" + element_id).val('0.00');
+        purchaseTotalCal();
+    }
+});
+
+function purchaseTotalCal() {
+    if ($("#tableDynamic tr").size() == 0) {
+        return $("#net_purchase_amount").val(0);
+    }
+    $("#tableDynamic tr").each(function () {
+        row_total = 0;
+        $(".totalPrice").each(function () {
+            row_total += Number(parseFloat($(this).val()));
+        });
+        if (!isNaN(row_total)) {
+            $("#net_purchase_amount").val(row_total.toFixed(2));
+        }
+    });
 }
 
 

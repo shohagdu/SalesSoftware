@@ -67,6 +67,7 @@ $urlConcat= $uriValue."/".$uriValue2;
                         <li><a href="<?php echo base_url('purchases/index'); ?>"><i class="glyphicon glyphicon-tasks"></i> List </a></li>
                     </ul>
                 </li>
+                <!--
                 <li <?php if ($uriValue2 == 'shipment_member_info' || $uriValue2 == 'member_due_collection' ) { ?> class="treeview active"  <?php } ?>>
                     <a href="#">
                         <i class="glyphicon glyphicon-circle-arrow-right"></i> <span>Supplier</span>
@@ -81,6 +82,7 @@ $urlConcat= $uriValue."/".$uriValue2;
                         glyphicon-tasks"></i>Supplier Due Payment</a></li>
                     </ul>
                 </li>
+                -->
 
                 <!--
                 <li <?php if ($uriValue == 'transfer') { ?> class="treeview active"  <?php } ?>>
@@ -144,6 +146,12 @@ $urlConcat= $uriValue."/".$uriValue2;
                     <ul class="treeview-menu">
                         <li><a href="<?php echo base_url('products/index'); ?>"><i class="glyphicon
                         glyphicon-tasks"></i>  Products Record</a></li>
+                        <!--
+                        <li><a href="<?php echo base_url('products/printBarcodes'); ?>"><i class="glyphicon
+                        glyphicon-tasks"></i>  Barcode Print</a></li>
+                        -->
+
+
                     </ul>
                 </li>
                 <li <?php if ($uriValue == 'reports') { ?> class="treeview active"  <?php } ?>>
@@ -156,7 +164,13 @@ $urlConcat= $uriValue."/".$uriValue2;
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="<?php echo base_url('reports/inventory_report'); ?>"><i class="glyphicon
-                        glyphicon-tasks"></i>  Invantory</a></li>
+                        glyphicon-tasks"></i>  Inventory</a></li>
+                        <li><a href="<?php echo base_url('reports/salesReport'); ?>"><i class="glyphicon
+                        glyphicon-tasks"></i>  Sales Report</a></li>
+                        <li><a href="<?php echo base_url('reports/purchaseReport'); ?>"><i class="glyphicon
+                        glyphicon-tasks"></i>  Purchase Report</a></li>
+
+
                     </ul>
                 </li>
 

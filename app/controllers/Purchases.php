@@ -102,16 +102,20 @@ class Purchases extends CI_Controller {
             $insert_id=$this->db->insert_id();
             if(!empty($productID)){   
                 foreach($productID as $key=>$product){
-                    $stock_info[]=[
-                        'product_id'=>  $product,
-                        'purchase_id'=>  $insert_id,
-                        'stock_type'=>  1,
-                        'total_item'=>  $quantity[$key],
-                        'debit_outlet'=>  $this->outletID,
-                        'created_by'=>  $this->userId,
-                        'created_time'=>$this->dateTime,
-                        'created_ip'=>  $this->ipAddress,
-                    ];
+                    if(!empty($product) && !empty($unitPrice[$key]) && !empty($quantity[$key])) {
+                        $stock_info[] = [
+                            'product_id' => $product,
+                            'purchase_id' => $insert_id,
+                            'stock_type' => 1,
+                            'unit_price' => $unitPrice[$key],
+                            'total_item' => $quantity[$key],
+                            'total_price' => $unitPrice[$key] * $quantity[$key],
+                            'debit_outlet' => $this->outletID,
+                            'created_by' => $this->userId,
+                            'created_time' => $this->dateTime,
+                            'created_ip' => $this->ipAddress,
+                        ];
+                    }
                 }
                 $this->db->insert_batch("stock_info",$stock_info);
             }
@@ -148,7 +152,9 @@ class Purchases extends CI_Controller {
                     if(!empty($stock_id[$key])) {
                         $update_stock_info[] = [
                             'id' => $stock_id[$key],
+                            'unit_price' => $unitPrice[$key],
                             'total_item' => $quantity[$key],
+                            'total_price' => $unitPrice[$key] * $quantity[$key],
                             'debit_outlet' => $this->outletID,
                             'updated_by' => $this->userId,
                             'updated_time' => $this->dateTime,
@@ -159,7 +165,9 @@ class Purchases extends CI_Controller {
                             'product_id' => $product,
                             'purchase_id' => $update_id,
                             'stock_type' => 1,
+                            'unit_price' => $unitPrice[$key],
                             'total_item' => $quantity[$key],
+                            'total_price' => $unitPrice[$key] * $quantity[$key],
                             'debit_outlet' => $this->outletID,
                             'created_by'=>$this->userId,
                             'created_time'=>$this->dateTime,

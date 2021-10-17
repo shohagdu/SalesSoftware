@@ -95,7 +95,16 @@ class Reports extends CI_Controller {
         }
     }
 
-
+    function salesReport() {
+        $data = array();
+        $view = array();
+        $data['title'] = "Sales Reports";
+        $outlet_id=$this->outletID;
+        $data['outlet_info']= $this->SETTINGS->outlet_info();
+        $data['info']=$this->REPORT->sales_report('',$outlet_id);
+        $view['content'] = $this->load->view('dashboard/reports/sales/salesReport', $data, TRUE);
+        $this->load->view('dashboard/index', $view);
+    }
 
 
 }
