@@ -88,7 +88,7 @@
                     <b>Version 1.1</b>
                 </div>
                 <strong>Copyright &copy;  <a href=""></a></strong> All rights
-                reserved. Developped By <a href="http://shohozit.com/" target="_blank">SHOHOZIT</a>
+                reserved. Developed By <a href="http://shohozit.com/" target="_blank">SHOHOZIT</a>
             </footer>
         </div>
     </body>
