@@ -11,3 +11,7 @@ UPDATE  `stock_info` SET `total_price`=`total_item`*`unit_price` ORDER BY id DES
 UPDATE stock_info as T1   JOIN product_info as T2 ON T1.product_code = T2.productCode
   SET T1.product_id = T2.id
 WHERE T1.product_code is NOT NULL
+
+-----------Updated
+
+UPDATE `product_info` SET `band_id`=15,`source_id`=22 ORDER BY id DESC

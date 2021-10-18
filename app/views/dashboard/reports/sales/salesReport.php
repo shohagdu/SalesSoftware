@@ -51,12 +51,11 @@
                             </thead>
                             <tbody>
                             <?php
-
-                            if(!empty($info)){
                                 $i=1;
                                 $profiteLose=0;
-                                foreach ($info as $row) {
-                                    ?>
+                                if(!empty($info)){
+                                    foreach ($info as $row) {
+                            ?>
                                     <tr>
                                         <td><?php echo $i++; ?></td>
                                         <td>
