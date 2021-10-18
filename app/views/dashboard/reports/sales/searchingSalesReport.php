@@ -18,10 +18,9 @@
     </thead>
     <tbody>
     <?php
-
+    $profiteLose=0;
+    $i=1;
     if(!empty($info)){
-        $i=1;
-        $profiteLose=0;
         foreach ($info as $row) {
             ?>
             <tr>
@@ -59,7 +58,7 @@
     </tbody>
     <tfoot>
     <tr>
-        <td colspan="8" class="text-right">Current Profite/Lose</td>
+        <td colspan="8" class="text-right">Current Profit/Lose</td>
         <td><i class="badge"><?php echo number_format($profiteLose,2); ?></i></td>
     </tr>
     </tfoot>
