@@ -31,7 +31,7 @@
         <div class="wrapper">
             <header class="main-header">
                 <a href="<?php echo base_url(); ?>" class="logo">
-                    <span class="logo-lg"><?php echo  setShopName ?></span>
+                    <span class="logo-lg">RED GREEN</span>
                 </a>
                 <!-- Header Navbar: style can be found in header.less -->
                 <nav class="navbar navbar-static-top">
