@@ -77,11 +77,11 @@
 
 
                                     <td><i class="badge"><?php echo (!empty($row->discount)?$row->discount:''); $tDiscount+=$row->discount; ?></i></td>
-                                    <td><i class="badge"><?php echo (!empty($row->net_total)?$row->net_total:'');  $tNetTotal+=$row->net_total; ?></i></td>
-                                    <td><i class="badge"><?php echo (!empty($row->payment_amount)?$row->payment_amount:''); $paymentAmt+=$row->payment_amount; ?></i></td>
-                                   <td><i class="badge"><?php echo (!empty($row->getPurchaseAmount)?$row->getPurchaseAmount:''); $tCosting+=$row->getPurchaseAmount; ?></i></td>
+                                    <td><i class="badge"><?php echo $netTotal=(!empty($row->net_total)?$row->net_total:'0.00');  $tNetTotal+=$row->net_total; ?></i></td>
+                                    <td><i class="badge"><?php echo (!empty($row->payment_amount)?$row->payment_amount:'0.00'); $paymentAmt+=$row->payment_amount; ?></i></td>
+                                   <td><i class="badge"><?php echo $purchaseAmt=(!empty($row->getPurchaseAmount)?$row->getPurchaseAmount:'0.00'); $tCosting+=$row->getPurchaseAmount; ?></i></td>
                                     <td><i class="badge">
-                                    <?php echo $profitLose=(!empty($row->net_total)?number_format(($row->net_total-$row->getPurchaseAmount),2):'0.00');  $tProfitLose+=$profitLose; ?>
+                                    <?php echo $profitLose=(!empty($row->net_total)?number_format(($netTotal-$purchaseAmt),2):'0.00');  $tProfitLose+=$profitLose; ?>
                                         </i>
                                     </td>
                                 </tr>
