@@ -40,7 +40,7 @@
                 </form>
             </div>
             <div class="clearfix"></div>
-            <div >
+            <div class="table-responsive" >
             <table id='SalesInfo' class='display dataTable table table-bordered table-hover' >
                 <thead>
                     <tr>

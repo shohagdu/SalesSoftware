@@ -152,6 +152,24 @@ class Reports_model extends CI_Model {
             return '0.00';
         }
     }
+    function todaySalesInfo($where=NULL){
+        $this->db->select('sum(net_total) as totalBill, sum(payment_amount) as totalCollectionAmt',true);
+        if(!empty($where['firstDate'])){
+            $this->db->where("sales_date >=", $where['firstDate']);
+            $this->db->where("sales_date <=", $where['toDate']);
+        }
+        $this->db->where('sales_info.is_active', 1);
+
+        $records = $this->db->get('sales_info');
+        if($records->num_rows()>0) {
+            $result = $records->row();
+            if(!empty($result)) {
+                return (!empty($result->totalCollectionAmt)?$result->totalCollectionAmt:'0.00');
+            }
+        }else{
+            return '0.00';
+        }
+    }
 
 
 }

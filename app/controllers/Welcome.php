@@ -14,13 +14,15 @@ class Welcome extends CI_Controller {
         }
         $this->load->model('Common_model', 'COMMON_MODEL', TRUE);
         $this->load->model('Cashbook_model', 'CASHBOOK', TRUE);
+        $this->load->model('Reports_model', 'REPORT', TRUE);
     }
 
 
     function index() {
-   //die("hello welcome index function");
         $data = array();
-        $data['accountBalanceHistory'] = [];
+        $param['firstDate']         =    date('Y-m-d');
+        $param['toDate']            =    date('Y-m-d');
+        $data['todaySalesInfo']     =    $this->REPORT->todaySalesInfo($param);
         $view = array();
         $data['title'] = "Dashboard";
         $view['content'] = $this->load->view('dashboard/welcome', $data, TRUE);
