@@ -154,25 +154,37 @@ $urlConcat= $uriValue."/".$uriValue2;
 
                     </ul>
                 </li>
-                <li <?php if ($uriValue == 'reports') { ?> class="treeview active"  <?php } ?>>
+                <li  <?php if ($uriValue == 'reports') { ?> class="treeview active"  <?php } ?> >
                     <a href="#">
-                        <i class="glyphicon glyphicon-circle-arrow-right"></i>
-                        <span>Report</span>
-                        <span class="pull-right-container">
-                            <i class="glyphicon glyphicon-chevron-left pull-right"></i>
-                        </span>
+                        <i class="glyphicon glyphicon-circle-arrow-right"></i> All Report                <span class="pull-right-container">
+                                <i class="glyphicon glyphicon-chevron-left pull-right"></i>
+                             </span>
                     </a>
                     <ul class="treeview-menu">
+                        <li <?php if ($uriValue == 'reports') { ?> class="treeview active"  <?php } ?>>
+                            <a href="#">
+                                <i class="fa fa-folder"></i> Sales                                        <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu  ">
+                                <li class="treeview active">
+                                    <a href="<?php echo base_url('reports/dailySalesStatement'); ?>">
+                                        <i class="glyphicon glyphicon-tasks"></i> Daily Sales                                                 </a>
+                                </li>
+                                <li class="treeview active">
+                                    <a href="<?php echo base_url('reports/salesReport'); ?>">
+                                        <i class="glyphicon glyphicon-tasks"></i> Details Sales                                                 </a>
+                                </li>
+                            </ul>
+                        </li>
                         <li><a href="<?php echo base_url('reports/inventory_report'); ?>"><i class="glyphicon
                         glyphicon-tasks"></i>  Inventory</a></li>
-                        <li><a href="<?php echo base_url('reports/salesReport'); ?>"><i class="glyphicon
-                        glyphicon-tasks"></i>  Sales Report</a></li>
+                        <!--
                         <li><a href="<?php echo base_url('reports/purchaseReport'); ?>"><i class="glyphicon
                         glyphicon-tasks"></i>  Purchase Report</a></li>
-
-
+                        -->
                     </ul>
                 </li>
+
 
                 <li <?php if ($uriValue2 == 'productBand' || $uriValue2 == 'productSource' || $uriValue2 == 'productType' || $uriValue2 == 'productUnit'  || $uriValue2 == 'listUser') { ?> class="treeview active"  <?php } ?> >
                     <a href="#">

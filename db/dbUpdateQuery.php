@@ -15,3 +15,7 @@ WHERE T1.product_code is NOT NULL
 -----------Updated
 
 UPDATE `product_info` SET `band_id`=15,`source_id`=22 ORDER BY id DESC
+-----------Updated
+
+SELECT LPAD(productCode, 4, 0) as newCode , productCode FROM product_info
+ORDER BY id ASC

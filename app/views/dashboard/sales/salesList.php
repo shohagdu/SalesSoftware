@@ -1,6 +1,8 @@
 <section class="content">
     <div class="box">
         <div class="box-header">
+            <div class="box-body" id="alert" style="display: none;"> <div class="callout callout-info"><span
+                            id="show_message"></span></div></div>
             <h3 class="box-title">Sales Record</h3>
             <a href="<?php echo site_url('pos/salesList'); ?>" style="margin-left:10px"  class="btn btn-primary btn-sm  pull-right"><i
                         class="glyphicon glyphicon-refresh"></i> Refresh</a>

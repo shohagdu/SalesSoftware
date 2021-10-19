@@ -285,5 +285,39 @@ class Pos extends CI_Controller
         $data = $this->POS->showAllPurchaseInfo($postData);
         echo json_encode($data);
     }
+    public function deleteSalesInfo(){
+        extract($_POST);
+        $this->db->trans_start();
+        if(empty($id)){
+            echo json_encode(['status'=>'error','message'=>'ID is required','data'=>'']);exit;
+        }
+        $info = array(
+            'is_active' => 0,
+            'updated_by' => $this->userId,
+            'updated_time' => $this->dateTime,
+            'updated_ip' => $this->ipAddress,
+        );
 
+        $this->db->where('id', $id);
+        $this->db->update("sales_info", $info);
+
+        $this->db->where('sales_id', $id);
+        $this->db->where('stock_type', 2);
+        $this->db->update("stock_info", $info);
+
+
+        $message = 'Successfully Delete this Information';
+
+
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === true) {
+            echo json_encode(['status' => 'success', 'message' => $message]);
+            exit;
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Fetch a problem, data not update',
+                'redirect_page' => '']);
+            exit;
+        }
+
+    }
 }

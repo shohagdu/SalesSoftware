@@ -1565,3 +1565,51 @@ function searchingSalesReport () {
     });
 }
 
+function searchingDailySalesStatement () {
+    $(".search_btn").attr("disabled", true);
+    $.ajax({
+        url:  base_url +"reports/searchingDailySalesSatement/",
+        data: $('#salesReportForm').serialize(),
+        type: "POST",
+        success: function (response) {
+            $(".search_btn").attr("disabled", false);
+            if(response!=''){
+                $("#stock_info_data").html(response);
+            }
+        }
+    });
+}
+
+function deleteSalesInformation(id) {
+    var confirmation = confirm("Are you sure you want to remove this Member?");
+
+    if (confirmation) {
+        $.ajax({
+            url: base_url + "Pos/deleteSalesInfo",
+            data: {id: id},
+            type: "POST",
+            dataType: 'JSON',
+            success: function (response) {
+                if (response.status == 'success') {
+                    $("#alert").show();
+                    $("#show_message").html(response.message);
+                    setTimeout(function () {
+                        $("#alert").hide();
+                        $("#show_message").html('');
+                        $('#SalesInfo').DataTable().ajax.reload();
+                    }, 1500);
+                } else {
+                    $("#alert").show();
+                    $("#show_message").html(response.message);
+                    setTimeout(function () {
+                        $("#alert").hide();
+                        $("#show_message").html('');
+                    }, 3500);
+                }
+            }
+        });
+    }
+
+
+}
+

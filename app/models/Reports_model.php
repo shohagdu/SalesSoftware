@@ -106,6 +106,52 @@ class Reports_model extends CI_Model {
             return false;
         }
     }
+    function dailySalesReport($where=NULL){
+        $this->db->select('sales_info.id as salesID,customer_shipment_member_info.name as customerName,mobile,sales_info.sales_date,sales_info.invoice_no,sub_total,discount,net_total,payment_amount,',true);
+        if(!empty($where['firstDate'])){
+            $this->db->where("sales_date >=", $where['firstDate']);
+            $this->db->where("sales_date <=", $where['toDate']);
+            unset($where['firstDate']);
+            unset($where['toDate']);
+        }else{
+            $this->db->where("sales_date >=", date('Y-m-d'));
+            $this->db->where("sales_date <=", date('Y-m-d'));
+        }
+        if(!empty($where)) {
+            $this->db->where($where);
+        }
+        $this->db->where('sales_info.is_active', 1);
+        $this->db->join('customer_shipment_member_info', 'sales_info.customer_id = customer_shipment_member_info.id', 'left');
+        $this->db->order_by("sales_date", "ASC");
+        $records = $this->db->get('sales_info');
+        if($records->num_rows()>0) {
+            $result = $records->result();
+            if(!empty($result)) {
+                foreach ($result as $key => $row) {
+                    $result[$key]->getPurchaseAmount=self::getPurchaseAmtBySalesID(['stock_info.sales_id'=>$row->salesID]);
+
+                }
+                return $result;
+            }
+        }else{
+            return false;
+        }
+    }
+
+    function getPurchaseAmtBySalesID($where){
+        $this->db->select('sum((total_item*purchaseAmtForSales)) as profileAmount',true);
+        if(!empty($where)) {
+            $this->db->where($where);
+        }
+        $this->db->where('stock_info.is_active', 1);
+        $records = $this->db->get('stock_info');
+        if($records->num_rows()>0) {
+            $result = $records->row();
+            return (!empty($result->profileAmount)?$result->profileAmount:'0.00');
+        }else{
+            return '0.00';
+        }
+    }
 
 
 }

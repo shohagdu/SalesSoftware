@@ -328,7 +328,7 @@ function addCustomerMemberInfoPos() {
     $("#alert_error").hide();
 }
 function saveCustomerMemberInfoPos() {
-   // $(".submit_btn").attr("disabled", true);
+   $(".submit_btn").attr("disabled", true);
     $.ajax({
         url:  base_url +"settings/save_customer_member_info/",
         data: $('#customerMemberInfoForm').serialize(),
@@ -360,7 +360,7 @@ function saveCustomerMemberInfoPos() {
 }
 
 function saveSalesInfo() {
-      //$("#payment_genarel").attr("disabled", true);
+      $("#payment_genarel").attr("disabled", true);
     $.ajax({
         url:  base_url +"pos/save_sales_info/",
         data: $('#salesForm').serialize(),

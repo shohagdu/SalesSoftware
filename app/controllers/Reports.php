@@ -108,12 +108,6 @@ class Reports extends CI_Controller {
         extract($_POST);
         $data = array();
         $param=[];
-        if(empty($outletID)) {
-            $outlet_id = $this->outletID;
-        }else{
-            $outlet_id =$outletID;
-        }
-
         $date=$this->input->post('searchingDate');
         if($date!=''){
             $exp_date=explode("-",$date);
@@ -125,6 +119,30 @@ class Reports extends CI_Controller {
         $data['info']=$this->REPORT->sales_report($param);
         return   $this->load->view('dashboard/reports/sales/searchingSalesReport', $data);
     }
+    function dailySalesStatement() {
+        $data = array();
+        $view = array();
+        $data['title'] = "Daily Sales Statement";
+        $outlet_id=$this->outletID;
+        $data['info']=$this->REPORT->dailySalesReport('',$outlet_id);
+        $view['content'] = $this->load->view('dashboard/reports/sales/dailySalesStatement', $data, TRUE);
 
+        $this->load->view('dashboard/index', $view);
+    }
+    function searchingDailySalesSatement() {
+        extract($_POST);
+        $data = array();
+        $param=[];
+        $date=$this->input->post('searchingDate');
+        if($date!=''){
+            $exp_date=explode("-",$date);
+            $param['firstDate']      =    $exp_date[0];
+            $param['toDate']         =    $exp_date[1];
+        }else{
+            return "Date is required.";
+        }
+        $data['info']=$this->REPORT->dailySalesReport($param);
+        return   $this->load->view('dashboard/reports/sales/searchingDailySalesSatement', $data);
+    }
 
 }
