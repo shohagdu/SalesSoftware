@@ -35,27 +35,29 @@
                 <div class="clearfix"></div>   
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <table id='purchaseInfo' class='display dataTable table table-bordered table-hover' >
-                        <thead>
-                            <tr>
-                                <th>S/L</th>
-                                <th>Outlet Name</th>
-                                <th>Stock No</th>
-                                <th>Date</th>
-                                <th>Note</th>
-                                <th>Status</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <div class="table-responsive">
+                        <table id='purchaseInfo' class='display dataTable table table-bordered table-hover' >
+                            <thead>
+                                <tr>
+                                    <th>S/L</th>
+                                    <th>Outlet Name</th>
+                                    <th>Stock No</th>
+                                    <th>Date</th>
+                                    <th>Note</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
 
-                        
-                        </tbody>
-                        <tfoot>
 
-                        </tfoot>
-                    </table>
+                            </tbody>
+                            <tfoot>
+
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

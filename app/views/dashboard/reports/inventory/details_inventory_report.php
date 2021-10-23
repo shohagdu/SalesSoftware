@@ -29,11 +29,11 @@
                             <td class="text-left"><?php echo (!empty($products->sourceTitle)?$products->sourceTitle:'') ?> </td>
                         </tr>
                         <tr>
-                            <th class="text-left"> Product type</th>
-                            <td class="text-left"><?php echo (!empty($products->ProductTypeTitle)?$products->ProductTypeTitle:'') ?>
+                            <th class="text-left">Unit Purchase Price</th>
+                            <td class="text-left"><?php echo (!empty($products->purchase_price)?$products->purchase_price:'0.00') ?>
                             </td>
-                            <th class="text-left"> Current Stock</th>
-                            <td class="text-left"> </td>
+                            <th class="text-left">Unit Sale Price</th>
+                            <td class="text-left"> <?php echo (!empty($products->unit_sale_price)?$products->unit_sale_price:'0.00') ?> </td>
                         </tr>
 
 
@@ -138,6 +138,20 @@
                                         echo !empty($balance)
                                             ?$balance:'0'; ?></span></td>
                             </tr>
+                            <tr>
+                                <td colspan="3">Total Purchase Price</td>
+                                <td colspan="4"><span class="badge bg-yellow"><?php
+                                        echo !empty($balance)
+                                            ?number_format($balance*$products->purchase_price,2):'0'; ?></span></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">Total Purchase Price</td>
+                                <td colspan="4"><span class="badge bg-yellow"><?php
+                                        echo !empty($balance)
+                                            ?number_format($balance*$products->unit_sale_price,2):'0'; ?></span></td>
+                            </tr>
+
+
 
                         </tfoot>
                     </table>

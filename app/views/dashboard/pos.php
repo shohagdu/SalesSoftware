@@ -2,7 +2,7 @@
 <html>
 <head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>EASSY SALES V1.3</title>
+    <title>EASY SALES</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/hover.css">
@@ -177,7 +177,7 @@
                         <div class="col-sm-12" style="background: #fff">
                                 <div class="col-sm-8" style="margin-top:10px;">
                                     <div class="form-group" >
-                                        <div class="col-sm-10 search"  style="margin-bottom:10px;">
+                                        <div class="col-sm-7 search col-xs-12"  style="margin-bottom:10px;">
                                             <div class="row">
                                                 <span class="glyphicon glyphicon-search"></span>
                                                 <input required="" name="cst_name"
@@ -187,18 +187,25 @@
                                                 <input type="hidden" name="customer" id="cst_id"/>
                                             </div>
                                         </div>
-                                        <div class="col-sm-2 text-right" >
-                                            <div class="row">
+                                        <div class="col-sm-1 col-xs-4" >
                                                 <button type="button" class="btn btn-info" data-toggle="modal" onclick="addCustomerMemberInfoPos()"
-            data-target="#CustomerInfoModal"><i class="glyphicon glyphicon-plus"></i> Add</button>
+            data-target="#CustomerInfoModal" tabindex="-1"><i class="glyphicon glyphicon-plus"></i> Add</button>
+                                        </div>
+                                        <div class="col-sm-4 col-xs-8 text-center" style="padding-top:5px" >
+                                            <div class="form-check">
+                                                <input class="form-check-input" tabindex="-1" checked type="checkbox" value="1" name="allAreRunningCustomer" id="allAreRunningCustomer">
+                                                <label class="form-check-label" for="allAreRunningCustomer">
+                                                   All are  Running Customer
+                                                </label>
                                             </div>
                                         </div>
+
                                     </div>
                                     <div class="clearfix"></div>
-                                    <div class="panel panel-default ">
+                                    <div class="panel panel-default " style="margin-top:5px">
                                         <div class="panel-body"
-                                             style="height:70px;padding-top:6px;">
-                                            <div style="font-size:13px;font-weight:bold;float:left;text-decoration:underline"> Customer Information:
+                                             style="height:50px;padding-top:6px;">
+                                            <div style="font-size:10px;font-weight:bold;float:left;text-decoration:underline"> Customer Information:
                                             </div>
                                              <table style="width:100%;font-size:11px;"
                                                    id="showMemberInfo">
@@ -222,6 +229,7 @@
                                                     <td >: <span
                                                                 id="showEmail"></span></td>
                                                 </tr>
+
                                             </table>
                                         </div>
                                     </div>
@@ -238,17 +246,17 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-12">
-                                        <div class="row">
-                                            <div class="col-md-12 myStyleCss">
-                                                <div class="row"
+                                        <div class="row " >
+                                            <div class="col-md-12 col-xs-12 myStyleCss">
+                                                <div class="row table-responsive"
                                                      style="background: #fff;min-height:420px;border:1px solid #fff;">
                                                     <table class="table"
-                                                           style="background: #eee; border:2px solid #fff !important;"
+                                                           style="background: #eee; border:2px solid #fff !important;width: 100%!important;"
                                                            rules="all"
                                                     >
                                                         <thead>
                                                         <tr>
-                                                            <th style="width: 35%;text-align:center;background: #737373;color:white;padding:10px;">
+                                                            <th style="width: 30%;text-align:center;background: #737373;color:white;padding:10px;">
                                                                 Product Information
                                                             </th>
 
@@ -257,7 +265,7 @@
                                                             </th>
 
 
-                                                            <th style="25%;text-align:center;background: #737373;color:white;padding:10px;">
+                                                            <th style="20%;text-align:center;background: #737373;color:white;padding:10px;">
                                                                 Qty
                                                             </th>
                                                             <th style="15%;text-align:center;background: #737373;color:white;padding:10px;">
@@ -338,7 +346,7 @@
 
                                                 <p id="percentP" style="display: none;">
                                                     <label for="discountPercent">Percent(%)</label>
-                                                    <input tabindex="-1" placeholder="10" name="discountPercent"
+                                                    <input  placeholder="e.g 10" name="discountPercent"
                                                            id="discountPercent"
                                                            class="form-control">
                                                 </p>
@@ -365,7 +373,7 @@
                                                     <tr>
                                                         <td rowspan="4"  class="paymentBy"> Payment By </td>
                                                         <td>
-                                                            <label class="radio-inline"> <input type="checkbox" id="cash"
+                                                            <label class="radio-inline"> <input type="checkbox" tabindex="-1"  id="cash"
                                                                                                 value="cash"
                                                                                                 onchange="isCheckedById(this)"
                                                                                                 checked
@@ -384,7 +392,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <label class="radio-inline"> <input type="checkbox" id="cash_cheque"
+                                                            <label class="radio-inline"> <input type="checkbox" tabindex="-1" id="cash_cheque"
                                                                                                 onchange="isCheckedById(this)"
                                                                                                 value="cash_cheque"
                                                                                                 name="payment_by[1]"
@@ -395,7 +403,7 @@
                                                         </td>
 
                                                         <td>
-                                                            <input type="text" placeholder="0.00"  readonly
+                                                            <input type="text" tabindex="-1" placeholder="0.00"  readonly
                                                                    id="cash_cheque_amount"
                                                                    name="payment_ctg_amount[]"
                                                                    class="form-control payment_ctg_amount">
@@ -403,9 +411,9 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <label class="radio-inline"> <input type="checkbox" id="due_cheque"
+                                                            <label class="radio-inline"> <input type="checkbox" tabindex="-1" id="due_cheque"
                                                                                                 onclick="isCheckedById(this)"
-                                                                                                value="due_cheque"
+                                                                                                value="due_cheque" tabindex="-1"
                                                                                                 name="payment_by[2]"
                                                                 ></label>
                                                         </td>
@@ -414,16 +422,16 @@
                                                         </td>
 
                                                         <td>
-                                                            <input type="text" placeholder="0.00"   id="due_cheque_amount"
-                                                                   name="payment_ctg_amount[]" readonly
+                                                            <input type="text" tabindex="-1" placeholder="0.00"   id="due_cheque_amount"
+                                                                   name="payment_ctg_amount[]" tabindex="-1" readonly
                                                                    class="form-control payment_ctg_amount">
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <label class="radio-inline"> <input type="checkbox" id="online"
+                                                            <label class="radio-inline"> <input type="checkbox" tabindex="-1" id="online"
                                                                                                 onclick="isCheckedById(this)"
-                                                                                                value="online_payment"
+                                                                                                value="online_payment" tabindex="-1"
                                                                                                 name="payment_by[3]"
                                                                 ></label>
                                                         </td>
@@ -432,7 +440,7 @@
                                                         </td>
 
                                                         <td>
-                                                            <input placeholder="0.00"  type="text"  id="online_amount" readonly
+                                                            <input placeholder="0.00"  tabindex="-1" type="text"  id="online_amount" readonly
                                                                    name="payment_ctg_amount[]"
                                                                    class="form-control payment_ctg_amount">
                                                         </td>
@@ -443,9 +451,9 @@
                                         </tr>
                                         <tr>
 
-                                            <th class="thStyleNew" style="color:blue;">Payment </th>
+                                            <th class="thStyleNew"  style="color:blue;">Payment </th>
                                             <th class="tdStyleNew">
-                                                <input  id="paidNow" placeholder="0.00" value=''  type="text"
+                                                <input  id="paidNow"  tabindex="-1" placeholder="0.00" value=''  type="text"
                                                         class="form-control inputStyle"  name="paidNow" style='border:1px solid blue;' >
                                             </th>
                                         </tr>

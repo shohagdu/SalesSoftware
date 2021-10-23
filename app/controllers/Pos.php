@@ -42,9 +42,9 @@ class Pos extends CI_Controller
     }
 
     public function save_sales_info(){
-       // echo "<pre>";
-      //  print_r($_POST);
-      //  exit;
+        //echo "<pre>";
+       // print_r($_POST);
+       // exit;
         extract($_POST);
         $payment_byInfo=[];
         if(!empty($payment_by)){
@@ -53,7 +53,7 @@ class Pos extends CI_Controller
             }
         }
         $this->db->trans_start();
-        if(empty($customer)){
+        if(empty($customer) && $allAreRunningCustomer !=1){
             echo json_encode(['status'=>'error','message'=>'Customer is required','data'=>'']);exit;
         }
         if(empty($subTotal)){
@@ -61,6 +61,9 @@ class Pos extends CI_Controller
         }
         if(empty($productID[0])){
             echo json_encode(['status'=>'error','message'=>'Minimum one product is required','data'=>'']);exit;
+        }
+        if((isset($allAreRunningCustomer) && $allAreRunningCustomer==1) && ($totalAmount!= $paidNow) ){
+            echo json_encode(['status'=>'error','message'=>'Invoice amount and Paid amount must be equal. Because this is running Customer.','data'=>'']);exit;
         }
         if(empty($upId)){
             $sales_info=[

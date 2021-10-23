@@ -257,7 +257,9 @@ var addRowProduct = function (id, inventory, price, value,  productCode,unit_sal
 
         $("#confirmModal").on("click", function (e) {
             var customerId = $("#cst_id").val();
-            if (customerId == '') {
+            var allAreRunningCustomer = $('input[name="allAreRunningCustomer"]:checked').val();
+            // console.log(allAreRunningCustomer);
+            if (customerId == ''  &&  typeof allAreRunningCustomer=='undefined') {
                 $("#emptyMember").show();
                 $("#salesConfirmModal").modal("hide");
             } else {

@@ -51,23 +51,25 @@
                             </div>
                         </div>
                     </div>
-                    <table id='ProductInfo' class='display dataTable table table-bordered table-hover' >
-                        <thead>
-                            <tr>
-                                <th>S/L</th>
-                                <th>Name</th>
-                                <th>Product Code</th>
-                                <th>Brand</th>
-                                <th>Source</th>
-                                <th>Type</th>
-                                <th>Unit</th>
-                                <th>Sale Price</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
+                    <div class="table-responsive">
+                        <table id='ProductInfo' class='display dataTable table table-bordered table-hover' >
+                            <thead>
+                                <tr>
+                                    <th>S/L</th>
+                                    <th>Name</th>
+                                    <th>Product Code</th>
+                                    <th>Brand</th>
+                                    <th>Source</th>
+                                    <th>Type</th>
+                                    <th>Unit</th>
+                                    <th>Sale Price</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
 
-                    </table>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

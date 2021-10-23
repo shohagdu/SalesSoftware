@@ -7,7 +7,7 @@ class Reports_model extends CI_Model {
 
     function inventory_report($where=NULL,$outletID=NULL){
         //return 'hello';
-        $this->db->select('product_info.id,product_info.name,product_info.productCode,product_info.is_active,band.title as bandTitle,source.title as sourceTitle,productType.title as ProductTypeTitle,unitInfo.title as unitTitle',true);
+        $this->db->select('product_info.id,product_info.name,product_info.productCode,product_info.is_active,band.title as bandTitle,source.title as sourceTitle,productType.title as ProductTypeTitle,unitInfo.title as unitTitle,product_info.purchase_price,product_info.unit_sale_price',true);
         if(!empty($where)) {
             $this->db->where($where);
         }
@@ -16,7 +16,8 @@ class Reports_model extends CI_Model {
         $this->db->join('all_settings_info as source', 'source.id = product_info.source_id', 'left');
         $this->db->join(' all_settings_info as productType', 'productType.id = product_info.product_type', 'left');
         $this->db->join(' all_settings_info as unitInfo', 'unitInfo.id = product_info.unit_id', 'left');
-        $this->db->order_by("name", "ASC");
+        $this->db->order_by("productCode", "ASC");
+        $this->db->order_by("id", "ASC");
         $records = $this->db->get('product_info');
         if($records->num_rows()>0) {
            $result = $records->result();
