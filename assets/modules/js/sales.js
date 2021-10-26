@@ -47,15 +47,15 @@ var addRowProduct = function (id, inventory, price, value,  productCode,unit_sal
              // todo: IF PRODUCT IS EXIST THEN AUTOMATIC ADD IN QUEUE END
 
             $('<tr>\n\
-                        <td style="width:35%;" class="appenTd">' + value + ' <span class="badge pull-right"> Stock '+ inventory +'</span><div style="color:red;font-size:11px;text-align: center" class="badge" id="qty_empty_'+id+'"></div> </td>\n\
-                <td style="text-align:center;width:10%;" class="appenTd"><input id="price_' + id + '" name="price[]" value="' + unit_sale_price + '" style="text-align: center;height:30px;" class="unit_price" type="text"></td>\n\
-                    <td style="text-align:center;width:10%;" class="appenTd"><input id="qty_' + id + '" type="text"\
+                        <td style="width:30%;" class="appenTd">' + value + ' <span class="badge pull-right"> Stock '+ inventory +'</span><div style="color:red;font-size:11px;text-align: center" class="badge" id="qty_empty_'+id+'"></div> </td>\n\
+                <td style="text-align:center;width:10%;" class="appenTd"><input id="price_' + id + '" tabindex="-1" name="price[]" value="' + unit_sale_price + '" style="text-align: center;height:30px;" class="unit_price" type="text"></td>\n\
+                    <td style="text-align:center;width:15%;" class="appenTd"><input id="qty_' + id + '" type="text"\
                      class="quantity form-control" name="qty[]" value="1" style="text-align: center;height:30px;"\
                       >\n\
                     <input id="productID_' + id + '" name="productID[]" value="' + id + '" type="hidden">\n\
                      <input id="inventory_' + id + '" name="invantory[]" value="' + inventory + '" type="hidden">\n\
                     </td>\n\
-                    <td style="width:15%;text-align:center;"  class=" appenTd" style="width:20%" id="total_' + id + '"> <input id="sub_total_' + id + '" name="sub_total[]" class="totalprice" readonly style="text-align: center;height:30px;" value="' + (unit_sale_price * 1).toFixed(2) + '"   type="text"></td>\n\
+                    <td style="width:15%;text-align:center;"  class=" appenTd" style="width:20%" id="total_' + id + '"> <input id="sub_total_' + id + '" name="sub_total[]" class="totalprice" readonly style="text-align: center;height:30px;" value="' + (unit_sale_price * 1).toFixed(2) + '" tabindex="-1"   type="text"></td>\n\
                     <td class="appenTd" style="width:15%;text-align:center;padding-top:5px;padding-bottom:0px;"><button tabindex="-1" class="btn btn-danger btn-sm" id="removeRow"><i class="glyphicon glyphicon-trash" style="cursor:pointer;"></i>  </button></td>\n\
                     </tr>').appendTo('#tableDynamic');
 

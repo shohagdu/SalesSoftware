@@ -251,7 +251,7 @@
         <div class="col-xs-6">
         </div>
         <div class="pull-right col-xs-6">
-                    <button onclick="window.print();" class="btn btn-block btn-primary"><i class="glyphicon glyphicon-print"></i> Print</button>
+                    <button onclick="window.print();" onfocus="true" class="btn btn-block btn-primary"><i class="glyphicon glyphicon-print"></i> Print</button>
 
         </div>
 
