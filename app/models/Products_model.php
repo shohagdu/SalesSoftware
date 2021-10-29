@@ -287,6 +287,22 @@ class Products_model extends CI_Model {
             return  false;
         }
     }
-
+    function checkProductUniqueInfo($where=NULL,$checkingItem='Product Code',$updateID=NULL) {
+        $this->db->select('product_info.id,product_info.name',true);
+        if(!empty($where)){
+            $this->db->where($where);
+        }
+        if(!empty($updateID)){
+            $this->db->where('id !=',$updateID);
+        }
+        $this->db->where('is_active',1);
+        $records = $this->db->get('product_info');
+        if($records->num_rows()>0) {
+            return ['status'=>'error','message' => "$checkingItem is Must be Unique. Already Exist $checkingItem in Your Product Record ",'data'=>''];
+        }else{
+            // Eligible for update or save
+            return  true;
+        }
+    }
 
 }

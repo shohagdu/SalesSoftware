@@ -246,7 +246,6 @@
     </div>
 
     <div id="buttons" style="padding-top:10px; text-transform:uppercase;" class="no-print">
-
         <br/>
         <div class="col-xs-6">
         </div>
@@ -254,7 +253,6 @@
                     <button onclick="window.print();" onfocus="true" class="btn btn-block btn-primary"><i class="glyphicon glyphicon-print"></i> Print</button>
 
         </div>
-
         <div class="col-xs-12">
             <div class="row">
                 <div class="pull-right col-xs-6">

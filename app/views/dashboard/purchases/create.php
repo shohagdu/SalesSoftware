@@ -21,8 +21,8 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label>Stock No.</label>
-                                    <input name="purchaseNo" id="purchaseNo" type="text" placeholder="Enter Stock No"  class="form-control">
+                                    <label>Purchase No.</label>
+                                    <input name="purchaseNo" readonly id="purchaseNo" type="text" placeholder="Enter Purchase No"  class="form-control">
                                 </div>
                             </div>
                             

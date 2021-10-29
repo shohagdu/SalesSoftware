@@ -90,7 +90,57 @@ class Products extends CI_Controller {
             echo json_encode(['status'=>'error','message'=>'Status is required','data'=>'']);exit;
         }
 
+        // checking product unique info check
+
+
+
+
         if(empty($upId)) {
+
+            // Checking Product Code Unique
+            $checkProductCode=$this->PRODUCTS->checkProductUniqueInfo(['productCode'=> $productCode],'Product Code');
+            if(!empty($checkProductCode['status']) && $checkProductCode['status']=='error'){
+                echo json_encode($checkProductCode);exit;
+            }
+
+            /*================== Add product in inventory =====================*/
+                $purchaseData=[];
+                $stock_info=[];
+                if(!empty($addItemInventory) && $addItemInventory==1 ){
+                    if(empty($purchaseNo)){
+                        echo json_encode(['status'=>'error','message'=>'Purchase No is required','data'=>'']);exit;
+                    }
+                    if(empty($purchaseDate)){
+                        echo json_encode(['status'=>'error','message'=>'Purchase Date is required','data'=>'']);exit;
+                    }
+                    if(empty($quantity)){
+                        echo json_encode(['status'=>'error','message'=>'Quantity is required','data'=>'']);exit;
+                    }
+
+                    $purchaseData=[
+                        'purchase_id'=>$purchaseNo,
+                        'purchase_date'=>(!empty($purchaseDate)?$purchaseDate:''),
+                        'note'=>$note,
+                        'outlet_id'=>$this->outletID,
+                        'is_active'=>1,
+                        'created_by'=>$this->userId,
+                        'created_time'=>$this->dateTime,
+                        'created_ip'=>$this->ipAddress,
+                    ];
+                    $stock_info = [
+                        'stock_type' => 1,
+                        'unit_price' => $productPurchasePrice,
+                        'total_item' => $quantity,
+                        'total_price' => $productPurchasePrice * $quantity,
+                        'debit_outlet' => $this->outletID,
+                        'created_by' => $this->userId,
+                        'created_time' => $this->dateTime,
+                        'created_ip' => $this->ipAddress,
+                    ];
+                }
+            /*================== Add product in inventory =====================*/
+
+
             $productInfo = array(
                 'productCode' => $productCode,
                 'name' => $productName,
@@ -106,8 +156,28 @@ class Products extends CI_Controller {
                 'created_ip' => $this->ipAddress,
             );
             $this->db->insert("product_info", $productInfo);
+            $productID=$this->db->insert_id();
+
+            /*================== Add product in inventory =====================*/
+                if(!empty($productID)){
+                    if(!empty($purchaseData)) {
+                        $this->db->insert("purchase_info_stock_in", $purchaseData);
+                        $purchase_id = $this->db->insert_id();
+                        $stock_info['product_id'] = $productID;
+                        $stock_info['purchase_id'] = $purchase_id;
+                        if(!empty($stock_info)) {
+                            $this->db->insert("stock_info", $stock_info);
+                        }
+                    }
+                }
+            /*================== Add product in inventory =====================*/
             $message='Successfully Save Information';
         }else{
+            // Checking Product Code Unique
+            $checkProductCode=$this->PRODUCTS->checkProductUniqueInfo(['productCode'=> $productCode],'Product Code',$upId);
+            if(!empty($checkProductCode['status']) && $checkProductCode['status']=='error'){
+                echo json_encode($checkProductCode);exit;
+            }
             $productInfo = array(
                 'productCode' => $productCode,
                 'name' => $productName,

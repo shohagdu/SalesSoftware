@@ -323,4 +323,12 @@ class Pos extends CI_Controller
         }
 
     }
+
+    public function getInvoiceNumber()
+    {
+        if (isset($_GET['term'])) {
+            $q = strtolower($_GET['term']);
+            echo $this->POS->suggestInvoiceNumber($q);
+        }
+    }
 }

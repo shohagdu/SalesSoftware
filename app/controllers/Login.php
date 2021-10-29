@@ -8,6 +8,7 @@ class Login extends CI_Controller {
         parent::__construct();
         $this->load->model('Login_model', 'LOGIN', TRUE);
         $this->load->model('Common_model', 'COMMON_MODEL', TRUE);
+        $this->load->model('userAccessModel', 'userAccess', TRUE);
 
     }
 
@@ -34,6 +35,20 @@ class Login extends CI_Controller {
             $user = $login_info->userID;
             $user_name = $login_info->username;
             $roleID = $login_info->roleID;
+
+            $permission['permission_info']= (!empty($login_info->role_info)?json_decode($login_info->role_info,true):'');
+
+            if (array_key_exists(84, $permission['permission_info'])) {
+                $superadmindata['abhinvoiser_1_1_role'] = 'superadmin';
+            }else{
+                $superadmindata['abhinvoiser_1_1_role'] ='';
+            }
+            $this->session->set_userdata($superadmindata);
+
+            $acl_info['acl_info']=$this->userAccess->acl_menu_info();
+            $this->session->set_userdata($acl_info);
+            $this->session->set_userdata($permission);
+
             $branch_info=[
                 'outlet_id'=> $login_info->outlet_id,
                 'name'=> $login_info->name,

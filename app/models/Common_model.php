@@ -499,5 +499,66 @@ class Common_model extends CI_Model {
             return $random;
         }
     }
+    function table_data_selected($select,$table, $column_name, $column_value) {
+        $query = $this->db->select($select)->get_where($table, array($column_name => $column_value));
+        return $query->result();
+    }
+    public function get_join($table, $where = FALSE, $field_rows = '*', $limit = FALSE, $order_by = FALSE, $where_in_parmas = FALSE, $join_parmas = FALSE, $group_by = FALSE, $like = FALSE) {
+        $this->db->select($field_rows);
+        $this->db->from($table);
 
+        if (!empty($join_parmas)) {
+            foreach ($join_parmas as $join_item) {
+                if (isset($join_item['type'])) {
+                    $this->db->join($join_item['table'], $join_item['relation'], $join_item['type']);
+                } else {
+                    $this->db->join($join_item['table'], $join_item['relation']);
+                }
+            }
+        }
+
+        if (!empty($where)) {
+            $this->db->where($where);
+        }
+
+        if (!empty($where_in_parmas)) {
+            if (isset($where_in_parmas['key']) && isset($where_in_parmas['values'])) {
+                $this->db->where_in($where_in_parmas['key'], $where_in_parmas['values']);
+            } else {
+                foreach ($where_in_parmas as $where_in) {
+                    $this->db->where_in($where_in['key'], $where_in['values']);
+                }
+            }
+        }
+
+        if (!empty($like)) {
+            $this->db->like($like);
+        }
+
+        if (!empty($limit)) {
+            $this->db->limit($limit['limit'], $limit['start']);
+        }
+
+        if (!empty($group_by)) {
+            $this->db->group_by($group_by);
+        }
+
+        if (!empty($order_by)) {
+
+            if(isset($order_by[0]) && is_array($order_by[0]) && sizeof($order_by[0]) >0){
+                foreach ($order_by as $orow){
+                    $this->db->order_by($orow['field'], $orow['order']);
+                }
+            }else{
+                $this->db->order_by($order_by['field'], $order_by['order']);
+            }
+
+        }
+
+        $query = $this->db->get();
+        // return  $this->db->last_query();
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        }
+    }
 }

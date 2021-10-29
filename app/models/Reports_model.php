@@ -84,14 +84,17 @@ class Reports_model extends CI_Model {
             unset($where['firstDate']);
             unset($where['toDate']);
         }else{
-            $this->db->where("sales_date >=", date('Y-m-d'));
-            $this->db->where("sales_date <=", date('Y-m-d'));
+            if(empty($where['sales_info.invoice_no'])) {
+                $this->db->where("sales_date >=", date('Y-m-d'));
+                $this->db->where("sales_date <=", date('Y-m-d'));
+            }
         }
         if(!empty($where)) {
             $this->db->where($where);
         }
+        $this->db->where('sales_info.is_active', 1);
         $this->db->where('product_info.is_active', 1);
-        $this->db->join('stock_info', 'stock_info.sales_id = sales_info.id AND stock_info.stock_type=2 ', 'left');
+        $this->db->join('stock_info', 'stock_info.sales_id = sales_info.id AND stock_info.stock_type=2 AND stock_info.is_active=1', 'left');
         $this->db->join('product_info', 'product_info.id = stock_info.product_id', 'left');
         $this->db->join('all_settings_info as band', 'band.id = product_info.band_id', 'left');
         $this->db->join('all_settings_info as source', 'source.id = product_info.source_id', 'left');

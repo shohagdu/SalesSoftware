@@ -1,19 +1,92 @@
 <?php
- $uriValue = $this->uri->segment(1);
-$uriValue2 = $this->uri->segment(2);
-$urlConcat= $uriValue."/".$uriValue2;
+    $uriValue = $this->uri->segment(1);
+    $uriValue2 = $this->uri->segment(2);
+    if(empty($uriValue2)){
+        $urlConcat = $uriValue;
+    }else {
+        $urlConcat = $uriValue . "/" . $uriValue2;
+    }
+    $acl_menu_info = $this->session->userdata('acl_info');
+    $permission_info = $this->session->userdata('permission_info');
 ?>
 <aside class="main-sidebar">
     <section class="sidebar">
         <?php
-        $user = $this->session->userdata('user');
-        $user_role = $this->session->userdata('user_role');
-//        role==1 # ownere
-//        role==2 # manager
-//        role==3 # sales
-//        role==4 # waiter
-//        role==4 # cooker
+            $user = $this->session->userdata('user');
+            $user_role = $this->session->userdata('user_role');
         ?>
+        <ul class="sidebar-menu">
+        <?php
+        $childArray=[];
+        $allChildArray=[];
+        if(!empty($acl_menu_info)){
+            foreach($acl_menu_info as $main_menu){
+                if(!isset($permission_info[$main_menu->id])){
+                    continue;
+                }
+                $childArray=!empty($main_menu->all_sub_menu)?array_column($main_menu->all_sub_menu,'link'):'';
+
+                ?>
+                <li  class="treeview  <?php  echo( !empty($childArray) && (in_array($urlConcat,$childArray))?'active':'');  ?>" >
+                    <a href="<?php echo base_url().$main_menu->link; ?>">
+                        <i class="glyphicon glyphicon-circle-arrow-right"></i> <?php echo $main_menu->title ?>
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <?php
+                    if(!empty($main_menu->all_sub_menu)){
+                        ?>
+                        <ul class="treeview-menu">
+                            <?php
+                            foreach($main_menu->all_sub_menu as $sub_menu){
+                                if(!isset($permission_info[$main_menu->id][$sub_menu->id]) ){
+                                    continue;
+                                }
+                                if(empty($sub_menu->all_child_menu)){
+                                    ?>
+                                    <li class="treeview ">
+                                        <a href="<?php echo base_url().$sub_menu->link; ?>">
+                                            <i class="glyphicon glyphicon-tasks"></i> <?php echo $sub_menu->title ?>
+                                        </a>
+                                    </li>
+                                <?php }else{  ?>
+                                    <li class="treeview ">
+                                    <a href="#">
+                                        <i class="fa fa-folder"></i> <?php echo $sub_menu->title ?>
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </a>
+                                    <?php
+                                }
+                                ?>
+                                <?php
+
+                                if(!empty($sub_menu->all_child_menu)){
+                                    ?>
+                                    <ul class="treeview-menu  ">
+                                        <?php
+                                        foreach($sub_menu->all_child_menu as $child_menu){
+                                            if(!isset($permission_info[$main_menu->id][$sub_menu->id][$child_menu->id]) ){
+                                                continue;
+                                            }
+                                            ?>
+                                            <li class="treeview active">
+                                                <a href="<?php echo base_url().$child_menu->link; ?>">
+                                                    <i class="glyphicon glyphicon-tasks"></i> <?php echo $child_menu->title ?>
+                                                </a>
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
+                                    </li>
+
+                                <?php } ?>
+
+                            <?php }  ?>
+
+                        </ul>
+                    <?php }  ?>
+                </li>
+            <?php  } } ?>
+        </ul>
+            <!--
             <ul class="sidebar-menu">
 
                 <li class="">
@@ -67,75 +140,8 @@ $urlConcat= $uriValue."/".$uriValue2;
                         <li><a href="<?php echo base_url('purchases/index'); ?>"><i class="glyphicon glyphicon-tasks"></i> List </a></li>
                     </ul>
                 </li>
-                <!--
-                <li <?php if ($uriValue2 == 'shipment_member_info' || $uriValue2 == 'member_due_collection' ) { ?> class="treeview active"  <?php } ?>>
-                    <a href="#">
-                        <i class="glyphicon glyphicon-circle-arrow-right"></i> <span>Supplier</span>
-                        <span class="pull-right-container">
-                            <i class="glyphicon glyphicon-chevron-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="<?php echo base_url('shipment_info/shipment_member_info'); ?>"><i class="glyphicon
-                        glyphicon-tasks"></i>Supplier</a></li>
-                        <li><a href="<?php echo base_url('shipment_info/member_due_collection'); ?>"><i class="glyphicon
-                        glyphicon-tasks"></i>Supplier Due Payment</a></li>
-                    </ul>
-                </li>
-                -->
-
-                <!--
-                <li <?php if ($uriValue == 'transfer') { ?> class="treeview active"  <?php } ?>>
-                    <a href="#">
-                        <i class="glyphicon glyphicon-circle-arrow-right"></i> <span>Transfer</span>
-                        <span class="pull-right-container">
-                        <i class="glyphicon glyphicon-chevron-left pull-right"></i>
-                    </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="<?php echo base_url('transfer/create'); ?>"><i class="glyphicon glyphicon-tasks"></i> Add New </a></li>
-                        <li><a href="<?php echo base_url('transfer/index'); ?>"><i class="glyphicon glyphicon-tasks"></i> List </a></li>
-                    </ul>
-                </li>
-                <li <?php if ($uriValue == 'shipment_info') { ?> class="treeview active"  <?php } ?>>
-                    <a href="#">
-                        <i class="glyphicon glyphicon-circle-arrow-right"></i> <span>Shipment</span>
-                        <span class="pull-right-container">
-                    <i class="glyphicon glyphicon-chevron-left pull-right"></i>
-                </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="<?php echo base_url('shipment_info/stock_info'); ?>"><i class="glyphicon
-                        glyphicon-tasks"></i> Stock In Info </a></li>
-                        <li><a href="<?php echo base_url('shipment_info/delivery_info'); ?>"><i class="glyphicon
-                        glyphicon-tasks"></i>Delivery (out)</a></li>
-                        <li><a href="<?php echo base_url('shipment_info/shipment_setup'); ?>"><i class="glyphicon
-                        glyphicon-tasks"></i>Shipment Setup</a></li>
-                        <li><a href="<?php echo base_url('shipment_info/shipment_member_info'); ?>"><i class="glyphicon
-                        glyphicon-tasks"></i>Member Record</a></li>
-                        <li><a href="<?php echo base_url('shipment_info/member_due_collection'); ?>"><i class="glyphicon
-                        glyphicon-tasks"></i>Member Due Collection</a></li>
-
-                        <li><a href="<?php echo base_url('shipment_info/shipment_report'); ?>"><i class="glyphicon
-                        glyphicon-tasks"></i>Report</a></li>
 
 
-                    </ul>
-                </li>
-                -->
-
-                    <li <?php if ($uriValue2 == 'outlet_info') { ?> class="treeview active"  <?php } ?>>
-                    <a href="#">
-                        <i class="glyphicon glyphicon-circle-arrow-right"></i> <span>Outlet</span>
-                        <span class="pull-right-container">
-                        <i class="glyphicon glyphicon-chevron-left pull-right"></i>
-                    </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="<?php echo base_url('settings/outlet_info'); ?>"><i class="glyphicon
-                    glyphicon-tasks"></i>  Outlet Record</a></li>
-                    </ul>
-                </li>
                 <li <?php if ($uriValue == 'products') { ?> class="treeview active"  <?php } ?>>
                     <a href="#">
                         <i class="glyphicon glyphicon-circle-arrow-right"></i> <span>Products</span>
@@ -150,7 +156,7 @@ $urlConcat= $uriValue."/".$uriValue2;
                         <li><a href="<?php echo base_url('products/printBarcodes'); ?>"><i class="glyphicon
                         glyphicon-tasks"></i>  Barcode Print</a></li>
                         -->
-
+<!--
 
                     </ul>
                 </li>
@@ -182,6 +188,7 @@ $urlConcat= $uriValue."/".$uriValue2;
                         <li><a href="<?php echo base_url('reports/purchaseReport'); ?>"><i class="glyphicon
                         glyphicon-tasks"></i>  Purchase Report</a></li>
                         -->
+        <!--
                     </ul>
                 </li>
 
@@ -195,8 +202,11 @@ $urlConcat= $uriValue."/".$uriValue2;
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="<?php echo base_url('settings/listUser'); ?>"><i class="glyphicon glyphicon-tasks"></i>  User Info</a></li>
+                        <li><a href="<?php echo base_url('UserAccessRole'); ?>"><i class="glyphicon glyphicon-tasks"></i>  Access Role</a></li>
+
                         <li><a href="<?php echo base_url('settings/productBand'); ?>"><i class="glyphicon
                         glyphicon-tasks"></i> Product Band</a></li>
+
                         <li><a href="<?php echo base_url('settings/productSource'); ?>"><i class="glyphicon
                         glyphicon-tasks"></i> Product Source</a></li>
                         <li><a href="<?php echo base_url('settings/productType'); ?>"><i class="glyphicon
@@ -213,6 +223,7 @@ $urlConcat= $uriValue."/".$uriValue2;
                     </a>
                 </li>
             </ul>
+        -->
 
 
 

@@ -109,12 +109,16 @@ class Reports extends CI_Controller {
         $data = array();
         $param=[];
         $date=$this->input->post('searchingDate');
+        $salesID=$this->input->post('salesID');
         if($date!=''){
             $exp_date=explode("-",$date);
             $param['firstDate']      =    $exp_date[0];
             $param['toDate']         =    $exp_date[1];
-        }else{
-            return "Date is required.";
+        }
+        if(!empty($salesID)){
+            unset($param['firstDate']);
+            unset($param['toDate']);
+            $param['sales_info.invoice_no']      =    $salesID;
         }
         $data['info']=$this->REPORT->sales_report($param);
         return   $this->load->view('dashboard/reports/sales/searchingSalesReport', $data);

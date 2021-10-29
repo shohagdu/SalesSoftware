@@ -81,30 +81,12 @@ class Settings extends CI_Controller
             $data['created_time'] = $this->dateTime;
             $data['created_ip'] = $this->ipAddress;
             $last_id = $this->COMMON_MODEL->insert_data('tbl_pos_users', $data);
-
-            if (!empty($data['roleID'])) {
-
-                if ($data['roleID'] == 1) {
-                    $datas['admin_id'] = $last_id;
-                    $datas['roleName'] = 'Owner';
-                    $datas['roleDescription'] = 'Owner';
-                } elseif ($data['roleID'] == 2) {
-                    $datas['admin_id'] = $last_id;
-                    $datas['roleName'] = 'Master';
-                    $datas['roleDescription'] = 'Master';
-                } else {
-                    $datas['admin_id'] = $last_id;
-                    $datas['roleName'] = 'Sales';
-                    $datas['roleDescription'] = 'Sales';
-                }
-                $this->COMMON_MODEL->insert_data('tbl_pos_roles', $datas);
-
-                redirect('settings/listUser');
-            }
+            redirect('settings/listUser');
         }
         $view = array();
         $data['title'] = " Add User";
         $data['outlet_info']= $this->SETTINGS->outlet_info();
+        $data['role_info'] = $this->COMMON_MODEL->table_data_selected("id,role_name",'acl_role_info', 'is_active',1);
         $view['content'] = $this->load->view('dashboard/settings/user/addUser', $data, TRUE);
         $this->load->view('dashboard/index', $view);
     }
@@ -113,7 +95,14 @@ class Settings extends CI_Controller
     {
         $data = array();
         $data['title'] = " User List";
-        $data['admin_list'] = $this->COMMON_MODEL->get_data_list('tbl_pos_users');
+        $data['admin_list'] =$this->COMMON_MODEL->get_join("tbl_pos_users",'','tbl_pos_users.userID,tbl_pos_users.username,tbl_pos_users.roleID,tbl_pos_users.email,
+        (CASE
+            WHEN tbl_pos_users.is_active = 1 THEN "Active"
+            WHEN tbl_pos_users.is_active = 2 THEN "Inactive"
+            ELSE ""
+        END) as status
+        ,acl_role_info.role_name','',['field'=>'id','order'=>'ASC'],[['key'=>'tbl_pos_users.is_active','values'=>[1,2]]],[['table'=>'acl_role_info','relation'=>'acl_role_info.id=tbl_pos_users.roleID','type'=>'inner']]);
+
         $view['content'] = $this->load->view('dashboard/settings/user/listUser', $data, TRUE);
         $this->load->view('dashboard/index', $view);
     }
@@ -158,6 +147,7 @@ class Settings extends CI_Controller
 
         $data['title'] = " Edit User";
         $data['edit_admin'] = $this->COMMON_MODEL->get_single_data_by_single_column('tbl_pos_users', 'userID', $id);
+        $data['role_info'] = $this->COMMON_MODEL->table_data_selected("id,role_name",'acl_role_info', 'is_active',1);
         $data['outlet_info']= $this->SETTINGS->outlet_info();
         $view['content'] = $this->load->view('dashboard/settings/user/editadmin', $data, TRUE);
         $this->load->view('dashboard/index', $view);

@@ -75,7 +75,7 @@ class Pos_model extends CI_Model {
         $records = $this->db->get('sales_info')->result();
         // return $this->db->last_query();
         $data = array();
-        $i=1;
+        $i=(!empty($start)?$start+1:1);
         if(!empty($records)) {
             foreach ($records as $key => $record) {
                 $data[] = $record;
@@ -98,7 +98,31 @@ class Pos_model extends CI_Model {
         return $response;
     }
 
+    public function suggestInvoiceNumber($q)
+    {
+        $this->db->select("c.id ,c.invoice_no",false);
+        $this->db->from('sales_info as c');
+        if(!empty($q)) {
+            $where = "(c.invoice_no LIKE '%$q%' )";
+            $this->db->where($where);
+        }
+        $this->db->where('c.is_active', 1);
 
+        $this->db->order_by("c.id","DESC");
+        $this->db->limit(10);
+        $query_result = $this->db->get();
+        if($query_result->num_rows()>0) {
+            foreach ($query_result->result_array() as $row) {
+                $row['id'] = htmlentities(stripslashes($row['id']));
+                $row['value'] = htmlentities(stripslashes($row['invoice_no']));
+                $row_set[] = $row;
+            }
+            return json_encode($row_set);
+        }else{
+            return false;
+        }
+
+    }
 #--------------------------------------------------------------------- ------------------------------------------------
 #------------------------------------------------update for SK Fashion ------------------------------------------------
 #--------------------------------------------------------------------- ------------------------------------------------

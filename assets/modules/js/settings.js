@@ -174,6 +174,8 @@ $(document).ready(function(){
 function updateProductInfo(productid) {
     $("#productInfoForm")[0].reset();
     $("#show_label").html('Update');
+    $(".addInventoryCheckDiv").hide();
+    $(".showAddInventory").hide();
     $.ajax({
         url: base_url +"products/get_single_product_info",
         data: {id: productid},
@@ -182,7 +184,6 @@ function updateProductInfo(productid) {
         success: function (response) {
             if(response.status=='success'){
                 var data=response.data;
-                console.log(data);
                 $("#productCode").val(data.productCode);
                 $("#productNameShow").val(data.name);
                 $("#productBrand").val(data.band_id);
@@ -202,7 +203,18 @@ function addProductInfo() {
     $("#productInfoForm")[0].reset();
     $("#upId").val('');
     $("#show_label").html('Save');
+    $("#purchaseNo").val('SIN-'+randomString(10));
+    $('.showAddInventory').hide();
+    $(".addInventoryCheckDiv").show();
 }
+$(".addItemInventory").click(function() {
+    $('.clearInput').val('');
+    if($(this).is(":checked")) {
+        $(".showAddInventory").show(300);
+    } else {
+        $(".showAddInventory").hide(200);
+    }
+});
 
 function saveProductInfo() {
     $(".submit_btn").attr("disabled", true);
@@ -464,17 +476,14 @@ $(document).ready(function(){
         'ajax': {
             'url':  base_url +"purchases/showAllPurchaseInfo",
             'data': function(data){
-                data.outletID = $('#outletIDPurchase').val();
                 data.purchaseID = $('#purchaseNoSearch').val();
             }
         },
         'columns': [
             { data: 'serial_no', orderable: true, searchable: false  },
-            { data: 'outlet_name', name: 'outlet_setup.outlet_name' },
             { data: 'purchase_id', name: 'purchase_info_stock_in.purchase_id' },
             { data: 'purchase_date', name: 'purchase_info_stock_in.purchase_date' },
             { data: 'note', name: 'purchase_info_stock_in.note'},
-            { data: 'is_active', name: 'customer_shipment_member_info.is_active' },
             { data: 'action',orderable: false, searchable: false },
         ]
     });
@@ -755,7 +764,7 @@ function saveOutletInfo() {
 
     var randomString = function(length) {
         var text = "";
-        var possible = "123456789ABCDEFLMRW";
+        var possible = "123456789ABCDEFLMRWVXYZbcdefghkmnqrstvxyz";
         for(var i = 0; i < length; i++) {
             text += possible.charAt(Math.floor(Math.random() * possible.length));
         }
@@ -1613,3 +1622,90 @@ function deleteSalesInformation(id) {
 
 }
 
+$(".invoiceNumber").autocomplete({
+    source: base_url +'pos/getInvoiceNumber',
+    select: function (event, ui) {
+        var invoiceNo = ui.item.value;
+        $("#salesID").val(invoiceNo);
+    }
+});
+
+
+$(document).on("keyup", ".purchaseQtyPrice", function (event) {
+    var  price = parseFloat($("#productPurchasePrice").val());
+    var  qty = parseFloat($("#purchaseQuantity").val());
+    if (!isNaN(price) && !isNaN(qty) ) {
+        var sub_total=(price * qty);
+        $("#totalPurchaseAmount").val((sub_total).toFixed(2));
+    }else{
+        $("#totalPurchaseAmount").val('0.00');
+    }
+});
+
+function deletePurchaseInformation(id) {
+    var confirmation = confirm("Are you sure you want to remove this Member?");
+
+    if (confirmation) {
+        $.ajax({
+            url: base_url + "purchases/deletePurchaseInfo",
+            data: {id: id},
+            type: "POST",
+            dataType: 'JSON',
+            success: function (response) {
+                if (response.status == 'success') {
+                    $("#alert").show();
+                    $("#show_message").html(response.message);
+                    setTimeout(function () {
+                        $("#alert").hide();
+                        $("#show_message").html('');
+                        $('#purchaseInfo').DataTable().ajax.reload();
+                    }, 1500);
+                } else {
+                    $("#alert").show();
+                    $("#show_message").html(response.message);
+                    setTimeout(function () {
+                        $("#alert").hide();
+                        $("#show_message").html('');
+                    }, 3500);
+                }
+            }
+        });
+    }
+
+
+}
+
+
+/*
+|-----------------------------------------------------------------------------------|
+|------------------- for User Access    start---------------------------------------|
+|-----------------------------------------------------------------------------------|
+*/
+
+function saveUserRole() {
+    $("#submitBtn").attr("disabled", true);
+    $.ajax({
+        url:  base_url +"UserAccessRole/insert_user_role",
+        data: $('#userRoleForm').serialize(),
+        type: "POST",
+        dataType:'JSON',
+        success: function (response) {
+            $("#submitBtn").attr("disabled", false);
+            if(response.status=='error'){
+                $("#show_error_save_info").html(response.message);
+            }else{
+                $("#alert").show();
+                $("#show_error_save_info").html(response.message);
+                var redirect=response.redirect_page;
+                setTimeout(function(){
+                    window.location = base_url + redirect;
+                },1500);
+
+            }
+        }
+    });
+}
+
+$("#checkAll").click(function(){
+    $('input:checkbox').not(this).prop('checked', this.checked);
+});

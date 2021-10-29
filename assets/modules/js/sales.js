@@ -58,7 +58,6 @@ var addRowProduct = function (id, inventory, price, value,  productCode,unit_sal
                     <td style="width:15%;text-align:center;"  class=" appenTd" style="width:20%" id="total_' + id + '"> <input id="sub_total_' + id + '" name="sub_total[]" class="totalprice" readonly style="text-align: center;height:30px;" value="' + (unit_sale_price * 1).toFixed(2) + '" tabindex="-1"   type="text"></td>\n\
                     <td class="appenTd" style="width:15%;text-align:center;padding-top:5px;padding-bottom:0px;"><button tabindex="-1" class="btn btn-danger btn-sm" id="removeRow"><i class="glyphicon glyphicon-trash" style="cursor:pointer;"></i>  </button></td>\n\
                     </tr>').appendTo('#tableDynamic');
-
             return findTotal();
 
         };
