@@ -140,4 +140,8 @@ ALTER TABLE `acl_menu_info`
 --
 ALTER TABLE `acl_role_info`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+======Updated
 
+
+31-10-2021
+ALTER TABLE `sales_info` ADD `remaining_due_make_discount` DECIMAL(10,2) NULL DEFAULT NULL AFTER `discount`;

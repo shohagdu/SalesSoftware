@@ -92,14 +92,14 @@
             <div>
                 <table style="width:100%;font-size:9px;margin:10px 0px 10px 5px;">
                     <tr>
-                        <th style="width:15%;">Cust. Name:</th>
-                        <td style="width:30%;"><?php echo !empty($sales->customer_name)?$sales->customer_name:''; ?></td>
+                        <th style="width:17%;">Customer Name:</th>
+                        <td style="width:28%;"><?php echo !empty($sales->customer_name)?$sales->customer_name:'-'; ?></td>
                         <th style="width:35%;text-align:right">Date:</th>
                         <td style="width:30%;padding-left:10px;"><?php echo !empty($sales->sales_date)? date("d-m-Y", strtotime($sales->sales_date)):'';   ?></td>
                     </tr>
                     <tr>
                         <th>Mobile:</th>
-                        <td><?php echo !empty($sales->customer_mobile)?$sales->customer_mobile:''; ?></td>
+                        <td><?php echo !empty($sales->customer_mobile)?$sales->customer_mobile:'-'; ?></td>
                         <th style="text-align:right">Sale No:</th>
                         <td style="padding-left:10px;"><?php echo !empty($sales->invoice_no)?$sales->invoice_no:'';
                         ?></td>
@@ -210,29 +210,40 @@
                         <th class="text-right"><?php echo !empty($sales->payment_amount)? number_format
                             ($sales->payment_amount,2):'0.00';   ?></th>
                     </tr>
-                    <tr>
-                        <th  colspan="4"  style="text-align:right">Current Due AMT</th>
-                        <th class="text-right"><?php echo !empty($sales->current_due_amt)? number_format
-                            ($sales->current_due_amt,2):'0.00';   ?></th>
-                    </tr>
-                    <tr>
-                        <th  colspan="4"  style="text-align:right">Previous Due AMT</th>
-                        <th class="text-right"><?php echo !empty($sales->previous_due)? number_format
-                            ($sales->previous_due,2):'0.00';   ?></th>
-                    </tr>
-                    <tr>
-                        <th  colspan="4"  style="text-align:right">Total Payable AMT</th>
-                        <th class="text-right"><?php echo !empty($sales->total_due)? number_format($sales->total_due,
-                                2):'0
-                        .00';   ?></th>
-                    </tr>
 
+                    <?php
+                        if(!empty($sales->remaining_due_make_discount) || $sales->remaining_due_make_discount>0){
+                    ?>
+                        <tr>
+                            <th  colspan="4"  style="text-align:right">Remaining Due Make Discount</th>
+                            <th class="text-right"><?php echo !empty($sales->remaining_due_make_discount)? number_format
+                                ($sales->remaining_due_make_discount,2):'0.00';   ?></th>
+                        </tr>
+                    <?php
+                    }else{
+                    ?>
+                        <tr>
+                            <th  colspan="4"  style="text-align:right">Current Due AMT</th>
+                            <th class="text-right"><?php echo !empty($sales->current_due_amt)? number_format
+                                ($sales->current_due_amt,2):'0.00';   ?></th>
+                        </tr>
+                    <?php
+                    }
+                     if(!empty($sales->customer_id)){
+                    ?>
 
-
-
-
-
-
+                        <tr>
+                            <th  colspan="4"  style="text-align:right">Previous Due AMT</th>
+                            <th class="text-right"><?php echo !empty($sales->previous_due)? number_format
+                                ($sales->previous_due,2):'0.00';   ?></th>
+                        </tr>
+                        <tr>
+                            <th  colspan="4"  style="text-align:right">Total Payable AMT</th>
+                            <th class="text-right"><?php echo !empty($sales->total_due)? number_format($sales->total_due,
+                                    2):'0
+                            .00';   ?></th>
+                        </tr>
+                    <?php }?>
                 </tfoot>
             </table>
 
@@ -240,7 +251,7 @@
 
         <div class="order_barcodes text-center">
             <div class="text-center" style="font-size: 10px "> Thank you for shopping with us. Please come again.</div>
-            <span style="font-size:8px;"> Software Developed By <b>SHOHOZIT</b></span>
+            <span style="font-size:9px;"><b> Copyright &copy; www.shohozit.com, Developed By Omar Shohag, Cell: 01839707645 </b></span>
         </div>
         <div style="clear:both;"></div>
     </div>

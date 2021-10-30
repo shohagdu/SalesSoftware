@@ -152,7 +152,7 @@ var addRowProduct = function (id, inventory, price, value,  productCode,unit_sal
                 $("#sub_total_" + element_id).val((price * 1).toFixed(2));
                 $("#qty_empty_" + element_id).html(stockmessage);
                 return false;
-            }else if(!isNaN(inventory) && !isNaN(quantity) && (  inventory >quantity ) ){
+            }else if(!isNaN(inventory) && !isNaN(quantity) && (  inventory >=quantity ) ){
                 $("#sub_total_" + element_id).val((price * quantity).toFixed(2));
                 $("#qty_empty_" + element_id).html('');
                 findTotal();
@@ -255,6 +255,7 @@ var addRowProduct = function (id, inventory, price, value,  productCode,unit_sal
         });
 
         $("#confirmModal").on("click", function (e) {
+            $("#show_error_save_main").html('');
             var customerId = $("#cst_id").val();
             var allAreRunningCustomer = $('input[name="allAreRunningCustomer"]:checked').val();
             // console.log(allAreRunningCustomer);

@@ -17,7 +17,21 @@ class Pos_model extends CI_Model {
             return  false;
         }
     }
-
+    public function get_single_sales_infoSha1($id) {
+        $this->db->select("sales_info.*,customer_shipment_member_info.name as customer_name,customer_shipment_member_info.mobile  as customer_mobile,customer_shipment_member_info.email,customer_shipment_member_info.address,tbl_pos_users.username as user_name");
+        $this->db->where("sha1(sales_info.id)", $id);
+        $this->db->join('customer_shipment_member_info', 'customer_shipment_member_info.id = sales_info.customer_id', 'left');
+        $this->db->join('tbl_pos_users', 'tbl_pos_users.userID = sales_info.created_by', 'left');
+        $this->db->from('sales_info');
+        $query_result = $this->db->get();
+        if($query_result->num_rows()>0) {
+            $result = $query_result->row();
+            $result->product_info=$this->PURCHASE->details_stock_info_by_id(['stock_info.sales_id'=>$result->id]);
+            return $result;
+        }else{
+            return  false;
+        }
+    }
 
 
     public function viewInvoiceNo($q)
@@ -81,8 +95,7 @@ class Pos_model extends CI_Model {
                 $data[] = $record;
                 $data[$key]->serial_no = (int) $i++;
                 $data[$key]->is_active =  ($record->is_active==1)?"<span class='badge bg-green'>Active</span>":"<span class='badge bg-red'>Inactive</span>";
-                //$data[$key]->action = '<a href="'. base_url('pos/update/'.$record->id).'"  class="btn btn-primary  btn-sm"  ><i  class="glyphicon glyphicon-pencil"></i> Edit</a> <a href="'. base_url('pos/show/'.$record->id).'" class="btn btn-info  btn-sm"   ><i  class="glyphicon glyphicon-share-alt"></i> view</a> <a href="'. base_url('pos/show/'.$record->id).'" class="btn btn-danger  btn-xs"   ><i  class="glyphicon glyphicon-remove"></i> Delete</a>';
-                $data[$key]->action = ' <a href="'. base_url('pos/show/'.$record->id).'" class="btn btn-info  btn-xs"   ><i  class="glyphicon glyphicon-share-alt"></i> View</a> <button onclick="deleteSalesInformation('.$record->id.')"  type="button" class="btn btn-danger  btn-xs"   ><i  class="glyphicon glyphicon-remove"></i> Delete</button> ';
+                $data[$key]->action = ' <a href="'. base_url('pos/show/'.$record->id).'" class="btn btn-info  btn-xs"   ><i  class="glyphicon glyphicon-share-alt"></i> View</a> <a href="'. base_url('pos/update/'.sha1($record->id)).'"  class="btn btn-primary  btn-xs"  ><i  class="glyphicon glyphicon-pencil"></i> Edit</a> <button onclick="deleteSalesInformation('.$record->id.')"  type="button" class="btn btn-danger  btn-xs"   ><i  class="glyphicon glyphicon-remove"></i> Delete</button> ';
 
 
 

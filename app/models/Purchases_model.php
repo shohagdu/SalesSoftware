@@ -111,7 +111,7 @@ class Purchases_model extends CI_Model {
                 $data[$key]->serial_no = (int) $i++;
                 $data[$key]->purchase_date =  date("d M, Y", strtotime($record->purchase_date)); ;
                 $data[$key]->is_active =  ($record->is_active==1)?"<span class='badge bg-green'>Active</span>":"<span class='badge bg-red'>Inactive</span>";
-                $data[$key]->action = '<a href="'. base_url('purchases/update/'.$record->id).'"  class="btn btn-primary  btn-sm"  ><i  class="glyphicon glyphicon-pencil"></i> Edit</a> <a href="'. base_url('purchases/view_purchage_info/'.$record->id).'" class="btn btn-info  btn-sm"   ><i  class="glyphicon glyphicon-share-alt"></i> View</a> <button onclick="deletePurchaseInformation('.$record->id.')"  type="button" class="btn btn-danger  btn-xs"   ><i  class="glyphicon glyphicon-remove"></i> Delete</button>';
+                $data[$key]->action = '<a href="'. base_url('purchases/update/'.$record->id).'"  class="btn btn-primary  btn-xs"  ><i  class="glyphicon glyphicon-pencil"></i> Edit</a> <a href="'. base_url('purchases/view_purchage_info/'.$record->id).'" class="btn btn-info  btn-xs"   ><i  class="glyphicon glyphicon-share-alt"></i> View</a> <button onclick="deletePurchaseInformation('.$record->id.')"  type="button" class="btn btn-danger  btn-xs"   ><i  class="glyphicon glyphicon-remove"></i> Delete</button>';
 
 
             }
