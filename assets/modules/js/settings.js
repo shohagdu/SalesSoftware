@@ -1709,3 +1709,33 @@ function saveUserRole() {
 $("#checkAll").click(function(){
     $('input:checkbox').not(this).prop('checked', this.checked);
 });
+
+// For Manager Reports
+function searchingDailySalesReports () {
+    $(".search_btn").attr("disabled", true);
+    $.ajax({
+        url:  base_url +"reports/searchingDailySalesReports/",
+        data: $('#salesReportForm').serialize(),
+        type: "POST",
+        success: function (response) {
+            $(".search_btn").attr("disabled", false);
+            if(response!=''){
+                $("#stock_info_data").html(response);
+            }
+        }
+    });
+}
+function searchingDailyDetailsSalesReport () {
+    //$(".submit_btn").attr("disabled", true);
+    $.ajax({
+        url:  base_url +"reports/searchingDetailsSalesReport/",
+        data: $('#salesReportForm').serialize(),
+        type: "POST",
+        success: function (response) {
+            $(".submit_btn").attr("disabled", false);
+            if(response!=''){
+                $("#stock_info_data").html(response);
+            }
+        }
+    });
+}

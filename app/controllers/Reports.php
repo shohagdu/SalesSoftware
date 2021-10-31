@@ -149,4 +149,60 @@ class Reports extends CI_Controller {
         return   $this->load->view('dashboard/reports/sales/searchingDailySalesSatement', $data);
     }
 
+//     This Function for Manage without Profit/Lose
+function dailySalesReports() {
+    $data = array();
+    $view = array();
+    $data['title'] = "Daily Sales Statement";
+    $outlet_id=$this->outletID;
+    $data['info']=$this->REPORT->dailySalesReport('',$outlet_id);
+    $view['content'] = $this->load->view('dashboard/reports/sales/daily/dailySalesStatement', $data, TRUE);
+
+    $this->load->view('dashboard/index', $view);
+}
+    function searchingDailySalesReports() {
+        extract($_POST);
+        $data = array();
+        $param=[];
+        $date=$this->input->post('searchingDate');
+        if($date!=''){
+            $exp_date=explode("-",$date);
+            $param['firstDate']      =    $exp_date[0];
+            $param['toDate']         =    $exp_date[1];
+        }else{
+            return "Date is required.";
+        }
+        $data['info']=$this->REPORT->dailySalesReport($param);
+        return   $this->load->view('dashboard/reports/sales/daily/searchingDailySalesSatement', $data);
+    }
+
+    function detailsSalesReport() {
+        $data = array();
+        $view = array();
+        $data['title'] = "Sales Reports";
+        $outlet_id=$this->outletID;
+        $data['outlet_info']= $this->SETTINGS->outlet_info();
+        $data['info']=$this->REPORT->sales_report('',$outlet_id);
+        $view['content'] = $this->load->view('dashboard/reports/sales/daily/salesReport', $data, TRUE);
+        $this->load->view('dashboard/index', $view);
+    }
+    function searchingDetailsSalesReport() {
+        extract($_POST);
+        $data = array();
+        $param=[];
+        $date=$this->input->post('searchingDate');
+        $salesID=$this->input->post('salesID');
+        if($date!=''){
+            $exp_date=explode("-",$date);
+            $param['firstDate']      =    $exp_date[0];
+            $param['toDate']         =    $exp_date[1];
+        }
+        if(!empty($salesID)){
+            unset($param['firstDate']);
+            unset($param['toDate']);
+            $param['sales_info.invoice_no']      =    $salesID;
+        }
+        $data['info']=$this->REPORT->sales_report($param);
+        return   $this->load->view('dashboard/reports/sales/daily/searchingSalesReport', $data);
+    }
 }

@@ -145,3 +145,12 @@ ALTER TABLE `acl_role_info`
 
 31-10-2021
 ALTER TABLE `sales_info` ADD `remaining_due_make_discount` DECIMAL(10,2) NULL DEFAULT NULL AFTER `discount`;
+====updated
+
+31-10-2021
+UPDATE `acl_menu_info` SET `title` = 'Daily Sales (Profit/Lose)' WHERE `acl_menu_info`.`id` = 57;
+UPDATE `acl_menu_info` SET `title` = 'Detail Sales (Profit/Lose)' WHERE `acl_menu_info`.`id` = 58;
+
+INSERT INTO `acl_menu_info` (`id`, `glyphicon_icon`, `title`, `link`, `is_main_menu`, `parent_id`, `display_position`, `is_active`, `created_by`, `created_time`, `created_ip`, `updated_by`, `updated_time`, `updated_ip`) VALUES (NULL, '', 'Daily Sales', 'reports/dailySalesReports', '3', '56', '3', '1', '2', '2020-05-07 08:22:54', '127.0.0.55', '56', '2020-05-07 08:22:54', '127.0.0.55');
+
+INSERT INTO `acl_menu_info` (`id`, `glyphicon_icon`, `title`, `link`, `is_main_menu`, `parent_id`, `display_position`, `is_active`, `created_by`, `created_time`, `created_ip`, `updated_by`, `updated_time`, `updated_ip`) VALUES (NULL, '', 'Detail Sales', 'reports/detailsSalesReport', '3', '56', '4', '1', '2', '2020-05-07 08:22:54', '127.0.0.55', '56', '2020-05-07 08:22:54', '127.0.0.55');
