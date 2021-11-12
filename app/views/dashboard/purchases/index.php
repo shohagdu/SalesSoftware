@@ -10,10 +10,15 @@
                 </div>
                 <form action="" method="post">
                     <div class="form-group">
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <label>Purchase No</label>
                             <div class="clearfix"></div>
                             <input type="text" id="purchaseNoSearch" class="form-control" placeholder="Enter Purchase No">
+                        </div>
+                        <div class="col-sm-3">
+                            <label>Product Code</label>
+                            <div class="clearfix"></div>
+                            <input type="text" id="productCode" class="form-control" placeholder="Enter Product Code">
                         </div>
                     </div>
                 </form>     
@@ -27,6 +32,7 @@
                                     <th>S/L</th>
                                     <th>Stock No</th>
                                     <th>Date</th>
+                                    <th class="width30per">Product Codes</th>
                                     <th>Note</th>
                                     <th></th>
                                 </tr>

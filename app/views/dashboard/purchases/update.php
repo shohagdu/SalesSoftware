@@ -73,9 +73,9 @@
                                 </thead>
                                 <tbody id="tableDynamic">
                                     <?php
+                                    $i=1;
+                                    $total=0;
                                     if(!empty($details)){
-                                        $i=1;
-                                        $total=0;
                                         foreach ($details as $row){
                                             $total+=$row->total_price;
                                            $prodouct_value= $row->product_name . ' [' . $row->productCode . '] '

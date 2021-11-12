@@ -477,21 +477,20 @@ $(document).ready(function(){
             'url':  base_url +"purchases/showAllPurchaseInfo",
             'data': function(data){
                 data.purchaseID = $('#purchaseNoSearch').val();
+                data.productCode = $('#productCode').val();
             }
         },
         'columns': [
             { data: 'serial_no', orderable: true, searchable: false  },
             { data: 'purchase_id', name: 'purchase_info_stock_in.purchase_id' },
             { data: 'purchase_date', name: 'purchase_info_stock_in.purchase_date' },
+            { data: 'productInfo', name: 'product_info.productCode' },
             { data: 'note', name: 'purchase_info_stock_in.note'},
             { data: 'action',orderable: false, searchable: false },
         ]
     });
 
-    $('#outletIDPurchase').change(function(){
-        purchaseInfoTable.draw();
-    });
-    $('#purchaseNoSearch').keyup(function(){
+    $('#purchaseNoSearch,#productCode').keyup(function(){
         purchaseInfoTable.draw();
     });
 

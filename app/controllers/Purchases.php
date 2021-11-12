@@ -88,36 +88,54 @@ class Purchases extends CI_Controller {
         if(empty($update_id)){
             $this->db->trans_start();
             $data=[
-                'purchase_id'=>$purchaseNo,
-                'purchase_date'=>(!empty($purchaseDate)?$purchaseDate:''),
-                'note'=>$note,
-                'outlet_id'=>$this->outletID,
-                'is_active'=>1,
-                'created_by'=>$this->userId,
-                'created_time'=>$this->dateTime,
-                'created_ip'=>$this->ipAddress,
+                'purchase_id'       =>$purchaseNo,
+                'purchase_date'     =>(!empty($purchaseDate)?$purchaseDate:''),
+                'note'              =>$note,
+                'outlet_id'         =>$this->outletID,
+                'is_active'         =>1,
+                'created_by'        =>$this->userId,
+                'created_time'      =>$this->dateTime,
+                'created_ip'        =>$this->ipAddress,
             ];
               
             $this->db->insert("purchase_info_stock_in",$data);
             $insert_id=$this->db->insert_id();
+            $productInfo=[];
             if(!empty($productID)){   
                 foreach($productID as $key=>$product){
                     if(!empty($product) && !empty($unitPrice[$key]) && !empty($quantity[$key])) {
                         $stock_info[] = [
-                            'product_id' => $product,
-                            'purchase_id' => $insert_id,
-                            'stock_type' => 1,
-                            'unit_price' => $unitPrice[$key],
-                            'total_item' => $quantity[$key],
-                            'total_price' => $unitPrice[$key] * $quantity[$key],
-                            'debit_outlet' => $this->outletID,
-                            'created_by' => $this->userId,
-                            'created_time' => $this->dateTime,
-                            'created_ip' => $this->ipAddress,
+                            'product_id'    => $product,
+                            'purchase_id'   => $insert_id,
+                            'stock_type'    => 1,
+                            'unit_price'    => $unitPrice[$key],
+                            'total_item'    => $quantity[$key],
+                            'total_price'   => $unitPrice[$key] * $quantity[$key],
+                            'debit_outlet'  => $this->outletID,
+                            'created_by'    => $this->userId,
+                            'created_time'  => $this->dateTime,
+                            'created_ip'    => $this->ipAddress,
+                        ];
+
+                        //   todo ::  Average Purchase Price Calculation
+                        $averagePrice=$this->PRODUCT->productAveragePrice($product);
+                        $totalPrice=(!empty($averagePrice->totalPrice))?$averagePrice->totalPrice+($unitPrice[$key] * $quantity[$key]):$unitPrice[$key] * $quantity[$key];
+                        $totalItem=(!empty($averagePrice->totalItem))?$averagePrice->totalItem+$quantity[$key]:$quantity[$key];
+                        $average_price=number_format($totalPrice/$totalItem,0,'.','');
+
+                        $productInfo[]=[
+                            'id'                => $product,
+                            'purchase_price'    => $average_price,
+                            'updated_by'        => $this->userId,
+                            'updated_time'      => $this->dateTime,
+                            'updated_ip'        => $this->ipAddress,
                         ];
                     }
                 }
                 $this->db->insert_batch("stock_info",$stock_info);
+                if(!empty($productInfo)){
+                    $this->db->update_batch("product_info",$productInfo,'id');
+                }
             }
             $redierct_page='purchases/index';
             $this->db->trans_complete();
@@ -133,13 +151,13 @@ class Purchases extends CI_Controller {
             $this->db->trans_start();
             $data=[
                // 'purchase_id'=>$purchaseNo,
-                'purchase_date'=>(!empty($purchaseDate)?$purchaseDate:''),
-                'note'=>$note,
-                'outlet_id'=>$this->outletID,
-                'is_active'=>1,
-                'updated_by'=>$this->userId,
-                'updated_time'=>$this->dateTime,
-                'updated_ip'=>$this->ipAddress,
+                'purchase_date' =>(!empty($purchaseDate)?$purchaseDate:''),
+                'note'          =>$note,
+                'outlet_id'     =>$this->outletID,
+                'is_active'     =>1,
+                'updated_by'    =>$this->userId,
+                'updated_time'  =>$this->dateTime,
+                'updated_ip'    =>$this->ipAddress,
             ];
             $this->db->where("id",$update_id);
             $this->db->update("purchase_info_stock_in",$data);
@@ -151,31 +169,47 @@ class Purchases extends CI_Controller {
                 foreach($productID as $key=>$product){
                     if(!empty($stock_id[$key])) {
                         $update_stock_info[] = [
-                            'id' => $stock_id[$key],
-                            'unit_price' => $unitPrice[$key],
-                            'total_item' => $quantity[$key],
-                            'total_price' => $unitPrice[$key] * $quantity[$key],
-                            'debit_outlet' => $this->outletID,
-                            'updated_by' => $this->userId,
-                            'updated_time' => $this->dateTime,
-                            'updated_ip' => $this->ipAddress,
+                            'id'            => $stock_id[$key],
+                            'unit_price'    => $unitPrice[$key],
+                            'total_item'    => $quantity[$key],
+                            'total_price'   => $unitPrice[$key] * $quantity[$key],
+                            'debit_outlet'  => $this->outletID,
+                            'updated_by'    => $this->userId,
+                            'updated_time'  => $this->dateTime,
+                            'updated_ip'    => $this->ipAddress,
                         ];
                     }else{
                         $create_stock_info[] = [
-                            'product_id' => $product,
-                            'purchase_id' => $update_id,
-                            'stock_type' => 1,
-                            'unit_price' => $unitPrice[$key],
-                            'total_item' => $quantity[$key],
-                            'total_price' => $unitPrice[$key] * $quantity[$key],
-                            'debit_outlet' => $this->outletID,
-                            'created_by'=>$this->userId,
-                            'created_time'=>$this->dateTime,
-                            'created_ip'=>$this->ipAddress,
+                            'product_id'    => $product,
+                            'purchase_id'   => $update_id,
+                            'stock_type'    => 1,
+                            'unit_price'    => $unitPrice[$key],
+                            'total_item'    => $quantity[$key],
+                            'total_price'   => $unitPrice[$key] * $quantity[$key],
+                            'debit_outlet'  => $this->outletID,
+                            'created_by'    => $this->userId,
+                            'created_time'  => $this->dateTime,
+                            'created_ip'    => $this->ipAddress,
                         ];
                     }
-                }
 
+                    //   todo ::  Average Purchase Price Calculation
+                    $averagePrice=$this->PRODUCT->productAveragePrice($product,$update_id);
+                    $totalPrice=(!empty($averagePrice->totalPrice))?$averagePrice->totalPrice+($unitPrice[$key] * $quantity[$key]):$unitPrice[$key] * $quantity[$key];
+                    $totalItem=(!empty($averagePrice->totalItem))?$averagePrice->totalItem+$quantity[$key]:$quantity[$key];
+                    $average_price=number_format($totalPrice/$totalItem,0,'.','');
+
+                    $productInfo[]=[
+                        'id'                => $product,
+                        'purchase_price'    => $average_price,
+                        'updated_by'        => $this->userId,
+                        'updated_time'      => $this->dateTime,
+                        'updated_ip'        => $this->ipAddress,
+                    ];
+                }
+                if(!empty($productInfo)){
+                    $this->db->update_batch("product_info",$productInfo,'id');
+                }
 
                 if(!empty($update_stock_info)) {
                     $this->db->update_batch("stock_info",$update_stock_info,'id');

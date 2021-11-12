@@ -70,6 +70,8 @@
                     </thead>
                     <tbody>
                         <?php $i = 1;
+                        $tAmount='0.00';
+                        $tQty='0';
                         if(!empty($details)){
                          foreach ($details as $row) { 
                                if(!empty($row->product_name)){
@@ -80,15 +82,23 @@
                                 <td class="text-left" ><?php echo (!empty($row->bandTitle)?$row->bandTitle:''); ?></td>
                                 <td class="text-left" ><?php echo (!empty($row->sourceTitle)?$row->sourceTitle:''); ?></td>
                                 <td><?php echo (!empty($row->unitTitle)?$row->unitTitle:''); ?></td>
-                                <td><?php echo (!empty($row->total_item)?$row->total_item:''); ?></td>
+                                <td><?php echo $item=(!empty($row->total_item)?$row->total_item:''); $tQty+=$item; ?></td>
                                 <td><?php echo (!empty($row->unit_price)?$row->unit_price:''); ?></td>
-                                <td><?php echo (!empty($row->total_price)?$row->total_price:''); ?></td>
+                                <td><?php echo $total=(!empty($row->total_price)?$row->total_price:''); $tAmount+=$total; ?></td>
 
                               
                             </tr>	
                         <?php }} } ?>
 
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="5">Total Summery</th>
+                            <th><?php echo $tQty ?></th>
+                            <th></th>
+                            <th><?php echo number_format($tAmount,2) ?></th>
+                        </tr>
+                    </tfoot>
                   
                 </table>
                 <div class="col-sm-12 margin-top-10px" >

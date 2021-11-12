@@ -31,8 +31,6 @@ class Products_model extends CI_Model {
         }else{
             return 0;
         }
-
-
     }
 
 
@@ -302,6 +300,27 @@ class Products_model extends CI_Model {
         }else{
             // Eligible for update or save
             return  true;
+        }
+    }
+
+    public function productAveragePrice($product_id,$purchaseID=NULL){
+        $this->db->select('sum(stock_info.total_price) as totalPrice,sum(stock_info.total_item) as totalItem');
+        $this->db->where('is_active',1);
+        $this->db->where('stock_type',1);
+        if(!empty($purchaseID)){
+            $this->db->where('purchase_id',$purchaseID);
+        }
+        $this->db->where('product_id',$product_id);
+        $row_data=$this->db->get('stock_info');
+        if($row_data->num_rows()>0){
+            $row=$row_data->row();
+            if(!empty($row)){
+                return $row;
+            }else{
+                return 0;
+            }
+        }else{
+            return 0;
         }
     }
 
