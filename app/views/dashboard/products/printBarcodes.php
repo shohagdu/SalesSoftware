@@ -28,6 +28,9 @@
 	  .printItem{
 	    page-break-after: auto;
 	  }
+      .textCntr{
+          text-align: center;
+      }
 	}
      #tableStyle td{
         border:1px solid #d0d0d0;
@@ -94,21 +97,26 @@
 	</div>
 	<?php if(isset($barcodes)){ ?>
 	<div class="row">
-		<div class="col-md-1"></div>
-		<div class="col-md-10">
+		<div class="col-md-5"></div>
+		<div class="col-md-3">
 <!--			<button type="button" onclick="window.print();" class="no-print btn btn-sm btn-success"><i class="glyphicon glyphicon-print"></i>  Print</button>-->
 			<div class="box" style="border-top: 0px;margin-bottom: 0px;">
 		        <div class="box-body">
 		          	
-		          	<div class="printArea">
-		          		<?php foreach($barcodes as $barcode){ ?>
+		          	<div class="printArea textCntr ">
+		          		<?php  foreach($barcodes as $barcode){   ?>
 		          		<?php for($i = 0 ; $i < $barcode['productQuantity']; $i++){?>
 		          		<div class="printItem">
 		          			<span class="printProduct"><?php echo $barcode['productName']; ?></span>
-		          			<span class="printPrice">Price <?php echo $barcode['productPrice']; ?></span>
-		          			<span class="printBar"><img src="<?php echo base_url(); ?>products/genBarcode/<?php echo $barcode['productCode']; ?>" alt="50219056"></span>
+
+		          			<span class="printBar">
+                                <img src="<?php echo base_url('Products/genBarcode/'.$barcode['productCode']); ?>" alt="<?php echo $barcode['productCode']; ?>">
+                            </span>
+                            <span class="printPrice">Price <?php echo $barcode['productPrice']; ?></span>
 		          		</div>
+                                <div class="clearfix"></div>
 		          		<?php } ?>
+
 		          		<?php } ?>
 		          	</div>
 
@@ -124,59 +132,3 @@
 	<?php } ?>
 </section>
 <!-- /.content -->
-
-<script type="text/javascript">
-	var addRowProduct = function (product) {
-		var productID = $('#productID_'+ product.id).val();
-		var productQuantity = parseInt($('#productQuantity_'+ product.id).val());
-		
-		if(productID == product.id){
-			return $('#productQuantity_'+ product.id).val(productQuantity + 1);
-		}
-		
-		return $('<tr>\n\
-					<td>'+ product.value +'</td>\n\
-					<td style="width: 8%;">\n\
-						<input id="productQuantity_'+ product.id +'" type="text" class="form-control" name="productQuantity[]" value="1">\n\
-						<input type="hidden" class="form-control" name="productName[]" value="'+ product.productName +'">\n\
-						<input type="hidden" class="form-control" name="productCode[]" value="'+ product.productCode +'">\n\
-						<input type="hidden" class="form-control" name="productPrice[]" value="'+ product.productPrice +'">\n\
-						<input id="productID_'+ product.id +'" type="hidden" class="form-control" name="productID[]" value="'+ product.id +'">\n\
-					</td>\n\
-					<td style="width: 20%;">'+ product.catName +'</td>\n\
-					<td style="width: 2%;">\n\
-						<a href="javascript:void(0);" id="removeRow" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>\n\
-					</td></tr>').appendTo('#tableDynamic');
-		
-	};
-	
-	
-	$( "#productName" ).autocomplete({
-      source: 'get_suggestions',
-      response: function (event, ui) {
-      	if(ui.content){
-      		if(ui.content.length == 1){
-	      		//console.log(ui.content[0]);
-	      		addRowProduct(ui.content[0]);
-      			$(this).val(''); 
-      			$(this).focus();
-      			$(this).autocomplete('close');
-      			return false;
-	      	}
-      	}
-      	
-      },
-      select: function (event, ui) {
-      	//console.log(ui);
-      	addRowProduct(ui.item);
-      	$(this).val(''); return false;
-      }
-
-    });
-
-
-    $(document).on("click", "#removeRow", function(e) {
-		$('#removeRow').closest('tr').remove();
-	});
-
-</script>

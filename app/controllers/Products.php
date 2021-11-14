@@ -261,11 +261,21 @@ class Products extends CI_Controller {
     function genBarcode($productID) {
         $this->load->library('zend');
         $this->zend->load('Zend/Barcode');
-        $imageResource = Zend_Barcode::render('code128', 'image', array('text' => $productID), array());
+        $imageResource = Zend_Barcode::render('code128', 'image',
+            array(
+                'text' => $productID,
+                'barHeight' => 55,
+//                'drawText' => FALSE,
+                'withQuietZones' => FALSE,
+                'barWidth' => 3000,
+            )
+        );
         header("Content-Type: image/png");
 
         return $imageResource;
     }
+
+
 
 
 

@@ -1738,3 +1738,51 @@ function searchingDailyDetailsSalesReport () {
         }
     });
 }
+
+
+var addRowProduct = function (product) {
+    var productID = $('#productID_'+ product.id).val();
+    var productQuantity = parseInt($('#productQuantity_'+ product.id).val());
+
+    if(productID == product.id){
+        return $('#productQuantity_'+ product.id).val(productQuantity + 1);
+    }
+
+    return $('<tr>\n\
+					<td>'+ product.value +'</td>\n\
+					<td style="width: 8%;">\n\
+						<input id="productQuantity_'+ product.id +'" type="text" class="form-control" name="productQuantity[]" value="1">\n\
+						<input type="hidden" class="form-control" name="productName[]" value="'+ product.productName +'">\n\
+						<input type="hidden" class="form-control" name="productCode[]" value="'+ product.productCode +'">\n\
+						<input type="hidden" class="form-control" name="productPrice[]" value="'+ product.unit_sale_price +'">\n\
+						<input id="productID_'+ product.id +'" type="hidden" class="form-control" name="productID[]" value="'+ product.id +'">\n\
+					</td>\n\
+					<td style="width: 20%;">'+ product.bandTitle +'</td>\n\
+					<td style="width: 2%;">\n\
+						<a href="javascript:void(0);" id="removeRow" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>\n\
+					</td></tr>').appendTo('#tableDynamic');
+
+};
+
+
+$( "#productName" ).autocomplete({
+    source: base_url+ "purchases/productNameSuggestions",
+    response: function (event, ui) {
+        if(ui.content){
+            if(ui.content.length == 1){
+                addRowProduct(ui.content[0]);
+                $(this).val('');
+                $(this).focus();
+                $(this).autocomplete('close');
+                return false;
+            }
+        }
+
+    },
+    select: function (event, ui) {
+        //console.log(ui);
+        addRowProduct(ui.item);
+        $(this).val(''); return false;
+    }
+
+});
