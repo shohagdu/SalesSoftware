@@ -264,10 +264,10 @@ class Products extends CI_Controller {
         $imageResource = Zend_Barcode::render('code128', 'image',
             array(
                 'text' => $productID,
-                'barHeight' => 55,
-//                'drawText' => FALSE,
+                'barHeight' => 25,
+                'drawText' => TRUE,
                 'withQuietZones' => FALSE,
-                'barWidth' => 3000,
+//                'barWidth' => 3000,
             )
         );
         header("Content-Type: image/png");

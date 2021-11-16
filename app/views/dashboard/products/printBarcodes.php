@@ -4,26 +4,37 @@
 	}
 	.printItem{
 		float: left;
-    text-align: center;
-    padding: 0mm;
-    width: 28mm;
-    height: 33mm;
+        text-align: center;
+        padding: 0mm;
+        width: 28mm;
+        height: 33mm;
+        margin-bottom: 20px;
 	}
 	.printProduct{
 		display: block;
     	text-transform: uppercase;
-    	font-size: 12px;
+    	font-size: 14px;
+        font-weight: bold;
 	}
 	.printPrice{
 		display: block;
     	text-transform: uppercase;
-    	font-size: 12px;
+    	font-size: 15px;
+        font-weight: bold;
+        margin: 3px 0px;
+
+
 	}
 	.printBar{
 		display: block;
     	text-transform: uppercase;
+        margin: 5px 0px;
 	}
-
+    .orgName{
+        display: block;
+        text-transform: uppercase;
+        font-size: 14px;
+    }
 	@media print {
 	  .printItem{
 	    page-break-after: auto;
@@ -107,12 +118,15 @@
 		          		<?php  foreach($barcodes as $barcode){   ?>
 		          		<?php for($i = 0 ; $i < $barcode['productQuantity']; $i++){?>
 		          		<div class="printItem">
+
 		          			<span class="printProduct"><?php echo $barcode['productName']; ?></span>
 
 		          			<span class="printBar">
                                 <img src="<?php echo base_url('Products/genBarcode/'.$barcode['productCode']); ?>" alt="<?php echo $barcode['productCode']; ?>">
                             </span>
-                            <span class="printPrice">Price <?php echo $barcode['productPrice']; ?></span>
+                            <span class="printPrice">MRP. <?php echo $barcode['productPrice']; ?></span>
+                            <span class="orgName">RED GREEN</span>
+
 		          		</div>
                                 <div class="clearfix"></div>
 		          		<?php } ?>
