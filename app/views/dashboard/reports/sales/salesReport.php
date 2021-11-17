@@ -95,12 +95,26 @@
 
                             </tbody>
                             <tfoot>
-                            <tr>
-                                <th colspan="7" class="text-right">Total Summery</th>
-                                <th><i class="badge"><?php echo number_format($tSale,2); ?></i></th>
-                                <th><i class="badge"><?php echo number_format($tPurchase,2); ?></i></th>
-                                <th><i class="badge"><?php echo number_format($profiteLose,2); ?></i></th>
-                            </tr>
+                                <tr>
+                                    <th colspan="7" class="text-right">Total Summery</th>
+                                    <th><i class="badge"><?php echo number_format($tSale,2); ?></i></th>
+                                    <th><i class="badge"><?php echo number_format($tPurchase,2); ?></i></th>
+                                    <th><i class="badge"><?php echo number_format($profiteLose,2); ?></i></th>
+                                </tr>
+                                <tr>
+                                    <th colspan="9" class="text-right">Total Discount(-)</th>
+                                    <th><i class="badge"><?php echo $totalDiscount= (!empty($discountAdjustmentInfo->totalDiscount)? number_format($discountAdjustmentInfo->totalDiscount,2,'.',''):'0'); ?></i></th>
+                                </tr>
+                                <tr>
+                                    <th colspan="9" class="text-right">Total Adjustment(-)</th>
+                                    <th><i class="badge"><?php echo $totalAdjusment= (!empty($discountAdjustmentInfo->totalAdjustmentDiscount)? number_format($discountAdjustmentInfo->totalAdjustmentDiscount,2,'.',''):'0'); ?></i></th>
+                                </tr>
+                                 <tr>
+                                    <th colspan="9" class="text-right">Total Net Profit/Lose</th>
+                                    <th><i class="badge"><?php echo number_format($profiteLose-($totalDiscount+$totalAdjusment),2); ?></i></th>
+                                </tr>
+
+
                             </tfoot>
                         </table>
                     </div>

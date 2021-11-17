@@ -77,7 +77,7 @@ class Reports_model extends CI_Model {
     }
 
     function sales_report($where=NULL){
-        $this->db->select('product_info.id as productID,product_info.name,product_info.productCode,product_info.is_active,band.title as bandTitle,source.title as sourceTitle,productType.title as ProductTypeTitle,unitInfo.title as unitTitle,stock_info.id as stockID,stock_info.unit_price,total_item,total_price,purchaseAmtForSales,sales_info.id as salesID,(total_price-(total_item*purchaseAmtForSales)) as profileAmount,customer_shipment_member_info.name as customerName,mobile,sales_info.sales_date,sales_info.invoice_no',true);
+        $this->db->select('product_info.id as productID,product_info.name,product_info.productCode,product_info.is_active,band.title as bandTitle,source.title as sourceTitle,productType.title as ProductTypeTitle,unitInfo.title as unitTitle,stock_info.id as stockID,stock_info.unit_price,total_item,total_price,purchaseAmtForSales,sales_info.id as salesID,(total_price-(total_item*purchaseAmtForSales)) as profileAmount,customer_shipment_member_info.name as customerName,mobile,sales_info.sales_date,sales_info.invoice_no,sales_info.remaining_due_make_discount,sales_info.discount',true);
         if(!empty($where['firstDate'])){
             $this->db->where("sales_date >=", $where['firstDate']);
             $this->db->where("sales_date <=", $where['toDate']);
@@ -111,7 +111,7 @@ class Reports_model extends CI_Model {
         }
     }
     function dailySalesReport($where=NULL){
-        $this->db->select('sales_info.id as salesID,customer_shipment_member_info.name as customerName,mobile,sales_info.sales_date,sales_info.invoice_no,sub_total,discount,net_total,payment_amount,',true);
+        $this->db->select('sales_info.id as salesID,customer_shipment_member_info.name as customerName,mobile,sales_info.sales_date,sales_info.invoice_no,sub_total,discount,net_total,payment_amount,remaining_due_make_discount',true);
         if(!empty($where['firstDate'])){
             $this->db->where("sales_date >=", $where['firstDate']);
             $this->db->where("sales_date <=", $where['toDate']);
@@ -169,6 +169,28 @@ class Reports_model extends CI_Model {
             $result = $records->row();
             if(!empty($result)) {
                 return (!empty($result->totalCollectionAmt)?$result->totalCollectionAmt:'0.00');
+            }
+        }else{
+            return '0.00';
+        }
+    }
+    function discountAdjustmentInfo($where=NULL){
+        $this->db->select('sum(discount) as totalDiscount, sum(remaining_due_make_discount) as totalAdjustmentDiscount',true);
+        if(!empty($where['firstDate'])){
+            $this->db->where("sales_date >=", $where['firstDate']);
+            $this->db->where("sales_date <=", $where['toDate']);
+        }else{
+            $this->db->where("sales_date >=", date('Y-m-d'));
+            $this->db->where("sales_date <=", date('Y-m-d'));
+        }
+        $this->db->where('sales_info.is_active', 1);
+
+        $records = $this->db->get('sales_info');
+        if($records->num_rows()>0) {
+            $result = $records->row();
+            if(!empty($result)) {
+                return $result;
+                //(!empty($result->totalDiscount+$result->totalAdjustmentDiscount)?$result->totalDiscount+$result->totalAdjustmentDiscount:'0.00');
             }
         }else{
             return '0.00';

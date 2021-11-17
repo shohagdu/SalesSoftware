@@ -101,6 +101,7 @@ class Reports extends CI_Controller {
         $outlet_id=$this->outletID;
         $data['outlet_info']= $this->SETTINGS->outlet_info();
         $data['info']=$this->REPORT->sales_report('',$outlet_id);
+        $data['discountAdjustmentInfo']=$this->REPORT->discountAdjustmentInfo('',$outlet_id);
         $view['content'] = $this->load->view('dashboard/reports/sales/salesReport', $data, TRUE);
         $this->load->view('dashboard/index', $view);
     }
@@ -121,6 +122,7 @@ class Reports extends CI_Controller {
             $param['sales_info.invoice_no']      =    $salesID;
         }
         $data['info']=$this->REPORT->sales_report($param);
+        $data['discountAdjustmentInfo']=$this->REPORT->discountAdjustmentInfo($param);
         return   $this->load->view('dashboard/reports/sales/searchingSalesReport', $data);
     }
     function dailySalesStatement() {

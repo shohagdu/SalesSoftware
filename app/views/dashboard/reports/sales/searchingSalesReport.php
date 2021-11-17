@@ -1,20 +1,18 @@
 <table  class="table-style table" style="width:100%;border:1px solid #d0d0d0;">
     <thead>
-        <tr>
-            <td class="font-weight-bold"> SL</td>
-            <td class="font-weight-bold"> Sales ID</td>
-            <td class="font-weight-bold"> Date</td>
-            <td class="font-weight-bold"> Product Info</td>
-            <td class="font-weight-bold"> Unit Sales Price</td>
-            <td class="font-weight-bold"> Unit Purchase Price</td>
+    <tr>
+        <td class="font-weight-bold"> SL</td>
+        <td class="font-weight-bold"> Sales ID</td>
+        <td class="font-weight-bold"> Date</td>
+        <td class="font-weight-bold"> Product Info</td>
+        <td class="font-weight-bold"> Unit Sales Price</td>
+        <td class="font-weight-bold"> Unit Purchase Price</td>
+        <td class="font-weight-bold"> Qty</td>
+        <td class="font-weight-bold"> Total Sales  </td>
+        <td class="font-weight-bold"> Total Purchase  </td>
+        <td class="font-weight-bold"> Profit /Lose </td>
 
-            <td class="font-weight-bold"> Qty</td>
-            <td class="font-weight-bold"> Total Sales  </td>
-            <td class="font-weight-bold"> Total Purchase  </td>
-
-            <td class="font-weight-bold"> Profit /Lose </td>
-
-        </tr>
+    </tr>
     </thead>
     <tbody>
     <?php
@@ -66,5 +64,19 @@
         <th><i class="badge"><?php echo number_format($tPurchase,2); ?></i></th>
         <th><i class="badge"><?php echo number_format($profiteLose,2); ?></i></th>
     </tr>
+    <tr>
+        <th colspan="9" class="text-right">Total Discount(-)</th>
+        <th><i class="badge"><?php echo $totalDiscount= (!empty($discountAdjustmentInfo->totalDiscount)? number_format($discountAdjustmentInfo->totalDiscount,2,'.',''):'0'); ?></i></th>
+    </tr>
+    <tr>
+        <th colspan="9" class="text-right">Total Adjustment(-)</th>
+        <th><i class="badge"><?php echo $totalAdjusment= (!empty($discountAdjustmentInfo->totalAdjustmentDiscount)? number_format($discountAdjustmentInfo->totalAdjustmentDiscount,2,'.',''):'0'); ?></i></th>
+    </tr>
+    <tr>
+        <th colspan="9" class="text-right">Total Net Profit/Lose</th>
+        <th><i class="badge"><?php echo number_format($profiteLose-($totalDiscount+$totalAdjusment),2); ?></i></th>
+    </tr>
+
+
     </tfoot>
 </table>
