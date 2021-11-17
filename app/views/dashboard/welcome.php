@@ -2,7 +2,10 @@
     <section class="row content invoice">
         <div class="row">
             <div class="col-md-12">
-                <a href="<?php  echo base_url('reports/dailySalesStatement')?>">
+                <?php
+                    $isSuperAdmin = $this->session->userdata('abhinvoiser_1_1_role');
+                ?>
+                <a href="<?php   echo ((!empty($isSuperAdmin) && $isSuperAdmin=='superadmin')? base_url('reports/dailySalesStatement'):'')?>">
                     <div class="col-md-4">
                         <div class="small-box bg-aqua">
                             <div class="inner">
