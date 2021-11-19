@@ -92,7 +92,14 @@ class Purchases_model extends CI_Model {
         ## Fetch records
         $productCodeSearching=(!empty($productCode)?" and product_info.productCode IN('$productCode')":'');
 
-        $this->db->select("purchase_info_stock_in.*,outlet_setup.name as outlet_name,(SELECT GROUP_CONCAT(product_info.productCode SEPARATOR ', ' ) FROM `stock_info` INNER JOIN product_info ON product_info.id=stock_info.product_id WHERE stock_info.purchase_id=purchase_info_stock_in.id AND stock_info.is_active=1 $productCodeSearching    ) as productCodesInfo", false);
+        $this->db->select("
+        purchase_info_stock_in.id, 
+        purchase_info_stock_in.purchase_id, 
+        purchase_info_stock_in.purchase_date, 
+        purchase_info_stock_in.purchase_date, 
+        purchase_info_stock_in.note, 
+        purchase_info_stock_in.is_active, 
+        outlet_setup.name as outlet_name,(SELECT GROUP_CONCAT(product_info.productCode SEPARATOR ', ' ) FROM `stock_info` INNER JOIN product_info ON product_info.id=stock_info.product_id WHERE stock_info.purchase_id=purchase_info_stock_in.id AND stock_info.is_active=1 $productCodeSearching    ) as productCodesInfo", false);
         if($searchQuery != ''){
             $this->db->where($searchQuery);
         }
@@ -127,7 +134,31 @@ class Purchases_model extends CI_Model {
         );
         return $response;
     }
+    public function suggestPurchaseNumber($q)
+    {
+        $this->db->select("c.id ,c.purchase_id",false);
+        $this->db->from('purchase_info_stock_in as c');
+        if(!empty($q)) {
+            $where = "(c.purchase_id LIKE '%$q%' )";
+            $this->db->where($where);
+        }
+        $this->db->where('c.is_active', 1);
 
+        $this->db->order_by("c.id","DESC");
+        $this->db->limit(10);
+        $query_result = $this->db->get();
+        if($query_result->num_rows()>0) {
+            foreach ($query_result->result_array() as $row) {
+                $row['id'] = htmlentities(stripslashes($row['id']));
+                $row['value'] = htmlentities(stripslashes($row['purchase_id']));
+                $row_set[] = $row;
+            }
+            return json_encode($row_set);
+        }else{
+            return false;
+        }
+
+    }
     
 
     

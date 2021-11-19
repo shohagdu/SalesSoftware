@@ -178,9 +178,12 @@ class Products_model extends CI_Model {
         $search_arr = array();
         $searchQuery = "";
         if($searchValue != ''){
-            $search_arr[] = " (name like '%".$searchValue."%' or 
-             unit_sale_price like '%".$searchValue."%' or 
-             unit_id like'%".$searchValue."%'   ) ";
+            $search_arr[] = " (
+            name like '%".$searchValue."%' or 
+            productCode like '%".$searchValue."%' or 
+            unit_sale_price like '%".$searchValue."%' or 
+            unit_id like'%".$searchValue."%'   
+            ) ";
         }
 
 
@@ -235,7 +238,7 @@ class Products_model extends CI_Model {
                 $data[] = $record;
                 $data[$key]->serial_no = (int) $i++;
                 $data[$key]->is_active = ($record->is_active==1)?"<span class='badge bg-green'>Active</span>":"<span class='badge bg-red'>Inactive</span>";
-                $data[$key]->action = '<button  class="btn btn-primary  btn-sm" data-toggle="modal" onclick="updateProductInfo('.$record->id.' )" data-target="#productModal"><i  class="glyphicon glyphicon-pencil"></i> Edit</button>';
+                $data[$key]->action = '<button  class="btn btn-primary  btn-sm" data-toggle="modal" onclick="updateProductInfo('.$record->id.' )" data-target="#productModal"><i  class="glyphicon glyphicon-pencil"></i> Edit</button> <a href="'.base_url('reports/details_inventory_report/'.$record->id).'"  class="btn btn-info  btn-sm"  ><i  class="glyphicon glyphicon-pencil"></i> Details</a> ';
 
             }
         }

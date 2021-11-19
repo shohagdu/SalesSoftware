@@ -207,4 +207,60 @@ function dailySalesReports() {
         $data['info']=$this->REPORT->sales_report($param);
         return   $this->load->view('dashboard/reports/sales/daily/searchingSalesReport', $data);
     }
+    function dateWisePurchse() {
+        $data = array();
+        $view = array();
+        $data['title']          = "Purchase Reports";
+        $outlet_id              = $this->outletID;
+        $data['outlet_info']    = $this->SETTINGS->outlet_info();
+        $data['info']           = $this->REPORT->purchase_report('',$outlet_id);
+        $view['content']        = $this->load->view('dashboard/reports/purchase/dateWisePurchse', $data, TRUE);
+        $this->load->view('dashboard/index', $view);
+    }
+    function searchingDateWisePurchse() {
+        extract($_POST);
+        $data = array();
+        $param=[];
+        $date=$this->input->post('searchingDate');
+        $purchaseID=$this->input->post('purchaseID');
+        if($date!=''){
+            $exp_date=explode("-",$date);
+            $param['firstDate']      =    $exp_date[0];
+            $param['toDate']         =    $exp_date[1];
+        }
+        if(!empty($purchaseID)){
+            unset($param['firstDate']);
+            unset($param['toDate']);
+            $param['purchase_id']      =    $purchaseID;
+        }
+        $data['info']=$this->REPORT->purchase_report($param);
+        return   $this->load->view('dashboard/reports/purchase/searchingDateWisePurchse', $data);
+    }
+    function detailsPurchasePurchse() {
+        $data = array();
+        $view = array();
+        $data['title']          = "Details Purchase Reports";
+        $data['info']           = $this->REPORT->details_purchase_report('');
+        $view['content']        = $this->load->view('dashboard/reports/purchase/detailsPurchasePurchse', $data, TRUE);
+        $this->load->view('dashboard/index', $view);
+    }
+    function detailsPurchasePurchseAction() {
+        extract($_POST);
+        $data = array();
+        $param=[];
+        $date=$this->input->post('searchingDate');
+        $purchaseID=$this->input->post('purchaseID');
+        if($date!=''){
+            $exp_date=explode("-",$date);
+            $param['firstDate']      =    $exp_date[0];
+            $param['toDate']         =    $exp_date[1];
+        }
+        if(!empty($purchaseID)){
+            unset($param['firstDate']);
+            unset($param['toDate']);
+            $param['purchase_id']      =    $purchaseID;
+        }
+        $data['info']=$this->REPORT->details_purchase_report($param);
+        return   $this->load->view('dashboard/reports/purchase/detailsPurchasePurchseAction', $data);
+    }
 }

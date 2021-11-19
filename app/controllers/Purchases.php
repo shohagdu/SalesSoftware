@@ -284,5 +284,12 @@ class Purchases extends CI_Controller {
         }
 
     }
+    public function getPurchaseNumber()
+    {
+        if (isset($_GET['term'])) {
+            $q = strtolower($_GET['term']);
+            echo $this->PURCHASE->suggestPurchaseNumber($q);
+        }
+    }
 
 }

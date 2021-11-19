@@ -67,14 +67,23 @@
                             $i=1;
                             $tDebit=0;
                             $tCredit=0;
+                            $tQty=0;
+                            $tPurchase=0;
                              if(!empty($info)){
                                 foreach($info as $row){
                                     ?>
                                     <tr>
                                         <td><?php echo $i++; ?></td>
                                         <td><?php echo (!empty($row->created_time)?date('d M, Y',strtotime
-                                            ($row->created_time)):'') ?></td>
-                                        <td></td>
+                                            ($row->created_time)):"<span class='badge bg-red-active'> Initial Stock</span>") ?></td>
+                                        <td>
+                                            <?php
+                                            $totalPurchaseAmnt=(!empty($row->unit_price*$row->total_item)?number_format($row->unit_price*$row->total_item,2,'.',''):'');
+                                            echo (!empty($row->unit_price)?$row->unit_price:'').' * '.(!empty($row->total_item)?$row->total_item:'').' = '.$totalPurchaseAmnt;
+                                            $tPurchase += $totalPurchaseAmnt;
+                                            $tQty += $row->total_item;
+                                            ?>
+                                        </td>
                                         <td>
                                             <?php
                                                 // add type
@@ -83,6 +92,7 @@
                                                         echo(!empty($row->total_item) ? $row->total_item : '0');
                                                     $tDebit+=$row->total_item;
                                                  }
+
                                             ?>
                                         </td>
                                         <td>
@@ -125,27 +135,28 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="3">Total Debit Item</td>
+                                <td colspan="2" class="text-right">Total Debit Item</td>
+                                <td > <span class="badge">AVG. Price : <?php echo !empty($tQty)?  number_format($tPurchase/$tQty,2):'0.00' ?></span> </td>
                                 <td colspan="2"> <span class="badge bg-green"><?php echo !empty($tDebit)?$tDebit:'0';
                                         ?></span></td>
                                 <td  colspan="2"><span class="badge bg-red"><?php echo !empty($tCredit)?$tCredit:'0';
                                         ?></span></td>
                             </tr>
                             <tr>
-                                <td colspan="3">Balances</td>
+                                <td colspan="3" class="text-right">Balances</td>
                                 <td colspan="4"><span class="badge bg-yellow"><?php
                                         $balance=(!empty($tDebit)?$tDebit:'0')-(!empty($tCredit)?$tCredit:'0');
                                         echo !empty($balance)
                                             ?$balance:'0'; ?></span></td>
                             </tr>
                             <tr>
-                                <td colspan="3">Total Purchase Price</td>
+                                <td colspan="3" class="text-right">Total Purchase Price</td>
                                 <td colspan="4"><span class="badge bg-yellow"><?php
                                         echo !empty($balance)
                                             ?number_format($balance*$products->purchase_price,2):'0'; ?></span></td>
                             </tr>
                             <tr>
-                                <td colspan="3">Total Purchase Price</td>
+                                <td colspan="3" class="text-right">Total Purchase Price</td>
                                 <td colspan="4"><span class="badge bg-yellow"><?php
                                         echo !empty($balance)
                                             ?number_format($balance*$products->unit_sale_price,2):'0'; ?></span></td>

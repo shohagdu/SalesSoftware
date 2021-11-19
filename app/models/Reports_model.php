@@ -197,5 +197,99 @@ class Reports_model extends CI_Model {
         }
     }
 
+    function purchase_report($postData=NULL){
+        $purchaseNo       = (!empty($postData['purchase_id'])?$postData['purchase_id']:'');
+
+        if (!empty($purchaseNo)) {
+            $search_arr[] = " purchase_info_stock_in.purchase_id = '" . $purchaseNo."'" ;
+        }
+
+
+        $search_arr[] = " purchase_info_stock_in.is_active = 1 ";
+        if(count($search_arr) > 0){
+            $searchQuery = implode(" and ",$search_arr);
+        }
+
+        $this->db->select("
+        purchase_info_stock_in.id, 
+        purchase_info_stock_in.purchase_id, 
+        purchase_info_stock_in.purchase_date, 
+        purchase_info_stock_in.purchase_date, 
+        purchase_info_stock_in.note, 
+        purchase_info_stock_in.is_active, 
+        outlet_setup.name as outlet_name,(SELECT GROUP_CONCAT(product_info.productCode SEPARATOR ', ' ) FROM `stock_info` INNER JOIN product_info ON product_info.id=stock_info.product_id WHERE stock_info.purchase_id=purchase_info_stock_in.id AND stock_info.is_active=1   ) as productCodesInfo,(SELECT sum(total_price)  FROM `stock_info` INNER JOIN product_info ON product_info.id=stock_info.product_id WHERE stock_info.purchase_id=purchase_info_stock_in.id AND stock_info.is_active=1   ) as totalPrice ", false);
+        if($searchQuery != ''){
+            $this->db->where($searchQuery);
+        }
+        if(!empty($postData['firstDate'])){
+            $this->db->where("purchase_info_stock_in.purchase_date >=", $postData['firstDate']);
+            $this->db->where("purchase_info_stock_in.purchase_date <=", $postData['toDate']);
+        }elseif(empty($purchaseNo)){
+            $this->db->where("purchase_info_stock_in.purchase_date >=", date('Y-m-d'));
+            $this->db->where("purchase_info_stock_in.purchase_date <=", date('Y-m-d'));
+        }
+
+        $this->db->join('outlet_setup', 'outlet_setup.id = purchase_info_stock_in.outlet_id', 'left');
+        $this->db->order_by("purchase_info_stock_in.id", "DESC");
+        $numRecords = $this->db->get('purchase_info_stock_in');
+        if($numRecords->num_rows()>0){
+           return $numRecords->result();
+        }else{
+            return false;
+        }
+    }
+    function details_purchase_report($postData=NULL){
+        $purchaseNo       = (!empty($postData['purchase_id'])?$postData['purchase_id']:'');
+
+        if (!empty($purchaseNo)) {
+            $search_arr[] = " purchase_info_stock_in.purchase_id = '" . $purchaseNo."'" ;
+        }
+
+
+        $search_arr[] = " stock_info.stock_type = 1 ";
+        $search_arr[] = " purchase_info_stock_in.is_active = 1 ";
+        if(count($search_arr) > 0){
+            $searchQuery = implode(" and ",$search_arr);
+        }
+
+        $this->db->select("
+        purchase_info_stock_in.id, 
+        purchase_info_stock_in.purchase_id, 
+        purchase_info_stock_in.purchase_date, 
+        purchase_info_stock_in.purchase_date, 
+        purchase_info_stock_in.note, 
+        purchase_info_stock_in.is_active, 
+        outlet_setup.name as outlet_name,
+        product_info.name,
+        product_info.productCode,
+        product_info.purchase_price,
+        product_info.unit_sale_price,
+        stock_info.total_price,
+        stock_info.total_item,
+        stock_info.unit_price
+         ", false);
+        if($searchQuery != ''){
+            $this->db->where($searchQuery);
+        }
+        if(!empty($postData['firstDate'])){
+            $this->db->where("purchase_info_stock_in.purchase_date >=", $postData['firstDate']);
+            $this->db->where("purchase_info_stock_in.purchase_date <=", $postData['toDate']);
+        }elseif(empty($purchaseNo)){
+            $this->db->where("purchase_info_stock_in.purchase_date >=", date('Y-m-d'));
+            $this->db->where("purchase_info_stock_in.purchase_date <=", date('Y-m-d'));
+        }
+
+        $this->db->join('purchase_info_stock_in', 'purchase_info_stock_in.id = stock_info.purchase_id', 'inner');
+        $this->db->join('product_info', 'product_info.id = stock_info.product_id', 'inner');
+
+        $this->db->join('outlet_setup', 'outlet_setup.id = purchase_info_stock_in.outlet_id', 'left');
+        $this->db->order_by("purchase_info_stock_in.id", "DESC");
+        $numRecords = $this->db->get('stock_info');
+        if($numRecords->num_rows()>0){
+            return $numRecords->result();
+        }else{
+            return false;
+        }
+    }
 
 }

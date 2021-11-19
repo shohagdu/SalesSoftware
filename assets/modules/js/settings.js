@@ -1786,3 +1786,41 @@ $( "#productName" ).autocomplete({
     }
 
 });
+
+function searchingPurchaseReports () {
+    $(".searchBtn").attr("disabled", true);
+    $.ajax({
+        url:  base_url +"reports/searchingDateWisePurchse/",
+        data: $('#purchaseReportForm').serialize(),
+        type: "POST",
+        success: function (response) {
+            $(".searchBtn").attr("disabled", false);
+            if(response!=''){
+                $("#stock_info_data").html(response);
+            }
+        }
+    });
+}
+
+$(".purchaseNumber").autocomplete({
+    source: base_url +'Purchases/getPurchaseNumber',
+    select: function (event, ui) {
+        var invoiceNo = ui.item.value;
+        $("#purchaseID").val(invoiceNo);
+    }
+});
+
+function searchingDetailsPurchaseReports () {
+    $(".searchBtn").attr("disabled", true);
+    $.ajax({
+        url:  base_url +"reports/detailsPurchasePurchseAction/",
+        data: $('#purchaseReportForm').serialize(),
+        type: "POST",
+        success: function (response) {
+            $(".searchBtn").attr("disabled", false);
+            if(response!=''){
+                $("#stock_info_data").html(response);
+            }
+        }
+    });
+}
