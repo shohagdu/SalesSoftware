@@ -52,27 +52,38 @@ class Pos_model extends CI_Model {
 
     }
 
-    public function showAllPurchaseInfo($postData){
+    public function showAllSalesInfo($postData){
         $draw = $postData['draw'];
         $start = $postData['start'];
         $rowperpage = $postData['length'];
+        $searchInfo = (!empty($postData['search']['value'])?$postData['search']['value']:'');
 
         //all default searching
         $search_arr[] = " sales_info.is_active = 1 ";
         $search_arr[] = " sales_info.outletID =  ".$this->outletID;
 
         // Custom search filter
-        $customerID = $postData['customerID'];
+        $customerID = !empty($postData['customerID'])?$postData['customerID']:'';
+        $saleNo = !empty($postData['saleNo'])?$postData['saleNo']:'';
+        $dateRange = !empty($postData['dateRange'])?$postData['dateRange']:'';
 
         if (!empty($customerID)) {
             $search_arr[] = " sales_info.customer_id = " . $customerID ;
         }
-
-
+        if (!empty($saleNo)) {
+            $search_arr[] = " sales_info.invoice_no = '" . $saleNo."'" ;
+        }
+        if (!empty($dateRange)) {
+            $exp_date=explode("-",$dateRange);
+            $firstDate      =    $exp_date[0];
+            $toDate         =    $exp_date[1];
+            $search_arr[] = " sales_date >='". $firstDate."'" ;
+            $search_arr[] = " sales_date <='". $toDate."'" ;
+        }
         if(count($search_arr) > 0){
             $searchQuery = implode(" and ",$search_arr);
         }
-
+        //return $searchQuery;
         ## Total number of records without filtering
         $totalRecords=$this->__get_count_row('sales_info',$searchQuery);
         ## Total number of record with filtering
@@ -81,6 +92,12 @@ class Pos_model extends CI_Model {
         $this->db->select("sales_info.*,outlet_setup.name as outlet_name,concat(customer_shipment_member_info.name ,' [',customer_shipment_member_info.mobile,']') as customer_info ", FALSE);
         if($searchQuery != ''){
             $this->db->where($searchQuery);
+        }
+        if($searchInfo != ''){
+            $this->db->like('invoice_no', $searchInfo);
+            $this->db->or_like('payment_amount', $searchInfo);
+            $this->db->or_like('customer_shipment_member_info.name', $searchInfo);
+            $this->db->or_like('customer_shipment_member_info.mobile', $searchInfo);
         }
         $this->db->join('outlet_setup', 'outlet_setup.id = sales_info.outletID', 'left');
         $this->db->join('customer_shipment_member_info', 'customer_shipment_member_info.id = sales_info.customer_id', 'left');

@@ -504,8 +504,8 @@ $(document).ready(function(){
         'ajax': {
             'url':  base_url +"pos/showAllSalesInfo",
             'data': function(data){
-                data.customerID = $('#tags_11').val();
-                data.saleNo = $('#saleNo').val();
+                data.customerID = $('#customerID_11').val();
+                data.saleNo = $('#salesID').val();
                 data.dateRange = $('#reservation').val();
             }
         },
@@ -518,11 +518,7 @@ $(document).ready(function(){
             { data: 'action',orderable: false, searchable: false },
         ]
     });
-
-    $('#tags_11,#saleNo').change(function(){
-        SalesInfoTable.draw();
-    });
-    $('#reservation').keyup(function(){
+    $('#customerName_11,#salesID,#reservation').change(function(){
         SalesInfoTable.draw();
     });
 

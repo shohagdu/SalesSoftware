@@ -14,29 +14,28 @@
         <div class="box-body">
             <div class="row" style="margin-bottom:5px;">
                 <form action="" method="post">
-                    <div class="col-sm-9 clearfix">
-                        <div class="col-sm-4 col-xs-12 clearfix">
-                            <input type="text" name="customer" id="tags_11" placeholder="Customer Nmae, Mobile "
-                                       class="form-control pull-right" >
-                            <input type="hidden" name="customer" id="cst_id"/>
-                        </div>
-                        <div class="col-sm-3 col-xs-12 clearfix">
-                            <input type="text" name="saleNo" id="saleNo" placeholder="Invoice No"
-                                       class="form-control pull-right">
-                            <input type="hidden" name="salesID" id="salesID"/>
-                        </div>
-                        <div class="col-sm-5">
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                <input type="text" name="date"  class="form-control pull-right" id="reservation">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3 col-xs-12">
+                    <div class="col-sm-4 col-xs-8 clearfix">
+                        <input type="text" id="customerName_11" class="customerName form-control"
+                               placeholder="Searching by Customer Name Or Mobile "  >
 
+                        <input type="hidden" name="customer_id" id="customerID_11" class="  form-control"  >
                     </div>
+                    <div class="col-sm-2 col-xs-4 clearfix">
+                        <input type="text" name="salesID" id="salesID" placeholder="Invoice No"
+                                   class="form-control pull-right invoiceNumber">
+                    </div>
+                    <!--
+                    <div class="col-sm-4">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" name="date" value="<?php echo date('Y/m/01 - Y/m/d') ?>"  class="form-control pull-right" id="reservation">
+                        </div>
+                    </div>
+                    -->
+
+
                 </form>
             </div>
             <div class="clearfix"></div>

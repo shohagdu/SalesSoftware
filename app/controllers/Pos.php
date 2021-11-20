@@ -386,7 +386,7 @@ class Pos extends CI_Controller
     }
     public function showAllSalesInfo(){
         $postData = $this->input->post();
-        $data = $this->POS->showAllPurchaseInfo($postData);
+        $data = $this->POS->showAllSalesInfo($postData);
         echo json_encode($data);
     }
     public function deleteSalesInfo(){
