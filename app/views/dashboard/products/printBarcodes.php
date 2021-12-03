@@ -1,68 +1,14 @@
-<style type="text/css">
-	.printArea{
-		padding: 0mm 13mm;
-	}
-	.printItem{
-		float: left;
-        text-align: center;
-        padding: 0mm;
-        width: 28mm;
-        height: 33mm;
-        margin-bottom: 20px;
-	}
-	.printProduct{
-		display: block;
-    	text-transform: uppercase;
-    	font-size: 14px;
-        font-weight: bold;
-	}
-	.printPrice{
-		display: block;
-    	text-transform: uppercase;
-    	font-size: 15px;
-        font-weight: bold;
-        margin: 3px 0px;
-
-
-	}
-	.printBar{
-		display: block;
-    	text-transform: uppercase;
-        margin: 5px 0px;
-	}
-    .orgName{
-        display: block;
-        text-transform: uppercase;
-        font-size: 14px;
-    }
-	@media print {
-	  .printItem{
-	    page-break-after: auto;
-	  }
-      .textCntr{
-          text-align: center;
-      }
-	}
-     #tableStyle td{
-        border:1px solid #d0d0d0;
-    } #tableStyle th{
-               border:1px solid #d0d0d0;
-    }
-</style>
-
-
 <!-- Main content -->
-<section class="content">
+<section >
 	<div class="row no-print">
-
 		<div class="col-md-12">
 			<div class="box">
 		        <div class="box-header with-border">
 		          <h3 class="box-title">Print Barcode/Label</h3>
 		          	<?php if($this->session->flashdata('msg')){?>
-    
+
 				        <?php echo $this->session->flashdata('msg'); ?>
-				    
+
 				    <?php }?>
 		        </div>
 		        <div class="box-body">
@@ -72,7 +18,7 @@
 						        <label>Add Product</label>
 						        <input id="productName" class="form-control" placeholder="Add Product">
 						    </div>
-		          		</div>	
+		          		</div>
 		          	</div>
 		          	<form action="<?php echo base_url('products/printBarcodes'); ?>" method="post">
 		          	<div class="row">
@@ -87,16 +33,16 @@
 				                </tr>
 					            </thead>
 					            <tbody id="tableDynamic">
-				                
+
 					            </tbody>
 				            </table>
-		          		</div>	
+		          		</div>
 		          	</div>
 		          	<div class="row">
-		          		<div class="col-md-3">
-		          			<button type="submit" class="btn  btn-primary btn-sm">Save</button>
-		          			<a href="<?php echo base_url(); ?>products/printBarcodes" class="btn btn-danger btn-sm">Clear</a>
-		          		</div>	
+		          		<div class="col-md-12 text-center">
+		          			<button type="submit" class="btn  btn-primary btn-lg"><i class="glyphicon glyphicon-ok-sign"></i> Generate Barcode</button>
+		          			<a href="<?php echo base_url(); ?>products/printBarcodes" class="btn btn-danger btn-lg"><i class="glyphicon glyphicon-refresh"></i> Clear</a>
+		          		</div>
 
 		          	</div>
 		          	</form>
@@ -107,42 +53,35 @@
 		<div class="col-md-1"></div>
 	</div>
 	<?php if(isset($barcodes)){ ?>
-	<div class="row">
-		<div class="col-md-5"></div>
-		<div class="col-md-3">
-<!--			<button type="button" onclick="window.print();" class="no-print btn btn-sm btn-success"><i class="glyphicon glyphicon-print"></i>  Print</button>-->
-			<div class="box" style="border-top: 0px;margin-bottom: 0px;">
-		        <div class="box-body">
-		          	
-		          	<div class="printArea textCntr ">
-		          		<?php  foreach($barcodes as $barcode){   ?>
-		          		<?php for($i = 0 ; $i < $barcode['productQuantity']; $i++){?>
-		          		<div class="printItem">
-
-		          			<span class="printProduct"><?php echo $barcode['productName']; ?></span>
-
-		          			<span class="printBar">
+         <div class="col-sm-offset-10 col-sm-2 no-print">
+            <button type="button" onclick="window.print();"  class="no-print btn btn-block btn-success btn-lg btn-flat print-button"><i class="fa fa-print"></i> </button>
+         </div>
+        <div class="clearfix"></div>
+        <div class="col-sm-offset-5 "  style="margin-top: 0px;">
+            <?php  foreach($barcodes as $barcode){   ?>
+            <?php for($i = 0 ; $i < $barcode['productQuantity']; $i++){?>
+                <div class="dashboard-section">
+                    <div class="barcode-label-container">
+                        <div id="barcode-label" class="barcode-label">
+                            <div class="barcode-text">
+                                <span class="barcode-strong"><?php echo $barcode['productName']; ?></span>
+                            </div>
+                            <div class="barcode-area">
                                 <img src="<?php echo base_url('Products/genBarcode/'.$barcode['productCode']); ?>" alt="<?php echo $barcode['productCode']; ?>">
-                            </span>
-                            <span class="printPrice">MRP. <?php echo $barcode['productPrice']; ?></span>
-                            <span class="orgName">RED GREEN</span>
+                            </div>
+                            <div class="barcode-foot barcode-strong barcode-rotated">
+                                MRP-<?php echo $barcode['productPrice']; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div style="white-space: pre-line"></div>
+            <?php } ?>
 
-		          		</div>
-                                <div class="clearfix"></div>
-		          		<?php } ?>
-
-		          		<?php } ?>
-		          	</div>
-
-		          	
-
-				</div>
-		        <!-- /.box-body -->
-		    </div>
-		    <button type="button" onclick="window.print();" class="no-print btn btn-block btn-success btn-flat"><i class="fa fa-print"></i>  Print</button>
-		</div>
-
-	</div>
+            <?php } ?>
+        </div>
+        <div class="clearfix"></div>
 	<?php } ?>
 </section>
 <!-- /.content -->

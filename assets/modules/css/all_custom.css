@@ -106,3 +106,85 @@ address p {
 
 .ui-autocomplete { z-index:2147483647; }
 
+/*Bar code Printing start */
+
+.dashboard-section {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: flex-end;
+}
+.dashboard-section > button {
+    /*margin-left: 10px;*/
+}
+.barcode-label-container {
+    /*border: 1px solid #333;*/
+    width: fit-content;
+    overflow: hidden;
+    margin-top:2px;
+    margin-left: 5px;
+}
+.barcode-label {
+    background-color: #ffffff;
+    color: #000000;
+    box-sizing: border-box;
+    height: 24.9mm;
+    width: 35mm;
+    /*padding: 1.5mm;*/
+    display: grid;
+    grid-template-columns: 1fr 6mm;
+    grid-template-rows: 4mm 1fr 17.5mm;
+    grid-template-areas: 'header footer' 'text footer' 'barcode footer';
+    font-family: monospace;
+    font-size: 8pt;
+    line-height: 1.2;
+    text-align: center;
+
+}
+.barcode-rotated {
+    line-height: 6mm;
+    transform: translate(calc(-12.5mm), 0) rotate(-90deg);
+    transform-origin: center center;
+    height: 6mm;
+    width: calc(31mm);
+}
+.barcode-header {
+    grid-area: header;
+    text-transform: uppercase;
+}
+.barcode-text {
+    grid-area: text;
+    text-transform: uppercase;
+    /*height: calc(28.8pt);*/
+    overflow-y: hidden;
+    align-self: center;
+}
+.barcode-area {
+    grid-area: barcode;
+    align-self: center;
+}
+.barcode-foot {
+    grid-area: footer;
+    font-size: 10px;
+    align-self: center;
+}
+}
+.barcode-strong {
+    font-weight: bold;
+}
+.print-button {
+    width: 77px;
+    height: 76px;
+    position: fixed;
+    padding: 5px;
+    bottom: 30px;
+    right: 30px;
+    color: #ffffff;
+    font-size: 2em;
+    text-align: center;
+    line-height: 36px;
+    -moz-border-radius: 6px 20px 6px 20px;
+    -webkit-border-radius: 6px 20px 6px 20px;
+    border-radius: 6px 20px 6px 20px;
+    z-index: 9999;
+}
+/*Barcode pirnting End*/
