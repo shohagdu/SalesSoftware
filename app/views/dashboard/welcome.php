@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 <?php
-                    $isSuperAdmin = $this->session->userdata('abhinvoiser_1_1_role');
+                    echo $isSuperAdmin = $this->session->userdata('abhinvoiser_1_1_role');
                 ?>
                 <a href="<?php   echo ((!empty($isSuperAdmin) && $isSuperAdmin=='superadmin')? base_url('reports/dailySalesStatement'):'')?>">
                     <div class="col-md-4">
