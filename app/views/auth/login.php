@@ -25,8 +25,8 @@
             
             <div class="login-box-body">
                 <div  class="header" >
-                    <div class="col-sm-offset-1 col-sm-10" >
-                        <img class="img-responsive"  src="<?php echo base_url(); ?>assets/image/du_logo.png"
+                    <div class="col-sm-offset-3 col-xs-offset-3 col-sm-8" >
+                        <img class="img-responsive"  src="<?php echo base_url(); ?>assets/image/logoIcon.png"
                              style="height:150px;text-align: center;">
                     </div>
                  </div>
