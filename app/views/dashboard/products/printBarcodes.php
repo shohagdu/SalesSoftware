@@ -64,6 +64,7 @@
                     <div class="barcode-label-container">
                         <div id="barcode-label" class="barcode-label">
                             <div class="barcode-text">
+                                <div >RED GREEN</div>
                                 <span class="barcode-strong"><?php echo $barcode['productName']; ?></span>
                             </div>
                             <div class="barcode-area">
