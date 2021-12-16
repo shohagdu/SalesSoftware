@@ -1820,3 +1820,67 @@ function searchingDetailsPurchaseReports () {
         }
     });
 }
+
+function purchaseSingleUpdate(id) {
+    $("#show_error_save_info").html('')
+    $("#singleUpdate_"+id).attr("disabled", true);
+    $('#purchaseProductModal').modal({
+        show: 'false'
+    });
+    $.ajax({
+        url:  base_url +"purchases/get_purchase_single_item_info/",
+        data: {id:id},
+        type: "POST",
+        dataType:'JSON',
+        success: function (response) {
+            $("#singleUpdate_"+id).attr("disabled", false);
+            if(response.status=='error'){
+                alert(response.message);
+            }else{
+                $("#updateSinglePurchaseItemForm")[0].reset();
+                var data=response.data;
+                $("#productInfo").val(data.product_name +' ['+data.productCode+']');
+                $("#productID").val(data.id);
+                $("#purchaseID").val(data.purchase_id);
+                $("#singleQty").val(data.total_item);
+                $("#singleUnitPrice").val(data.unit_price);
+                $("#singleTotalPrice").val(data.total_price);
+            }
+        }
+    });
+}
+
+function updateSinglePurchaseItem() {
+    $("#singleUpdateBtn").attr("disabled", true);
+    $.ajax({
+        url:  base_url +"purchases/updateSinglePurchaseItem/",
+        data: $('#updateSinglePurchaseItemForm').serialize(),
+        type: "POST",
+        dataType:'JSON',
+        success: function (response) {
+            $("#singleUpdateBtn").attr("disabled", false);
+            if(response.status=='error'){
+                $("#show_error_save_info").html(response.message);
+            }else{
+                $('#purchaseProductModal').modal('toggle');
+
+                setTimeout(function(){
+                    alert(response.message);
+                    window.location = base_url + response.redirect_page;
+                },1500);
+
+            }
+        }
+    });
+}
+
+$(document).on("keyup", ".purchase_single_item_change", function (event) {
+    var  price = parseFloat($("#singleUnitPrice").val());
+    var quantity = parseFloat($("#singleQty").val());
+    if (!isNaN(price) && !isNaN(quantity)  ) {
+        var sub_total=(price * quantity);
+        $("#singleTotalPrice").val((sub_total).toFixed(2));
+    }else{
+        $("#singleTotalPrice").val('0.00');
+    }
+});

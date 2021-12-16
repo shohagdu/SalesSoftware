@@ -68,7 +68,7 @@
                                         <th style="width:15%;">Unit Price</th>
                                         <th style="width:15%;">Total Price</th>
                             
-                                        <th style="width: 6%;">#</th>
+                                        <th style="width: 10%;">#</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tableDynamic">
@@ -101,7 +101,12 @@
                                         <td><input type="text" required name="unitPrice[]" id="unitPrice_<?php echo $row->id; ?>" value="<?php echo $row->unit_price ?>" placeholder="Unit Price" class="unitPrice form-control only-number"></td>
                                         <td><input type="text" required name="totalPrice[]" id="totalPrice_<?php echo $row->id; ?>" value="<?php echo $row->total_price ?>" placeholder="Total Price" class="totalPrice form-control only-number"></td>
                                     
-                                        <td><a href="javascript:void(0);" id="deleteRow_<?php echo $row->id; ?>"  class="deleteRow btn btn-danger  btn-sm"><i class="glyphicon glyphicon-remove"></i></a></td>
+                                        <td>
+                                            <a href="javascript:void(0);" title="Delete" id="deleteRow_<?php echo $row->id; ?>"  class="deleteRow btn btn-danger  btn-sm"><i class="glyphicon glyphicon-remove"></i></a>
+
+                                            <button type="button" title="Single Update" onclick="purchaseSingleUpdate('<?php echo $row->id; ?>')" id="singleUpdate_<?php echo $row->id; ?>"  class="singleUpdate btn btn-info  btn-sm"><i class="glyphicon glyphicon-pencil"></i> </button>
+
+                                        </td>
                                     </tr>
                                       <?php
                                         }
@@ -134,8 +139,55 @@
             </div>
         </div>  
     </div>
-
 </section>
+
+<!-- Modal -->
+<div class="modal fade" id="purchaseProductModal"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="col-sm-8">
+                    <h4 class="modal-title" id="exampleModalLabel">Update Purchase Information</h4>
+                </div>
+                <div class="col-sm-4">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="updateSinglePurchaseItemForm" role="form">
+                    <div class="form-group">
+                        <label for="productInfo">Product Information</label>
+                        <input type="text" name="productInfo" class="form-control" readonly id="productInfo"  placeholder="Product Information">
+                        <input type="hidden" name="productID" id="productID">
+                        <input type="hidden" name="purchaseID" id="purchaseID">
+                    </div>
+                    <div class="form-group">
+                        <label for="singleQty">Quantity</label>
+                        <input type="text" name="singleQty" class="form-control purchase_single_item_change" id="singleQty" placeholder="Quantity">
+                    </div>
+                    <div class="form-group">
+                        <label for="singleUnitPrice">Unit Price</label>
+                        <input type="text" name="singleUnitPrice" class="form-control purchase_single_item_change" id="singleUnitPrice" placeholder="Quantity">
+                    </div>
+                    <div class="form-group">
+                        <label for="singleTotalPrice">Total Price</label>
+                        <input type="text" name="singleTotalPrice" readonly class="form-control" id="singleTotalPrice" placeholder="Total Price">
+                    </div>
+                    <div class="form-group">
+                        <div id="show_error_save_info" style="color: red"></div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="singleUpdateBtn" onclick="updateSinglePurchaseItem()" class="btn btn-primary"><i class="glyphicon glyphicon-ok-circle"></i> Update</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i>Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 

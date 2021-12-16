@@ -291,5 +291,57 @@ class Purchases extends CI_Controller {
             echo $this->PURCHASE->suggestPurchaseNumber($q);
         }
     }
+    public function get_purchase_single_item_info()
+    {
+        if (isset($_POST['id'])) {
+            $info = $this->PURCHASE->single_stock_info_by_id(['stock_info.id'=>$_POST['id']]);
+           if(!empty($info)){
+               echo json_encode(['status'=>'success','message'=>'Successfully Data Found','data'=>$info]); exit;
+           }else{
+               echo json_encode(['status'=>'error','message'=>'No Data Found','data'=>'']); exit;
+           }
+        }
+    }
+    public function updateSinglePurchaseItem(){
+        extract($_POST);
+        $this->db->trans_start();
+        if(empty($productID)){
+            echo json_encode(['status'=>'error','message'=>'ID is required','data'=>'']);exit;
+        }
+        if(empty($singleQty)){
+            echo json_encode(['status'=>'error','message'=>'Qty is required','data'=>'']);exit;
+        }
+        if(empty($singleUnitPrice)){
+            echo json_encode(['status'=>'error','message'=>'Unit Price is required','data'=>'']);exit;
+        }
+        if(empty($singleTotalPrice)){
+            echo json_encode(['status'=>'error','message'=>'Total Price is required','data'=>'']);exit;
+        }
+        $info = array(
+            'total_item'        => $singleQty,
+            'unit_price'        => $singleUnitPrice,
+            'total_price'       => $singleQty* $singleUnitPrice,
+            'updated_by'        => $this->userId,
+            'updated_time'      => $this->dateTime,
+            'updated_ip'        => $this->ipAddress,
+        );
+        $this->db->where('id', $productID);
+        $this->db->update("stock_info", $info);
+        $message = 'Successfully Update this Information';
+
+
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === true) {
+            $redirectUrl='purchases/update/'.$purchaseID;
+            echo json_encode(['status' => 'success', 'message' => $message,'redirect_page'=>$redirectUrl]);
+            exit;
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Fetch a problem, data not update',
+                'redirect_page' => '']);
+            exit;
+        }
+
+    }
+
 
 }

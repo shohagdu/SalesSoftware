@@ -159,8 +159,28 @@ class Purchases_model extends CI_Model {
         }
 
     }
-    
 
+    function single_stock_info_by_id($where=null)
+    {
+        $this->db->select('stock_info.*,band.title as bandTitle,source.title as sourceTitle,productType.title as ProductTypeTitle,unitInfo.title as unitTitle,product_info.name as product_name,product_info.productCode');
+        $this->db->from('stock_info');
+        if(!empty($where)){
+            $this->db->where($where);
+        }
+        $this->db->join(' product_info', 'product_info.id = stock_info.product_id', 'left');
+        $this->db->join(' all_settings_info as band', 'band.id = product_info.band_id', 'left');
+        $this->db->join('all_settings_info as source', 'source.id = product_info.source_id', 'left');
+        $this->db->join(' all_settings_info as productType', 'productType.id = product_info.product_type', 'left');
+        $this->db->join(' all_settings_info as unitInfo', 'unitInfo.id = product_info.unit_id', 'left');
+
+        $this->db->where('stock_info.is_active',1);
+        $query_result = $this->db->get();
+        if($query_result->num_rows()>0) {
+            return  $result = $query_result->row();
+        }else{
+            return false;
+        }
+    }
     
     
 
