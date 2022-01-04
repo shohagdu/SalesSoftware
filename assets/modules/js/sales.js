@@ -1,5 +1,5 @@
 $(function () {
-    $("#tags_11").focus();
+    $("#productName").focus();
     $("#member_status").hide();
     $("#member_status_red").hide();
 });
@@ -10,6 +10,16 @@ $("#productName").autocomplete({
             response);
     },
     response: function (event, ui) {
+        if(ui.content){
+            if(ui.content.length == 1){
+                addRowProduct(ui.content[0].id, ui.content[0].current_stock_item, ui.content[0].productPrice, ui.content[0].value,ui.content[0].productCode,ui.content[0].unit_sale_price);
+                $(this).val('');
+                $(this).focus();
+                $(this).autocomplete('close');
+                return false;
+            }
+        }
+
     },
     select: function (event, ui) {
         addRowProduct(ui.item.id, ui.item.current_stock_item, ui.item.productPrice, ui.item.value,ui.item.productCode,ui.item.unit_sale_price);

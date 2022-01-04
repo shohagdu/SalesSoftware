@@ -14,7 +14,7 @@
                                                 <span class="glyphicon glyphicon-search"></span>
                                                 <input required="" name="cst_name"
                                                     placeholder="Name/Mobile/Email/ Address"
-                                                    class="customer form-control" onfocus="true"
+                                                    class="customer form-control"
                                                     id="tags_11">
                                                 <input type="hidden" name="customer" id="cst_id"/>
                                             </div>
@@ -71,7 +71,7 @@
                                             <div class="form-group">
                                                 <div class="search1">
                                                     <span class="glyphicon glyphicon-search"></span>
-                                                    <input id="productName" class="form-control"
+                                                    <input id="productName" autofocus  class="form-control"
                                                            placeholder="Scan/Search Product by Name/Code">
                                                 </div>
                                             </div>
