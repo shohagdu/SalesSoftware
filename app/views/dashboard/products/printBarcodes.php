@@ -60,8 +60,8 @@
         <div class="col-sm-offset-5 "  style="margin-top: 0px;">
             <?php  foreach($barcodes as $barcode){   ?>
             <?php for($i = 0 ; $i < $barcode['productQuantity']; $i++){?>
-                <div class="dashboard-section">
-                    <div class="barcode-label-container">
+                <div class="dashboard-section" >
+                    <div class="barcode-label-container" >
                         <div id="barcode-label" class="barcode-label">
                             <div class="barcode-text">
                                 <div >RED GREEN</div>

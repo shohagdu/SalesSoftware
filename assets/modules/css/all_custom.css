@@ -125,9 +125,10 @@ address p {
 }
 .barcode-label {
     background-color: #ffffff;
+    /*background-color: yellow;*/
     color: #000000;
     box-sizing: border-box;
-    height: 24.9mm;
+    height: 24.8mm;
     width: 35mm;
     /*padding: 1.5mm;*/
     display: grid;
@@ -157,6 +158,7 @@ address p {
     /*height: calc(28.8pt);*/
     overflow-y: hidden;
     align-self: center;
+    margin-top: 5px !important;
 }
 .barcode-area {
     grid-area: barcode;
