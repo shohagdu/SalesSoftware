@@ -355,6 +355,8 @@ class Purchases extends CI_Controller {
         if(!empty($postData['productID'])) {
             $data['record'] = $this->PURCHASE->searchPurchaseProduct($postData);
             $this->load->view('dashboard/purchases/searchPurchaseProductAction', $data);
+        }else{
+            echo "<h4 class='text-center bold' style='color:red;font-weight: bold;'>Searching Product Name/Code is required</h4> <br/>";
         }
     }
 
