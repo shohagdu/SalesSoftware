@@ -75,7 +75,7 @@ class Purchases_model extends CI_Model {
             $search_arr[] = " purchase_info_stock_in.outlet_id = " . $outletName ;
         }
         if (!empty($purchaseNo)) {
-            $search_arr[] = " product_info.purchase_id = '" . $purchaseNo."'" ;
+            $search_arr[] = " purchase_info_stock_in.purchase_id = '" . $purchaseNo."'" ;
         }
 
 
@@ -181,7 +181,37 @@ class Purchases_model extends CI_Model {
             return false;
         }
     }
-    
+    public function searchPurchaseProduct($postData){
+        $productID       = (!empty($postData['productID'])?$postData['productID']:'');
+        $this->db->select("
+        purchase_info_stock_in.id, 
+        purchase_info_stock_in.purchase_id, 
+        purchase_info_stock_in.purchase_date, 
+        purchase_info_stock_in.purchase_date, 
+        purchase_info_stock_in.note, 
+        purchase_info_stock_in.is_active, 
+        product_info.productCode,
+        product_info.name,
+        stock_info.total_item,
+        stock_info.unit_price,
+        stock_info.total_price,
+        ", false);
+
+        $this->db->join('product_info', 'product_info.id=stock_info.product_id', 'left');
+        $this->db->join('purchase_info_stock_in', 'stock_info.purchase_id=purchase_info_stock_in.id', 'left');
+        $this->db->where("product_info.id",$productID);
+        $this->db->where("stock_info.is_active",1);
+        $this->db->order_by("purchase_info_stock_in.id", "DESC");
+        $this->db->group_by("purchase_info_stock_in.id");
+        $records = $this->db->get('stock_info');
+//        return $this->db->last_query();
+        if($records->num_rows()>0){
+            return $records->result();
+        }else{
+            return false;
+        }
+
+    }
     
 
     

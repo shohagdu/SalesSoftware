@@ -1884,3 +1884,19 @@ $(document).on("keyup", ".purchase_single_item_change", function (event) {
         $("#singleTotalPrice").val('0.00');
     }
 });
+
+$('.changeSearchProduct').click(function(){
+    $.ajax({
+        url:  base_url +"purchases/searchPurchaseProductAction/",
+        data: $('#purchaseInfoForm').serialize(),
+        type: "POST",
+        // dataType:'JSON',
+        success: function (response) {
+            if(response !==''){
+                $(".showReports").html(response);
+            }else{
+                $(".showReports").html('');
+            }
+        }
+    });
+});

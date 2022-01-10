@@ -342,6 +342,20 @@ class Purchases extends CI_Controller {
         }
 
     }
+    function searchPurchaseProduct() {
+        $data = array();
+        $view = array();
+        $data['title'] = "Search Purchase Product";
+        $view['content'] = $this->load->view('dashboard/purchases/searchPurchaseProduct', $data, TRUE);
+        $this->load->view('dashboard/index', $view);
+    }
 
+    public function searchPurchaseProductAction(){
+        $postData = $this->input->post();
+        if(!empty($postData['productID'])) {
+            $data['record'] = $this->PURCHASE->searchPurchaseProduct($postData);
+            $this->load->view('dashboard/purchases/searchPurchaseProductAction', $data);
+        }
+    }
 
 }
