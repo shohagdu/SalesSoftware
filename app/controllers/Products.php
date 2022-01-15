@@ -227,10 +227,11 @@ class Products extends CI_Controller {
 //    }
 
 
-    private function productSerialize($productName, $productCode, $productPrice, $productQuantity) {
+    private function productSerialize($productName, $productCode, $productPrice, $productQuantity,$type) {
         foreach ($productName as $k => $name) {
+            $typeTitle=((empty($type[$k]) || $type[$k] == 'null' || $type[$k] == NULL|| $type[$k] == '' )?'':'-'.$type[$k]);
             $group[] = array(
-                'productName' => $name,
+                'productName' => $name.$typeTitle,
                 'productCode' => $productCode[$k],
                 'productPrice' => $productPrice[$k],
                 'productQuantity' => $productQuantity[$k]
@@ -249,7 +250,7 @@ class Products extends CI_Controller {
     function printBarcodes() {
         $data = array();
         if ($this->input->post()) {
-            $data['barcodes'] = $this->productSerialize($this->input->post('productName'), $this->input->post('productCode'), $this->input->post('productPrice'), $this->input->post('productQuantity'));
+            $data['barcodes'] = $this->productSerialize($this->input->post('productName'), $this->input->post('productCode'), $this->input->post('productPrice'), $this->input->post('productQuantity'), $this->input->post('productType'));
         }
 
         $view = array();

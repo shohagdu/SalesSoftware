@@ -1737,6 +1737,7 @@ function searchingDailyDetailsSalesReport () {
 
 
 var addRowProduct = function (product) {
+    console.log(product);
     var productID = $('#productID_'+ product.id).val();
     var productQuantity = parseInt($('#productQuantity_'+ product.id).val());
 
@@ -1749,6 +1750,7 @@ var addRowProduct = function (product) {
 					<td style="width: 8%;">\n\
 						<input id="productQuantity_'+ product.id +'" type="text" class="form-control" name="productQuantity[]" value="1">\n\
 						<input type="hidden" class="form-control" name="productName[]" value="'+ product.productName +'">\n\
+						<input type="text" class="form-control" name="productType[]" value="'+ product.ProductTypeTitle +'">\n\
 						<input type="hidden" class="form-control" name="productCode[]" value="'+ product.productCode +'">\n\
 						<input type="hidden" class="form-control" name="productPrice[]" value="'+ product.unit_sale_price +'">\n\
 						<input id="productID_'+ product.id +'" type="hidden" class="form-control" name="productID[]" value="'+ product.id +'">\n\
