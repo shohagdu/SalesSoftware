@@ -16,7 +16,7 @@
 		          		<div class="col-md-12">
 		          			<div class="form-group has-feedback">
 						        <label>Add Product</label>
-						        <input id="productName" class="form-control" placeholder="Add Product">
+						        <input id="productNameBarCode" class="form-control" placeholder="Add Product">
 						    </div>
 		          		</div>
 		          	</div>
@@ -26,10 +26,11 @@
 		          			<table id="tableStyle" class="table table-bordered" >
 				                <thead>
 				                <tr>
-				                  <th>Product Name (Product Code)</th>
-				                  <th style="width: 8%;">Quantity</th>
-				                  <th style="width: 20%;">Product Catagory</th>
-				                  <th style="width:10%;">Action</th>
+				                    <th>Product Name (Product Code)</th>
+                                    <th style="width: 8%;">Quantity</th>
+				                    <th style="width: 8%;">Type</th>
+				                    <th style="width: 20%;">Product Catagory</th>
+				                    <th style="width:10%;">Action</th>
 				                </tr>
 					            </thead>
 					            <tbody id="tableDynamic">
