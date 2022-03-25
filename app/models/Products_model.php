@@ -93,8 +93,8 @@ class Products_model extends CI_Model {
     function productSuggestionPurchase($q) {
         $this->db->select('product_info.*,band.title as bandTitle,source.title as sourceTitle,productType.title as ProductTypeTitle,unitInfo.title as unitTitle',true);
         if(!empty($q)){
-            $this->db->like('product_info.productCode', $q, 'before');
-            $this->db->or_like('product_info.name', $q, 'before');
+            $this->db->like('product_info.productCode', $q, 'after');
+            $this->db->or_like('product_info.name', $q, 'after');
             $this->db->where('product_info.is_active', 1);
         }
         $this->db->join(' all_settings_info as band', 'band.id = product_info.band_id', 'left');
