@@ -74,8 +74,14 @@
                                     ?>
                                     <tr>
                                         <td><?php echo $i++; ?></td>
-                                        <td><?php echo (!empty($row->created_time)?date('d M, Y',strtotime
-                                            ($row->created_time)):"<span class='badge bg-red-active'> Initial Stock</span>") ?></td>
+                                        <td>
+                                            <?php
+                                            echo (!empty($row->created_time)?date('d M, Y',strtotime
+                                            ($row->created_time)):"<span class='badge bg-red-active'> Initial Stock</span>");
+                                            echo (!empty($row->invoice_no)?"[ ".$row->invoice_no." # "
+                                                .$row->net_total." ]":'');
+                                            ?>
+                                        </td>
                                         <td>
                                             <?php
                                             $totalPurchaseAmnt=(!empty($row->unit_price*$row->total_item)?number_format($row->unit_price*$row->total_item,2,'.',''):'');

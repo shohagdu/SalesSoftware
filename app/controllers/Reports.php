@@ -69,6 +69,9 @@ class Reports extends CI_Controller {
         $data['products'] = $this->PRODUCTS->get_single_product_info(['product_info.id'=>$id]);
         $data['title'] = "Details Inventory Report of";
         $data['info']=$this->REPORT->details_inventory_report($id,$this->outletID);
+//        echo "<pre>";
+//        print_r($data['info']);
+//        exit;
         $view['content'] = $this->load->view('dashboard/reports/inventory/details_inventory_report', $data,TRUE);
         $this->load->view('dashboard/index', $view);
     }

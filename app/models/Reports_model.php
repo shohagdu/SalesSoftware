@@ -62,11 +62,12 @@ class Reports_model extends CI_Model {
         }
     }
     public function details_inventory_report($product_id,$outlet_id){
-        $this->db->select('stock_info.*',true);
+        $this->db->select('stock_info.*,sales_info.invoice_no,sales_info.net_total',true);
         if(!empty($product_id) && !empty($outlet_id)) {
             $this->db->where("stock_info.product_id",$product_id);
             $this->db->where("(stock_info.credit_outlet='$outlet_id' OR stock_info.debit_outlet='$outlet_id' )");
         }
+        $this->db->join('sales_info', 'stock_info.sales_id = sales_info.id AND stock_info.stock_type=2 AND stock_info.is_active=1', 'left');
         $this->db->where('stock_info.is_active', 1);
         $row_info = $this->db->get('stock_info');
         if($row_info->num_rows()>0){

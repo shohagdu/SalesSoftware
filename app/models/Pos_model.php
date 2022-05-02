@@ -109,10 +109,18 @@ class Pos_model extends CI_Model {
         $i=(!empty($start)?$start+1:1);
         if(!empty($records)) {
             foreach ($records as $key => $record) {
+                $action='';
                 $data[] = $record;
                 $data[$key]->serial_no = (int) $i++;
                 $data[$key]->is_active =  ($record->is_active==1)?"<span class='badge bg-green'>Active</span>":"<span class='badge bg-red'>Inactive</span>";
-                $data[$key]->action = ' <a href="'. base_url('pos/show/'.$record->id).'" class="btn btn-info  btn-xs"   ><i  class="glyphicon glyphicon-share-alt"></i> View</a> <a href="'. base_url('pos/update/'.sha1($record->id)).'"  class="btn btn-primary  btn-xs"  ><i  class="glyphicon glyphicon-pencil"></i> Edit</a> <button onclick="deleteSalesInformation('.$record->id.')"  type="button" class="btn btn-danger  btn-xs"   ><i  class="glyphicon glyphicon-remove"></i> Delete</button> ';
+
+                $action .= ' <a href="'. base_url('pos/show/'.$record->id).'" class="btn btn-info  btn-xs"   ><i  class="glyphicon glyphicon-share-alt"></i> View</a> <a href="'. base_url('pos/update/'.sha1($record->id)).'"  class="btn btn-primary  btn-xs"  ><i  class="glyphicon glyphicon-pencil"></i> Edit</a>';
+
+                if ($this->session->userdata('abhinvoiser_1_1_role') == 'superadmin') {
+                    $action .= '<button onclick="deleteSalesInformation('.$record->id.')"  type="button" class="btn btn-danger  btn-xs"   ><i  class="glyphicon glyphicon-remove"></i> Delete</button> ';
+                }
+
+                $data[$key]->action = $action;
 
 
 
