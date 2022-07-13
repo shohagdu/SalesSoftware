@@ -36,6 +36,7 @@
                             <th>S/L</th>
                             <th>Member Name </th>
                             <th>Date</th>
+                            <th>Type</th>
                             <th>Collection Amt</th>
                             <th>Note</th>
                             <th></th>
@@ -79,6 +80,17 @@
                     </div>
                     <div class="form-group col-sm-12">
                         <label class="col-sm-3 text-right">
+                            Transaction Type
+                        </label>
+                        <div class="col-sm-9">
+                            <select  class="form-control"  name="transType" id="transTypeMember">
+                                <option value="3">Due Collection</option>
+                                <option value="7">Manual Due Add</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label class="col-sm-3 text-right">
                             Due Amount
                         </label>
                         <div class="col-sm-9">
@@ -89,7 +101,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group col-sm-12">
+                    <div class="form-group col-sm-12 creditAmountDiv">
                         <div class="col-sm-12">
                             <table class="table table-bordered">
                                 <tr>
@@ -170,9 +182,10 @@
                             </table>
                         </div>
                     </div>
+
                     <div class="form-group col-sm-12">
                         <label class="col-sm-3 text-right">
-                            Payment Now
+                           <span class="creditAmount">Payment Now</span>
                         </label>
                         <div class="col-sm-9">
                             <input type="text" readonly class="form-control"

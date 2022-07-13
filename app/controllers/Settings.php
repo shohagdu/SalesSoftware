@@ -481,7 +481,7 @@ class Settings extends CI_Controller
         $view = array();
         $data['title']='Customer Due Collection';
         $data['redierct_page']='settings/customer_due_collection';
-        $data['outlet_info']= $this->SETTINGS->outlet_info();
+//        $data['outlet_info']= $this->SETTINGS->outlet_info();
         $view['content'] = $this->load->view('dashboard/settings/customer_member_Info/customer_due_collection', $data, TRUE);
         $this->load->view('dashboard/index', $view);
     }
@@ -567,9 +567,8 @@ class Settings extends CI_Controller
         if(empty($type)){
             echo json_encode(['status'=>'error','message'=>'Type is required','data'=>'']);exit;
         }
-
-        $info = $this->SETTINGS->checkingDueExitMember(['customer_shipment_member_info.id'=>$id]);
-        if(!empty($info) && ($info->current_due_qty >0 || $info->total_credit_amount>0  )){
+        $info = $this->SETTINGS->checkingDueExitMember(['t.customer_member_id'=>$id]);
+        if(!empty($info) && ($info->current_due >0 )){
             echo json_encode(['status'=>'error','message'=>'Sorry, This member Contains  Due Qty or Due Amount, You are not Authorised  to Delete this member.','data'=>'']);exit;
         }else {
             $info = array(
@@ -788,9 +787,13 @@ class Settings extends CI_Controller
                 $payment_byInfo[$payCtg]=$payment_ctg_amount[$key];
             }
         }
+        if(empty($transType)){
+            echo json_encode(['status'=>'error','message'=>'Transaction Type is required','data'=>'']);exit;
+        }
         if(empty($customer_id)){
             echo json_encode(['status'=>'error','message'=>'Customer Name is required','data'=>'']);exit;
         }
+
         if(empty($payment_now)){
             echo json_encode(['status'=>'error','message'=>'Payment Amount is required','data'=>'']);exit;
         }
@@ -803,19 +806,24 @@ class Settings extends CI_Controller
 
 
 
+
         if(empty($upId)){
             $this->db->trans_start();
             $payment_transaction=[
-                'customer_member_id'  =>  $customer_id,
-                'payment_by'  =>  (!empty($payment_byInfo)?json_encode($payment_byInfo):''),
-                'credit_amount'  =>  $payment_now,
-                'payment_date'  =>  (!empty($payment_date)?date('Y-m-d',strtotime($payment_date)):''),
-                'type'=>  3,
-                'remarks'  =>  $remarks,
-                'created_by'=>  $this->userId,
-                'created_time'=>$this->dateTime,
-                'created_ip'=>  $this->ipAddress,
+                'customer_member_id'    =>  $customer_id,
+                'payment_date'          =>  (!empty($payment_date)?date('Y-m-d',strtotime($payment_date)):''),
+                'type'                  =>  $transType,
+                'remarks'               =>  $remarks,
+                'created_by'            =>  $this->userId,
+                'created_time'          =>  $this->dateTime,
+                'created_ip'            =>  $this->ipAddress,
             ];
+            if($transType==3){
+                $payment_transaction['payment_by']      = $payment_now;
+                $payment_transaction['credit_amount']   = (!empty($payment_byInfo)?json_encode($payment_byInfo):'');
+            }else{
+                $payment_transaction['debit_amount']   = $payment_now;
+            }
             $this->db->insert("transaction_info",$payment_transaction);
 
             $redierct_page='settings/customer_due_collection';
@@ -833,30 +841,7 @@ class Settings extends CI_Controller
 
         }else{
             // when update
-            $this->db->trans_start();
-            $data=[
-                'member_id'=>$member_id,
-                'credit_qty'=>$delivery_qty,
-                'trans_date'=>(!empty($delivery_date)?date('Y-m-d',strtotime($delivery_date)):''),
-                'remarks'=>$remarks,
-                'updated_by'=>$this->userId,
-                'updated_time'=>$this->dateTime,
-                'updated_ip'=>$this->ipAddress,
-            ];
-            $this->db->where("id",$upId);
-            $this->db->update("shipment_stock_info",$data);
 
-            $redierct_page='shipment_info/shipment_setup';
-            $this->db->trans_complete();
-
-            if($this->db->trans_status()===true){
-                $this->db->trans_commit();
-                echo json_encode(['status'=>'success','message'=>"Successfully Update Information.",'redirect_page'=>$redierct_page]);
-                exit;
-            }else{
-                $this->db->trans_rollback();
-                echo json_encode(['status'=>'error','message'=>'Fetch a problem, data not update','redirect_page'=>$redierct_page]);exit;
-            }
 
         }
     }

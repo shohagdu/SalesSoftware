@@ -392,7 +392,7 @@ COUNT(CASE WHEN success_status = 2 THEN success_status ELSE NULL END) failed_sms
                 if($record->type==1) {
                     $data[$key]->current_due = (!empty($record->current_due)) ? "<span class='badge' style='background-color:red;'>"
                         . $record->current_due . "</span>" : "<span class='badge'>0.00</span>";
-                    $data[$key]->action = '<button  class="btn btn-primary  btn-sm" data-toggle="modal" onclick="updateCustomerMemberInfo(' . $record->id . ' )" data-target="#myModal"><i  class="glyphicon glyphicon-pencil"></i> Edit</button> <a  class="btn btn-info  btn-sm"  href="' . base_url('reports/details_customer_member_info/' . $record->id) . ' " ><i  class="glyphicon glyphicon-share-alt"></i> Ledger</a> ';
+                    $data[$key]->action = '<button  class="btn btn-primary  btn-sm" data-toggle="modal" onclick="updateCustomerMemberInfo(' . $record->id . ' )" data-target="#myModal"><i  class="glyphicon glyphicon-pencil"></i> Edit</button> <button  class="btn btn-danger  btn-sm" onclick="deleteCustomerMemberInfo(' . $record->id . ',1 )" ><i  class="glyphicon glyphicon-remove"></i> Delete</button>  <a  class="btn btn-info  btn-sm"  href="' . base_url('reports/details_customer_member_info/' . $record->id) . ' " ><i  class="glyphicon glyphicon-share-alt"></i> Ledger</a> ';
                 }else{
                     // This is for member
                     $data[$key]->current_due = '0.00';
@@ -412,12 +412,11 @@ COUNT(CASE WHEN success_status = 2 THEN success_status ELSE NULL END) failed_sms
         return $response;
     }
     function checkingDueExitMember($param){
-        $this->db->select("customer_shipment_member_info.*,IF(sum(t.debit_qty)>0,sum(t.debit_qty),0) as total_debit,IF(sum(t.credit_qty)>0,sum(t.credit_qty),0)  as total_credit,(sum(t.debit_qty) - IF(sum(t.credit_qty)>0, sum(t.credit_qty),0)) as current_due_qty,IF(sum(t.credit_amount)>0,sum(t.credit_amount),0)  as total_credit_amount",false);
+        $this->db->select("sum(t.debit_amount) as total_debit,sum(t.credit_amount)  as total_credit,(sum(t.debit_amount) - sum(t.credit_amount)) as current_due",false);
         if($param != ''){
             $this->db->where($param);
         }
-        $this->db->join('shipment_stock_details as t', 't.member_id = customer_shipment_member_info.id', 'left');
-        $records = $this->db->get('customer_shipment_member_info');
+        $records = $this->db->get('transaction_info as t');
         if($records->num_rows()>0){
             return $records->row();
         }else{
@@ -602,9 +601,9 @@ COUNT(CASE WHEN success_status = 2 THEN success_status ELSE NULL END) failed_sms
         $rowperpage = $postData['length'];
 
         //all default searching
-        $search_arr[] = "  transaction_info.type = 3 ";
+        $search_arr[] = "  transaction_info.type IN (3,7) ";
         $search_arr[] = "  transaction_info.is_active = 1 ";
-        $search_arr[] = "  transaction_info.outletID =  ".$this->outletID;
+//        $search_arr[] = "  transaction_info.outletID =  ".$this->outletID;
 
         // Custom search filter
         $customerID = !empty($postData['customerID'])?$postData['customerID']:'';
@@ -639,6 +638,7 @@ COUNT(CASE WHEN success_status = 2 THEN success_status ELSE NULL END) failed_sms
             foreach ($records as $key => $record) {
                 $data[] = $record;
                 $data[$key]->serial_no = (int) $i++;
+                $data[$key]->typeTitle =  ($record->type==3)?"Due Collection":($record->type==7?"Manual Due Add":"");
                 $data[$key]->is_active =  ($record->is_active==1)?"<span class='badge bg-green'>Active</span>":"<span class='badge bg-red'>Inactive</span>";
                 $data[$key]->action = '<button  class="btn btn-primary  btn-sm" data-toggle="modal" onclick="updateOutletInfo('.$record->id.' )" data-target="#myModal"><i  class="glyphicon glyphicon-pencil"></i> Edit</button> <a href="'. base_url('settings/due_collection_vouchar/'.$record->id).'" class="btn btn-info  btn-sm"   ><i  class="glyphicon glyphicon-share-alt"></i> view</a>';
 

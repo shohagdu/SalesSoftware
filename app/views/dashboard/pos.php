@@ -9,7 +9,7 @@
                         <div class="col-sm-12" style="background: #fff">
                                 <div class="col-sm-8" style="margin-top:10px;">
                                     <div class="form-group" >
-                                        <div class="col-sm-7 search col-xs-12"  style="margin-bottom:10px;">
+                                        <div class="col-sm-7 search col-xs-10"  style="margin-bottom:10px;">
                                             <div class="row">
                                                 <span class="glyphicon glyphicon-search"></span>
                                                 <input required="" name="cst_name"
@@ -19,7 +19,7 @@
                                                 <input type="hidden" name="customer" id="cst_id"/>
                                             </div>
                                         </div>
-                                        <div class="col-sm-1 col-xs-4" >
+                                        <div class="col-sm-1 col-xs-2" >
                                                 <button type="button" class="btn btn-info" data-toggle="modal" onclick="addCustomerMemberInfoPos()"
             data-target="#CustomerInfoModal" tabindex="-1"><i class="glyphicon glyphicon-plus"></i> Add</button>
                                         </div>
@@ -200,10 +200,11 @@
                                             </th>
                                         </tr>
                                         <tr>
-                                            <td colspan="2" class="tdStyleNew">
-                                                <table class="table table-bordered">
+                                            <td colspan="2" style="background-color: #d0d0d0;">
+                                                <table class="table table-bordered width0per" style="margin-top: 10px">
                                                     <tr>
-                                                        <td rowspan="4"  class="paymentBy"> Payment By </td>
+                                                        <td rowspan="4"  style="width: 100px" class="paymentBy"> <div
+                                                                    class="rotatedPaymentBy">Payment By</div>  </td>
                                                         <td>
                                                             <label class="radio-inline"> <input type="checkbox" tabindex="-1"  id="cash"
                                                                                                 value="cash"
@@ -212,14 +213,15 @@
                                                                                                 name="payment_by[0]"
                                                                 ></label>
                                                         </td>
-                                                        <td>
+                                                        <td class="width10per">
                                                             Cash
                                                         </td>
 
-                                                        <td>
+                                                        <td >
                                                             <input type="text" placeholder="0.00"   id="cash_amount"
+                                                                   style="width: 100%;"
                                                                    name="payment_ctg_amount[]"
-                                                                   class="form-control payment_ctg_amount">
+                                                                   class=" payment_ctg_amount">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -236,9 +238,9 @@
 
                                                         <td>
                                                             <input type="text" tabindex="-1" placeholder="0.00"  readonly
-                                                                   id="cash_cheque_amount"
+                                                                   id="cash_cheque_amount" style="width: 100%;"
                                                                    name="payment_ctg_amount[]"
-                                                                   class="form-control payment_ctg_amount">
+                                                                   class="payment_ctg_amount">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -255,8 +257,8 @@
 
                                                         <td>
                                                             <input type="text" tabindex="-1" placeholder="0.00"   id="due_cheque_amount"
-                                                                   name="payment_ctg_amount[]" tabindex="-1" readonly
-                                                                   class="form-control payment_ctg_amount">
+                                                                   name="payment_ctg_amount[]" tabindex="-1" readonly style="width: 100%;"
+                                                                   class="payment_ctg_amount">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -273,8 +275,8 @@
 
                                                         <td>
                                                             <input placeholder="0.00"  tabindex="-1" type="text"  id="online_amount" readonly
-                                                                   name="payment_ctg_amount[]"
-                                                                   class="form-control payment_ctg_amount">
+                                                                   name="payment_ctg_amount[]" style="width: 100%;"
+                                                                   class="payment_ctg_amount">
                                                         </td>
                                                     </tr>
                                                 </table>

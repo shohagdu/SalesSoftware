@@ -291,11 +291,21 @@ function deleteCustomerMemberInfo(id,type) {
                 if (response.status == 'success') {
                     $("#alert").show();
                     $("#show_message").html(response.message);
-                    setTimeout(function () {
-                        $("#alert").hide();
-                        $("#show_message").html('');
-                        $('#MemberInfo').DataTable().ajax.reload();
-                    }, 1500);
+
+                    if(type==1) {
+                        setTimeout(function () {
+                            $("#alert").hide();
+                            $("#show_message").html('');
+                            $('#customerMemberInfo').DataTable().ajax.reload();
+                        }, 1500);
+                    }else{
+                        setTimeout(function () {
+                            $("#alert").hide();
+                            $("#show_message").html('');
+                            $('#MemberInfo').DataTable().ajax.reload();
+                        }, 1500);
+                    }
+
                 } else {
                     $("#alert").show();
                     $("#show_message").html(response.message);
@@ -388,7 +398,6 @@ $(document).ready(function(){
         'columns': [
             { data: 'serial_no', orderable: true, searchable: false  },
             { data: 'name', name: 'customer_shipment_member_info.name' },
-            { data: 'outlet_name', name: 'outlet_setup.outlet_name' },
             { data: 'mobile', name: 'customer_shipment_member_info.mobile' },
             { data: 'email', name: 'customer_shipment_member_info.email'},
             { data: 'address', name: 'customer_shipment_member_info.address'},
@@ -675,6 +684,7 @@ $(document).ready(function(){
             { data: 'serial_no', orderable: true, searchable: false  },
             { data: 'customer_info', name: 'member.customer_info' },
             { data: 'payment_date', name: 'transaction_info.payment_date' },
+            { data: 'typeTitle', name: 'transaction_info.typeTitle' },
             { data: 'credit_amount', name: 'transaction_info.credit_amount' },
             { data: 'remarks', name: 'transaction_info.remarks' },
             { data: 'action',orderable: false, searchable: false },
@@ -1906,4 +1916,29 @@ $('.changeSearchProduct').click(function(){
             }
         }
     });
+});
+
+$(document).on("change", "#transTypeMember", function (event) {
+    var  type = $(this).val();
+    $(".creditAmountDiv").hide();
+    $(".creditAmount").html('')
+    if (type == 3 ) {
+        $(".creditAmountDiv").show();
+        $(".creditAmount").html('Payment Now');
+        $('#paidNow').attr('readonly', true);
+    }else{
+        $(".creditAmount").html('New Due Amount');
+        $('#paidNow').attr('readonly', false);
+    }
+});
+
+$(document).on("keyup", "#paidNow", function (event) {
+    var  newDueAmt      = parseFloat($(this).val());
+    var totalDue        = parseFloat($("#due_amount").val());
+    if (!isNaN(totalDue) && !isNaN(newDueAmt)  ) {
+        var newTotalDue=(totalDue + newDueAmt);
+        $("#current_due_amount").val((newTotalDue).toFixed(2));
+    }else{
+        $("#current_due_amount").val('0.00');
+    }
 });

@@ -122,8 +122,34 @@
         .paymentBy{
             font-weight: bold;
             vertical-align: middle !important;
+
+
+
+        }
+        .rotatedPaymentBy{
+            background-color: darkred;
+            color:white;
+            padding: 5px;
+            vertical-align: middle;
+            text-align: center;
+            /** Rotation */
+            -webkit-transform: rotate(-90deg);
+            -moz-transform: rotate(-90deg);
+            transform:rotate(-90deg);
+            width: 100px;
         }
 
+        /*@media screen and (min-width: 601px) {*/
+        /*    * {*/
+        /*        font-size: 15px;*/
+        /*    }*/
+        /*}*/
+
+        @media screen and (max-width: 600px) {
+            * {
+                font-size: 10px;
+            }
+        }
 
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

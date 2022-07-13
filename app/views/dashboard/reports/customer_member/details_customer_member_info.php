@@ -86,12 +86,16 @@
                                                     ?>
                                                     <tr>
                                                         <td style="padding-right:8px; " class="text-left
-                                                        width70per"><?php
+                                                        width70per">
+                                                            <?php
                                                             echo
                                                             !empty
                                                             ($paymentKey[$key])
-                                                                ?$paymentKey[$key]:''; ?></td>
-                                                        <td style="width:33%;"><?php echo number_format($value,2) ?></td>
+                                                                ?$paymentKey[$key]:''; ?>
+                                                        </td>
+                                                        <td style="width:33%;">
+                                                            <?php echo (($value>0)? number_format($value,2):'0.00') ?>
+                                                        </td>
                                                     </tr>
                                                 <?php } } ?>
                                             </table>

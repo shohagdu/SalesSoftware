@@ -15,16 +15,6 @@
                 <div class="box-body">
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-sm-2">
-                                <label>Outlet</label>
-                                <div class="clearfix"></div>
-                                <select id="outletID" class="form-control" required style="width: 100%;">
-                                    <option value="">Select Outlet</option>
-                                    <?php if(!empty($outlet_info)){ foreach ($outlet_info as $outlet) { ?>
-                                        <option value="<?php echo $outlet->id; ?>"><?php echo $outlet->name; ?></option>
-                                    <?php } }?>
-                                </select>
-                            </div>
                             <div class="col-sm-4">
                                 <label>Customer Name</label>
                                 <div class="clearfix"></div>
@@ -40,7 +30,6 @@
                         <tr>
                             <th style="width:5%;">SL.</th>
                             <th>Name</th>
-                            <th>Outlet</th>
                             <th>Mobile</th>
                             <th>Email</th>
                             <th>Address</th>
