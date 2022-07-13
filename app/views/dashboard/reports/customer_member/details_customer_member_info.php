@@ -68,9 +68,11 @@
                                 ?>
                                 <tr>
                                     <td><?php echo $i++; ?></td>
-                                    <td class="text-left"><?php echo (!empty($row->sales_date)?date('d M, Y',strtotime
-                                        ($row->sales_date)):'');
-                                        ?></td>
+                                    <td class="text-left">
+                                        <?php echo (!empty($row->sales_date)?date('d M, Y',strtotime
+                                        ($row->sales_date)):(!empty($row->payment_date)?date('d M, Y',strtotime($row->payment_date)):''));
+                                        ?>
+                                    </td>
                                     <td class="text-left"><?php  $paymentBy=!empty($row->payment_by)?json_decode
                                         ($row->payment_by,true):'';  ?>
                                         <table class="table-style width100per"  >

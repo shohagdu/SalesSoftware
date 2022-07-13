@@ -706,7 +706,6 @@ class Settings extends CI_Controller
                 echo json_encode(['status'=>'error','message'=>'no data found','data'=>[]]);exit;
             }
         }
-
     }
     public  function outlet_opening_stock_info($outlet_id){
         $data = array();
@@ -841,10 +840,84 @@ class Settings extends CI_Controller
 
         }else{
             // when update
+            $this->db->trans_start();
+            $payment_transaction=[
+                'customer_member_id'    =>  $customer_id,
+                'payment_date'          =>  (!empty($payment_date)?date('Y-m-d',strtotime($payment_date)):''),
+                'type'                  =>  $transType,
+                'remarks'               =>  $remarks,
+                'updated_by'            =>  $this->userId,
+                'updated_time'          =>  $this->dateTime,
+                'updated_ip'            =>  $this->ipAddress,
+            ];
+            if($transType==3){
+                $payment_transaction['payment_by']      =(!empty($payment_byInfo)?json_encode($payment_byInfo):'') ;
+                $payment_transaction['credit_amount']   = $payment_now;
+            }else{
+                $payment_transaction['debit_amount']   = $payment_now;
+            }
 
+
+            $this->db->where('id',$upId);
+            $this->db->update("transaction_info",$payment_transaction);
+
+            $redierct_page='settings/customer_due_collection';
+            $error=$this->db->error();
+
+            $this->db->trans_complete();
+            if($this->db->trans_status()===true){
+                $this->db->trans_commit();
+                echo json_encode(['status'=>'success','message'=>"Successfully Update Information.",
+                    'redirect_page'=>$redierct_page]);
+                exit;
+            }else{
+                $this->db->trans_rollback();
+                echo json_encode(['status'=>'error','message'=>$error['message'],'redirect_page'=>$redierct_page]);exit;
+            }
 
         }
     }
 
+    function getSingleTransactionInfo()
+    {
+        extract($_POST);
+        if(!empty($id)) {
+            $info = $this->SETTINGS->getSingleTransactionInfo(['t.id'=>$id]);
+            if(!empty($info)){
+                echo json_encode(['status'=>'success','message'=>'successfully data found','data'=>$info]);exit;
+            }else{
+                echo json_encode(['status'=>'error','message'=>'no data found','data'=>[]]);exit;
+            }
+        }
+    }
+
+    public function delete_due_collection(){
+        extract($_POST);
+        if(empty($upId)){
+            echo json_encode(['status'=>'error','message'=>'Update ID is required','data'=>'']);exit;
+        }
+        // when Delete
+        $this->db->trans_start();
+        $payment_transaction=[
+            'is_active'             =>  0,
+            'updated_by'            =>  $this->userId,
+            'updated_time'          =>  $this->dateTime,
+            'updated_ip'            =>  $this->ipAddress,
+        ];
+
+        $this->db->where('id',$upId);
+        $this->db->update("transaction_info",$payment_transaction);
+
+        $error=$this->db->error();
+        $this->db->trans_complete();
+        if($this->db->trans_status()===true){
+            $this->db->trans_commit();
+            echo json_encode(['status'=>'success','message'=>"Successfully Delete Information."]);
+            exit;
+        }else{
+            $this->db->trans_rollback();
+            echo json_encode(['status'=>'error','message'=>$error['message']]);exit;
+        }
+    }
 
 }

@@ -317,8 +317,6 @@ function deleteCustomerMemberInfo(id,type) {
             }
         });
     }
-
-
 }
 function saveCustomerMemberInfo() {
     $(".submit_btn").attr("disabled", true);
@@ -1352,12 +1350,7 @@ $('#member_name_11').change(function(){
         }
     });
 });
-// Member Due Collection
-function addCustomerDueCollection() {
-    $("#customerDueCollectionForm")[0].reset();
-    $("#show_label").html('Save');
-    $("#alert_error").hide();
-}
+
 $('#customerName_11').change(function(){
     var customer_id=$("#customerID_11").val();
     $("#paidNow").val('0.00');
@@ -1921,14 +1914,14 @@ $('.changeSearchProduct').click(function(){
 $(document).on("change", "#transTypeMember", function (event) {
     var  type = $(this).val();
     $(".creditAmountDiv").hide();
-    $(".creditAmount").html('')
+    $(".creditAmount").html('');
+    $('#paidNow').attr('readonly', false);
     if (type == 3 ) {
         $(".creditAmountDiv").show();
         $(".creditAmount").html('Payment Now');
         $('#paidNow').attr('readonly', true);
     }else{
-        $(".creditAmount").html('New Due Amount');
-        $('#paidNow').attr('readonly', false);
+        $(".creditAmount").html('Manual Due Amount');
     }
 });
 
@@ -1942,3 +1935,126 @@ $(document).on("keyup", "#paidNow", function (event) {
         $("#current_due_amount").val('0.00');
     }
 });
+// Member Due Collection
+function addCustomerDueCollection() {
+    $("#customerDueCollectionForm")[0].reset();
+    $("#show_label").html('Save');
+    $("#alert_error").hide();
+    $(".updateCollectionDiv").show();
+    $(".creditAmountDiv").show();
+}
+
+function updateDueCollectInfo (id) {
+    $("#customerDueCollectionForm")[0].reset();
+    $("#show_label").html('Update');
+    $("#alert_error").hide();
+
+    $(".creditAmountDiv").hide();
+    $(".creditAmount").html('');
+    $('#paidNow').attr('readonly', false);
+    $(".updateCollectionDiv").hide();
+    $.ajax({
+        url: base_url +"settings/getSingleTransactionInfo",
+        data: {id: id},
+        type: "POST",
+        dataType:'JSON',
+        success: function (response) {
+            if(response.status=='success'){
+                var data=response.data;
+
+                var paymentBy= JSON.parse(data.payment_by);
+                if(paymentBy!='' ) {
+                    $.each(paymentBy, function (key, value) {
+                        $("#" + key).attr('checked', true);
+                        $("#" + key + "_amount").attr('readonly', false);
+                        $("#" + key + "_amount").val(value);
+
+                    });
+
+
+                }
+                if(data.type==7){
+                    $(".creditAmount").html('Manual Due Amount');
+                    $("#paidNow").val(data.debit_amount);
+                }else if(data.type==3){
+                    $(".creditAmountDiv").show();
+                    $(".creditAmount").html('Payment Now');
+                    $('#paidNow').attr('readonly', true);
+                    $("#paidNow").val(data.credit_amount);
+                }
+                $("#customerName_11").val(data.customer_info);
+                $("#customerID_11").val(data.customer_member_id);
+                $("#transTypeMember").val(data.type);
+
+
+                $("#payment_date").val(data.payment_date_title);
+                $("#remarks").val(data.remarks);
+                $("#upId").val(data.id);
+            }
+        }
+    });
+
+}
+
+
+function deleteMemberDueCollectionInfo(id) {
+    var confirmation = confirm("Are you sure you want to delete this information?");
+    if (confirmation) {
+        $.ajax({
+            url: base_url + "settings/delete_due_collection",
+            data: {upId: id},
+            type: "POST",
+            dataType: 'JSON',
+            success: function (response) {
+                if (response.status == 'success') {
+                    $("#alert").show();
+                    $("#show_message").html(response.message);
+                    setTimeout(function () {
+                        $("#alert").hide();
+                        $("#show_message").html('');
+                        $('#customerDueCollectionInfo').DataTable().ajax.reload();
+                    }, 1500);
+                } else {
+                    $("#alert").show();
+                    $("#show_message").html(response.message);
+                    setTimeout(function () {
+                        $("#alert").hide();
+                        $("#show_message").html('');
+                    }, 3500);
+                }
+            }
+        });
+    }
+}
+
+function deleteProductInfo(id) {
+    var confirmation = confirm("Are you sure you want to delete this information?");
+    if (confirmation) {
+        $.ajax({
+            url: base_url + "products/deleteProductInfo",
+            data: {upId: id},
+            type: "POST",
+            dataType: 'JSON',
+            success: function (response) {
+                if (response.status == 'success') {
+                    $("#alert").show();
+                    console.log(response);
+                    $("#show_message").html(response.message);
+                    setTimeout(function () {
+                        $("#alert").hide();
+                        $("#show_message").html('');
+                        $('#ProductInfo').DataTable().ajax.reload();
+                    }, 1500);
+                } else {
+                    $("#alert").show();
+                    $("#show_message").html(response.message);
+                    setTimeout(function () {
+                        $("#alert").hide();
+                        $("#show_message").html('');
+                    }, 3500);
+                }
+            }
+        });
+    }
+}
+

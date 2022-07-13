@@ -89,7 +89,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group col-sm-12">
+                    <div class="form-group col-sm-12 updateCollectionDiv">
                         <label class="col-sm-3 text-right">
                             Due Amount
                         </label>
@@ -194,7 +194,7 @@
                                    id="paidNow">
                         </div>
                     </div>
-                    <div class="form-group col-sm-12">
+                    <div class="form-group col-sm-12 updateCollectionDiv">
                         <label class="col-sm-3 text-right">
                             Current Due
                         </label>

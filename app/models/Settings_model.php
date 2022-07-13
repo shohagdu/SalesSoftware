@@ -639,8 +639,10 @@ COUNT(CASE WHEN success_status = 2 THEN success_status ELSE NULL END) failed_sms
                 $data[] = $record;
                 $data[$key]->serial_no = (int) $i++;
                 $data[$key]->typeTitle =  ($record->type==3)?"Due Collection":($record->type==7?"Manual Due Add":"");
+                $data[$key]->credit_amount =  ($record->type==3)?$record->credit_amount:
+                    ($record->type==7?$record->debit_amount:"0.00");
                 $data[$key]->is_active =  ($record->is_active==1)?"<span class='badge bg-green'>Active</span>":"<span class='badge bg-red'>Inactive</span>";
-                $data[$key]->action = '<button  class="btn btn-primary  btn-sm" data-toggle="modal" onclick="updateOutletInfo('.$record->id.' )" data-target="#myModal"><i  class="glyphicon glyphicon-pencil"></i> Edit</button> <a href="'. base_url('settings/due_collection_vouchar/'.$record->id).'" class="btn btn-info  btn-sm"   ><i  class="glyphicon glyphicon-share-alt"></i> view</a>';
+                $data[$key]->action = '<button  class="btn btn-primary  btn-sm" data-toggle="modal" onclick="updateDueCollectInfo('.$record->id.' )" data-target="#myModal"><i  class="glyphicon glyphicon-pencil"></i> Edit</button> <button  class="btn btn-danger  btn-sm" onclick="deleteMemberDueCollectionInfo('.$record->id.' )" ><i  class="glyphicon glyphicon-remove"></i> Delete</button>';
 
 
             }
@@ -653,6 +655,20 @@ COUNT(CASE WHEN success_status = 2 THEN success_status ELSE NULL END) failed_sms
             "aaData" => $data
         );
         return $response;
+    }
+    public function getSingleTransactionInfo($where){
+        $this->db->select("t.*,concat(customer_shipment_member_info.name ,' [',customer_shipment_member_info.mobile,']') as customer_info,,DATE_FORMAT(payment_date, '%d-%m-%Y') as payment_date_title");
+        $this->db->from("transaction_info as t");
+        $this->db->join('customer_shipment_member_info', 'customer_shipment_member_info.id = t.customer_member_id', 'left');
+        if(!empty($where)) {
+            $this->db->where($where);
+        }
+        $query_result = $this->db->get();
+        if($query_result->num_rows()>0) {
+            return $query_result->row();
+        }else{
+            return false;
+        }
     }
 
 

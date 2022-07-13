@@ -276,6 +276,51 @@ class Products extends CI_Controller {
         return $imageResource;
     }
 
+    function deleteProductInfo()
+    {
+        extract($_POST);
+        $this->db->trans_start();
+        if (empty($upId)) {
+            echo json_encode(['status' => 'error', 'message' => 'Product ID is required', 'data' => '']);
+            exit;
+        }
+        echo "<pre>";
+
+        // Checking Product Code Unique
+        $outletID=$this->outletID;
+        $debit_item_info=$this->REPORT->stock_item_count(['stock_info.product_id'=>$upId,'stock_info.debit_outlet'=>$outletID]);
+
+        $credit_item_info=$this->REPORT->stock_item_count(['stock_info.product_id'=>$upId,'stock_info.credit_outlet'=>$outletID]);
+        $current_stock_item= $debit_item_info-$credit_item_info;
+
+
+
+        if (!empty($current_stock_item) && $current_stock_item !=0) {
+            echo json_encode(['status' => 'error', 'message' => 'This Product Stock Item is Not  Empty', 'data' => '']);
+            exit;
+        }
+        $productInfo = array(
+            'is_active' => 0,
+            'updated_by' => $this->userId,
+            'updated_time' => $this->dateTime,
+            'updated_ip' => $this->ipAddress,
+        );
+        $this->db->where('id', $upId);
+        $this->db->update("product_info", $productInfo);
+        $message = 'Successfully Delete Information';
+
+        $redierct_page = 'products/index';
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === true) {
+            echo json_encode(['status' => 'success', 'message' => $message]);
+            exit;
+        } else {
+            echo json_encode(['status' => 'success', 'message' => 'Fetch a problem, data not update',
+                'redirect_page' => $redierct_page]);
+            exit;
+        }
+    }
+
 
 
 
