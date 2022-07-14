@@ -919,5 +919,14 @@ class Settings extends CI_Controller
             echo json_encode(['status'=>'error','message'=>$error['message']]);exit;
         }
     }
+    function expenseCtg() {
+        $data = array();
+        $view = array();
+        $data['title'] = "Expense Category";
+        $data['type'] = 7;
+        $data['redierct_page'] = 'expenseCtg';
+        $view['content'] = $this->load->view('dashboard/settings/setting_info', $data, TRUE);
+        $this->load->view('dashboard/index', $view);
+    }
 
 }

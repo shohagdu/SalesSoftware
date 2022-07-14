@@ -63,6 +63,7 @@
                                     <th>Type</th>
                                     <th>Unit</th>
                                     <th>Sale Price</th>
+                                    <th>Stock</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>

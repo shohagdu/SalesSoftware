@@ -233,12 +233,18 @@ class Products_model extends CI_Model {
 
         $data = array();
         $i=1;
+        $outletID=$this->outletID;
         if(!empty($records)) {
             foreach ($records as $key => $record) {
                 $data[] = $record;
                 $data[$key]->serial_no = (int) $i++;
+
+                $debit_item_info=$this->REPORT->stock_item_count(['stock_info.product_id'=>$record->id,'stock_info.debit_outlet'=>$outletID]);
+                $credit_item_info=$this->REPORT->stock_item_count(['stock_info.product_id'=>$record->id,'stock_info.credit_outlet'=>$outletID]);
+                $data[$key]->current_stock_item = $debit_item_info-$credit_item_info;
+
                 $data[$key]->is_active = ($record->is_active==1)?"<span class='badge bg-green'>Active</span>":"<span class='badge bg-red'>Inactive</span>";
-                $data[$key]->action = '<button  class="btn btn-primary  btn-xs" data-toggle="modal" onclick="updateProductInfo('.$record->id.' )" data-target="#productModal"><i  class="glyphicon glyphicon-pencil"></i> Edit</button> <a href="'.base_url('reports/details_inventory_report/'.$record->id).'"  class="btn btn-info  btn-xs"  ><i  class="glyphicon glyphicon-pencil"></i> Details</a><button  class="btn btn-danger  btn-xs" onclick="deleteProductInfo('.$record->id.' )" ><i  class="glyphicon glyphicon-remove"></i> Delete</button> ';
+                $data[$key]->action = '<button  class="btn btn-primary  btn-xs" data-toggle="modal" onclick="updateProductInfo('.$record->id.' )" data-target="#productModal"><i  class="glyphicon glyphicon-pencil"></i> Edit</button> <a href="'.base_url('reports/details_inventory_report/'.$record->id).'"  class="btn btn-info  btn-xs"  ><i  class="glyphicon glyphicon-pencil"></i> Details</a> <button  class="btn btn-danger  btn-xs" onclick="deleteProductInfo('.$record->id.' )" ><i  class="glyphicon glyphicon-remove"></i> Delete</button> ';
 
             }
         }

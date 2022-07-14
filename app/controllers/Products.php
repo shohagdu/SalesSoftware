@@ -284,8 +284,6 @@ class Products extends CI_Controller {
             echo json_encode(['status' => 'error', 'message' => 'Product ID is required', 'data' => '']);
             exit;
         }
-        echo "<pre>";
-
         // Checking Product Code Unique
         $outletID=$this->outletID;
         $debit_item_info=$this->REPORT->stock_item_count(['stock_info.product_id'=>$upId,'stock_info.debit_outlet'=>$outletID]);
@@ -293,10 +291,10 @@ class Products extends CI_Controller {
         $credit_item_info=$this->REPORT->stock_item_count(['stock_info.product_id'=>$upId,'stock_info.credit_outlet'=>$outletID]);
         $current_stock_item= $debit_item_info-$credit_item_info;
 
-
-
         if (!empty($current_stock_item) && $current_stock_item !=0) {
-            echo json_encode(['status' => 'error', 'message' => 'This Product Stock Item is Not  Empty', 'data' => '']);
+            echo json_encode(['status' => 'error', 'message' => "This Products have a Stock (".$current_stock_item.") You
+            can not delete this product. First empty stock then try to delete this product.",
+                'data' => '']);
             exit;
         }
         $productInfo = array(

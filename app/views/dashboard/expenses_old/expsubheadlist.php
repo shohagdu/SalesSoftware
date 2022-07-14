@@ -1,45 +1,53 @@
 <section class="content">
     <div class="row">
         <div class="col-md-12">
+
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">Expense Head</h3>
+                    <h3 class="box-title">Expense Sub Head</h3>
+
                     <?php
-                        if($this->session->flashdata('msg')){
-                            echo $this->session->flashdata('msg');
-                        }if($this->session->flashdata('usingTransaction')){
-                            echo $this->session->flashdata('usingTransaction');
-                        }
-                    ?>
-                   <a href="<?php echo base_url('expenses/addexphead'); ?>" class="btn btn-primary btn-sm pull-right"><i class="glyphicon glyphicon-plus"></i> Add</a>
+                    if($this->session->flashdata('msg')){
+                        echo $this->session->flashdata('msg');
+                    }if($this->session->flashdata('usingTransaction')){
+                        echo $this->session->flashdata('usingTransaction');
+                    }
+//                    ?>
+                    >
+                    <a  class="btn btn-primary pull-right btn-sm" href="<?php echo base_url('expenses/addexpsubhead'); ?>"><i class="glyphicon glyphicon-plus"></i> Add</a>
                 </div>
                 <div class="box-body">
                     <table id="example1" class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th style="width: 10%;">SL.</th>
-                                <th style="width: 35%;"> Title</th>
+                                <th style="width: 35%;"> Account Head</th>
+                                <th style="width: 35%;"> Sub Title</th>
                                 <th style="width:15%;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                            $sl = 1;
-                            if(!empty($exp_head_list)){
-                            foreach ($exp_head_list as $exphdeach) {
-                                ?>
+                            <?php $sl = 1; ?>
+                            <?php foreach ($exp_sub_head_list as $exphdeach) { ?>
+                                <?php if ($exphdeach['softDelete'] == 0) { ?>
                                     <tr>
                                         <td><?php echo $sl; ?></td>
-                                        <td><?php echo $exphdeach->title; ?></td>
                                         <td>
-                                            <a style="margin-right: 5px;" href="<?php echo base_url('expenses/expHeadedit'); ?>/<?php echo $exphdeach->id; ?>" class="btn btn-primary btn-sm pull-left">Edit</a>
-                                            <a href="<?php echo base_url('expenses/expheaddelete'); ?>/<?php echo
-                                            $exphdeach->id; ?>" onclick="return confirm('Are You Want to Delete this expense head.');" class="btn btn-danger btn-sm pull-left">Delete</a>
+                                            <?php
+                                            $head_name = $this->COMMON_MODEL->get_single_data_by_single_column('tbl_pos_expense_head', 'expheadID', $exphdeach['head_id']);
+                                            echo $head_name['title'];
+                                            ?>
+                                        </td>
+                                        <td><?php echo $exphdeach['title']; ?></td>
+                                        <td>
+                                            <a style="margin-right: 5px;" href="<?php echo base_url('expenses/expsubheadedit'); ?>/<?php echo $exphdeach['subheadid']; ?>" class="btn btn-primary btn-sm pull-left">Edit</a>
+<!--                                            <a href="--><?php //echo base_url('expenses/expsubheaddelete'); ?><!--/--><?php //echo $exphdeach['subheadid']; ?><!--" onclick="return confirm('Are You Want to Delete this expense sub-head.');" class="btn btn-danger btn-sm pull-left">Delete</a>-->
                                         </td>
                                     </tr>
                                 <?php } ?>
+
                                 <?php $sl++; ?>
-                            <?php  } ?>
+                            <?php } ?>
                         </tbody>
                         <tfoot>
                         </tfoot>
@@ -78,7 +86,7 @@
             </div>
             <div class="modal-body">
                 <div id="showData">
-                    
+
                 </div>
             </div>
             <div class="modal-footer">

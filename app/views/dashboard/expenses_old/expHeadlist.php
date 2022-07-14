@@ -1,9 +1,11 @@
 <section class="content">
     <div class="row">
         <div class="col-md-12">
+           
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">Expense Head</h3>
+
                     <?php
                         if($this->session->flashdata('msg')){
                             echo $this->session->flashdata('msg');
@@ -23,23 +25,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                            $sl = 1;
-                            if(!empty($exp_head_list)){
-                            foreach ($exp_head_list as $exphdeach) {
-                                ?>
+                            <?php $sl = 1; ?>
+                            <?php foreach ($exp_head_list as $exphdeach) { ?>
+                                <?php if ($exphdeach['softDelete'] == 0) { ?>
                                     <tr>
                                         <td><?php echo $sl; ?></td>
-                                        <td><?php echo $exphdeach->title; ?></td>
+                                        <td><?php echo $exphdeach['title']; ?></td>
                                         <td>
-                                            <a style="margin-right: 5px;" href="<?php echo base_url('expenses/expHeadedit'); ?>/<?php echo $exphdeach->id; ?>" class="btn btn-primary btn-sm pull-left">Edit</a>
-                                            <a href="<?php echo base_url('expenses/expheaddelete'); ?>/<?php echo
-                                            $exphdeach->id; ?>" onclick="return confirm('Are You Want to Delete this expense head.');" class="btn btn-danger btn-sm pull-left">Delete</a>
+                                            <a style="margin-right: 5px;" href="<?php echo base_url('expenses/expHeadedit'); ?>/<?php echo $exphdeach['expheadID']; ?>" class="btn btn-primary btn-sm pull-left">Edit</a>
+                                            <a href="<?php echo base_url('expenses/expheaddelete'); ?>/<?php echo $exphdeach['expheadID']; ?>" onclick="return confirm('Are You Want to Delete this expense head.');" class="btn btn-danger btn-sm pull-left">Delete</a>
                                         </td>
                                     </tr>
                                 <?php } ?>
+
                                 <?php $sl++; ?>
-                            <?php  } ?>
+                            <?php } ?>
                         </tbody>
                         <tfoot>
                         </tfoot>
