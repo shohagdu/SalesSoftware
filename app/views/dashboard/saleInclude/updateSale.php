@@ -9,7 +9,7 @@ include ('salesHeader.php')
                     <div class="col-sm-12" style="background: #fff">
                         <div class="col-sm-8" style="margin-top:10px;">
                             <div class="form-group" >
-                                <div class="col-sm-7 search col-xs-12"  style="margin-bottom:10px;">
+                                <div class="col-sm-7 search col-xs-8"  style="margin-bottom:10px;">
                                     <div class="row">
                                         <span class="glyphicon glyphicon-search"></span>
                                         <input required="" name="cst_name"
@@ -312,6 +312,18 @@ include ('salesHeader.php')
                                     <th class="tdStyleNew">
                                         <input  id="paidNow"  tabindex="-1" placeholder="0.00" value='<?php echo (!empty($sales->payment_amount)?$sales->payment_amount:'0.00'); ?>'  type="text"
                                                 class="form-control inputStyle"  name="paidNow" style='border:1px solid blue;' >
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th class="thStyleNew"  style="color:blue;">Account </th>
+                                    <th class="tdStyleNew">
+                                        <select required name="account_id" class="form-control"
+                                                style="width: 100%;">
+                                            <?php if(!empty($account)){
+                                                foreach ($account as $eachaccount) { ?>
+                                                    <option value="<?php echo $eachaccount->accountID; ?>"><?php echo $eachaccount->accountName; ?></option>
+                                                <?php } } ?>
+                                        </select>
                                     </th>
                                 </tr>
                                 <tr>

@@ -31,20 +31,20 @@ class Pos extends CI_Controller
 
     function index()
     {
-        $data['posConfig'] = [];
-        $data['warehouses'] = [];
-        $data['productcatagories'] = [];
-        $data['inventory'] = [];
-        $data['config'] =[];
-        $data['memverInfo'] = [];
-        $todate=date('D');
+        $data['posConfig']          = [];
+        $data['warehouses']         = [];
+        $data['productcatagories']  = [];
+        $data['inventory']          = [];
+        $data['config']             =[];
+        $data['memverInfo']         = [];
+        $data['account']            = $this->SETTINGS->account();
         $this->load->view('dashboard/pos', $data);
     }
 
     public function save_sales_info(){
-        //echo "<pre>";
-       // print_r($_POST);
-       // exit;
+//        echo "<pre>";
+//        print_r($_POST);
+//        exit;
         extract($_POST);
         $payment_byInfo=[];
         if(!empty($payment_by)){
@@ -116,7 +116,9 @@ class Pos extends CI_Controller
 
             if(!empty($totalAmount)){
                 $total_transaction=[
+                    'type'                  => 1,
                     'customer_member_id'    =>  $customer,
+                    'payment_date'              =>  (!empty($saleDate)?date('Y-m-d',strtotime($saleDate)):''),
                     'sales_id'              =>  $insert_id,
                     'payment_by'            =>  NULL,
                     'debit_amount'          =>  $totalAmount,
@@ -128,6 +130,8 @@ class Pos extends CI_Controller
             }
             if(!empty($paidNow)){
                 $payment_transaction=[
+                    'payment_date'              =>  (!empty($saleDate)?date('Y-m-d',strtotime($saleDate)):''),
+                    'type'                      =>  2,
                     'customer_member_id'        =>  $customer,
                     'sales_id'                  =>  $insert_id,
                     'payment_by'                =>  (!empty($payment_byInfo)?json_encode($payment_byInfo):''),
@@ -137,11 +141,24 @@ class Pos extends CI_Controller
                     'created_ip'                =>  $this->ipAddress,
                 ];
                 $this->db->insert("transaction_info",$payment_transaction);
+                $credit_acc_id  =   $this->db->insert_id();
+            }
+            if(!empty($account_id)) {
+                $credit_transaction = [
+                    'payment_date'          =>  (!empty($saleDate)?date('Y-m-d',strtotime($saleDate)):''),
+                    'type'                  => 4,
+                    'sales_id'              => $insert_id,
+                    'bank_id'               => $account_id,
+                    'debit_amount'          => $paidNow,
+                    'parent_id'             => $credit_acc_id,
+                    'created_by'            => $this->userId,
+                    'created_time'          => $this->dateTime,
+                    'created_ip'            => $this->ipAddress,
+                ];
+                $this->db->insert("transaction_info", $credit_transaction);
             }
 
             $redierct_page="pos/show/".$insert_id;
-
-
             $this->db->trans_complete();
             if($this->db->trans_status()===true){
                 echo json_encode(['status'=>'success','message'=>"Successfully Save Information.",'redirect_page'=>$redierct_page]);
@@ -224,6 +241,7 @@ class Pos extends CI_Controller
             }
             if(!empty($totalAmount)){
                 $total_transaction=[
+                    'payment_date'          =>  (!empty($saleDate)?date('Y-m-d',strtotime($saleDate)):''),
                     'customer_member_id'    =>  $customer,
                     'payment_by'            =>  NULL,
                     'debit_amount'          =>  $totalAmount,
@@ -235,6 +253,7 @@ class Pos extends CI_Controller
             }
             if(!empty($paidNow)){
                 $payment_transaction=[
+                    'payment_date'              =>  (!empty($saleDate)?date('Y-m-d',strtotime($saleDate)):''),
                     'customer_member_id'        =>  $customer,
                     'payment_by'                =>  (!empty($payment_byInfo)?json_encode($payment_byInfo):''),
                     'credit_amount'             =>  $paidNow,
@@ -242,7 +261,21 @@ class Pos extends CI_Controller
                     'updated_time'              =>  $this->dateTime,
                     'updated_ip'                =>  $this->ipAddress,
                 ];
-                $this->db->where('sha1(sales_id)',$insert_id)->update("transaction_info",$payment_transaction);
+                $this->db->where('sha1(sales_id)',$insert_id)->where('type',2)->update("transaction_info",
+                    $payment_transaction);
+            }
+
+            if(!empty($account_id)) {
+                $credit_transaction = [
+                    'payment_date'          =>  (!empty($saleDate)?date('Y-m-d',strtotime($saleDate)):''),
+                    'bank_id'               => $account_id,
+                    'debit_amount'          => $paidNow,
+                    'updated_by'            => $this->userId,
+                    'updated_time'          => $this->dateTime,
+                    'updated_ip'            => $this->ipAddress,
+                ];
+                $this->db->where('sha1(sales_id)',$insert_id)->where('type',4)->update("transaction_info",
+                    $credit_transaction);
             }
             $redierct_page="pos/show/".$updatedID;
 
@@ -434,7 +467,8 @@ class Pos extends CI_Controller
     }
     function update($id)
     {
-        $data['sales'] = $this->POS->get_single_sales_infoSha1($id);
+        $data['sales']              = $this->POS->get_single_sales_infoSha1($id);
+        $data['account']            = $this->SETTINGS->account();
         $this->load->view('dashboard/saleInclude/updateSale', $data);
     }
 }

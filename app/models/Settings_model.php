@@ -691,6 +691,23 @@ COUNT(CASE WHEN success_status = 2 THEN success_status ELSE NULL END) failed_sms
             return  false;
         }
     }
+    public function transactionType(){
+        // 1 = Sales Total Amt (dr), 2 = when sales then payment (Cr), 3 = Due Collection (Cr), 4 = bank Add (Dr), 5 = Bank Cr (Deduct) 6 = Supplier bill Create (Cr), 7 = Supplier Payment (Dr) (Bank Cr), 8 = Expense (Dr) [bank CR]
+        return [
+            1 => 'Sales Total Amt', // Dr
+            2 => 'Payment (When Sales)', // Cr
+            3 => 'Due Collection', // Cr
+            4 => 'Bank Balance Add', //Dr
+            5 => 'Bank Balance Deduct', //Cr
+            6 => 'Supplier Bill Generate', // Cr
+            7 => 'Supplier Payment', // Dr
+            8 => 'Expense', // Dr // Bank Cr
+            9 => 'Customer Opening Deposit', // Cr
+            10=> 'Opening Due', // Dr
+            11=> 'Cash Deposit to Customer', // Dr
+            12=> 'Closing Discount', // Cr
+        ];
+    }
 
 
 }

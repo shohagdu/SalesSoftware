@@ -292,6 +292,19 @@
                                             </th>
                                         </tr>
                                         <tr>
+                                            <th class="thStyleNew"  style="color:blue;">Account </th>
+                                            <th class="tdStyleNew">
+                                                <select required name="account_id" class="form-control"
+                                                        style="width: 100%;">
+                                                    <?php if(!empty($account)){
+                                                        foreach ($account as $eachaccount) { ?>
+                                                            <option value="<?php echo $eachaccount->accountID; ?>"><?php echo $eachaccount->accountName; ?></option>
+                                                        <?php } } ?>
+                                                </select>
+                                            </th>
+                                        </tr>
+
+                                        <tr>
 
                                             <th class="thStyleNew" >Current Due </th>
                                             <th class="tdStyleNew">

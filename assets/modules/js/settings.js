@@ -2256,3 +2256,34 @@ function deleteBankTransferInformation(id) {
         });
     }
 }
+
+
+function searchingAccountsStatementReports () {
+    $(".search_btn").attr("disabled", true);
+    $.ajax({
+        url:  base_url +"cashbook/accountsStatementAction/",
+        data: $('#accountsReportForm').serialize(),
+        type: "POST",
+        success: function (response) {
+            $(".search_btn").attr("disabled", false);
+            if(response!=''){
+                $(".showInfo").html(response);
+            }
+        }
+    });
+}
+
+function searchingExpenseReports () {
+    $(".search_btn").attr("disabled", true);
+    $.ajax({
+        url:  base_url +"reports/searchingexpReports/",
+        data: $('#expReportForm').serialize(),
+        type: "POST",
+        success: function (response) {
+            $(".search_btn").attr("disabled", false);
+            if(response!=''){
+                $("#infoDataShow").html(response);
+            }
+        }
+    });
+}
