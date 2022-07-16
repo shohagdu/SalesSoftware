@@ -2287,3 +2287,13 @@ function searchingExpenseReports () {
         }
     });
 }
+$('#accountType').change(function(){
+    var accountType = $('#accountType').val();
+    if(accountType == 'BANK'){
+        $('.accountNumber').fadeIn();
+        $('.branchName').fadeIn();
+    }else{
+        $('.accountNumber').fadeOut();
+        $('.branchName').fadeOut();
+    }
+})

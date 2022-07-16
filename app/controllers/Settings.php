@@ -818,9 +818,9 @@ class Settings extends CI_Controller
                 'created_ip'            =>  $this->ipAddress,
             ];
             if($transType==3){
-                $payment_transaction['payment_by']      = $payment_now;
-                $payment_transaction['credit_amount']   = (!empty($payment_byInfo)?json_encode($payment_byInfo):'');
-            }else{
+                $payment_transaction['payment_by']      = (!empty($payment_byInfo)?json_encode($payment_byInfo):'') ;
+                $payment_transaction['credit_amount']   = $payment_now;
+            }else if($transType==7){
                 $payment_transaction['debit_amount']   = $payment_now;
             }
             $this->db->insert("transaction_info",$payment_transaction);
