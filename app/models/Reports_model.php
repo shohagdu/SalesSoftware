@@ -55,7 +55,6 @@ class Reports_model extends CI_Model {
         $this->db->join('sales_info', 'sales_info.id = transaction_info.sales_id', 'left');
         $this->db->order_by("transaction_info.id","ASC");
         $row_info = $this->db->get('transaction_info');
-        return $this->db->last_query();
         if($row_info->num_rows()>0){
             return $row_info->result();
         }else{
