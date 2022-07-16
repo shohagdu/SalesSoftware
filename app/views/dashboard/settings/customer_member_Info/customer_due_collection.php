@@ -29,28 +29,30 @@
                 <div class="clearfix"></div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <table id='customerDueCollectionInfo' class='display dataTable table table-bordered
-                    table-hover' >
-                        <thead>
-                        <tr>
-                            <th>S/L</th>
-                            <th>Member Name </th>
-                            <th>Date</th>
-                            <th>Type</th>
-                            <th>Collection Amt</th>
-                            <th>Note</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
+                    <div class="table-responsive">
+                        <table id='customerDueCollectionInfo' class='display dataTable table table-bordered
+                        table-hover' >
+                            <thead>
+                            <tr>
+                                <th>S/L</th>
+                                <th>Member Name </th>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Collection Amt</th>
+                                <th>Note</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
 
 
 
-                        </tbody>
-                        <tfoot>
+                            </tbody>
+                            <tfoot>
 
-                        </tfoot>
-                    </table>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

@@ -29,22 +29,24 @@
                         </div>
                     </form>
                     <div class="clearfix"></div>
-                    <table id="expenseInfoTBL" class='display dataTable table table-bordered table-hover' >
-                        <thead>
-                            <tr>
-                                <th style="width: 5%;">S/N</th>
-                                <th style="width: 15%;">Date</th>
-                                <th style="width: 20%;">Expense Category</th>
-                                <th style="width: 15%;">Account Info</th>
-                                <th style="width: 10%;">Exp. Account</th>
-                                <th style="width: 10%;">Remarks</th>
-                                <th style="width: 20%;">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <div class="table-responsive">
+                        <table id="expenseInfoTBL" class='display dataTable table table-bordered table-hover' >
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%;">S/N</th>
+                                    <th style="width: 15%;">Date</th>
+                                    <th style="width: 20%;">Expense Category</th>
+                                    <th style="width: 15%;">Account Info</th>
+                                    <th style="width: 10%;">Exp. Account</th>
+                                    <th style="width: 10%;">Remarks</th>
+                                    <th style="width: 20%;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

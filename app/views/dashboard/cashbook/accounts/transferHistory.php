@@ -13,25 +13,27 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    <table id='transferHitoryTBL' class='display dataTable table table-bordered table-hover' >
-                        <thead>
-                            <tr>
-                                <th>SL.</th>
-                                <th>Date</th>
-                                <th>From Accounts</th>
-                                <th>To Accounts</th>
-                                <th>Transfer Amount</th>
-                                <th>Note</th>
-                                <th>Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <div class="table-responsive">
+                        <table id='transferHitoryTBL' class='display dataTable table table-bordered table-hover' >
+                            <thead>
+                                <tr>
+                                    <th>SL.</th>
+                                    <th>Date</th>
+                                    <th>From Accounts</th>
+                                    <th>To Accounts</th>
+                                    <th>Transfer Amount</th>
+                                    <th>Note</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                        </tbody>
-                        <tfoot>
+                            </tbody>
+                            <tfoot>
 
-                        </tfoot>
-                    </table>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

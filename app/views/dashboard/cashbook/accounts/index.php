@@ -28,58 +28,60 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <table id="example1" class="table table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <th width="5%">SL.</th>
-                            <th>Account Name</th>
-                            <th width="16%">Account Type</th>
-                            <th>Account Number</th>
-                            <th>Branch Name</th>
-                            <th>Opening Balance</th>
-                            <th>Current Balance</th>
-                            <th>Status</th>
-                            <th style="width: 15%">#</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php $sl = 1; ?>
-                        <?php if(!empty($accounts)){ foreach ($accounts as $account) { ?>
+                    <div class="table-responsive">
+                        <table id="example1" class="table table-bordered table-hover">
+                            <thead>
                             <tr>
-                                <td><?php echo $sl; ?></td>
-                                <td><?php echo $account->accountName; ?></td>
-                                <td><?php echo $account->accountType; ?></td>
-                                <td><?php echo $account->accountNumber; ?></td>
-                                <td><?php echo $account->accountBranchName; ?></td>
-                                <td class="text-center"><span class="badge bg-light-gray-active"><?php echo (!empty($account->openingBal)
-                                            ?$account->openingBal:'0.00'); ?></span></td>
-                                <td class="text-center"><span class="badge bg-blue-active"><?php echo (!empty
-                                        ($account->balance)
-                                            ?$account->balance:'0.00'); ?></span></td>
-                                <td><?php echo ($account->softDelete==0)?'<span class="badge bg-green-active"> 
-                                Active</span>':'<span class="badge bg-red-active">Inactive';
-                                ?></td>
-                                <td>
-<!--                                    <a href="--><?php //echo base_url('cashbook/Accountshow'); ?><!--/--><?php //echo $account->accountID; ?><!--"-->
-<!--                                       class="btn btn-success btn-sm"><i class="glyphicon glyphicon-share-alt"></i>-->
-<!--                                        View</a>-->
-                                    <a href="<?php echo base_url('cashbook/Accountedit'); ?>/<?php echo $account->accountID; ?>"
-                                       class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
-
-                                    <a href="<?php echo base_url('cashbook/accountsStatement'); ?>/<?php echo
-                                    $account->accountID; ?>"
-                                       class="btn btn-info btn-sm"><i class="glyphicon glyphicon-share-alt"></i>
-                                        Ledger</a>
-
-                                </td>
+                                <th width="5%">SL.</th>
+                                <th>Account Name</th>
+                                <th width="16%">Account Type</th>
+                                <th>Account Number</th>
+                                <th>Branch Name</th>
+                                <th>Opening Balance</th>
+                                <th>Current Balance</th>
+                                <th>Status</th>
+                                <th style="width: 15%">#</th>
                             </tr>
-                            <?php $sl++; ?>
-                        <?php } } ?>
-                        </tbody>
-                        <tfoot>
+                            </thead>
+                            <tbody>
+                            <?php $sl = 1; ?>
+                            <?php if(!empty($accounts)){ foreach ($accounts as $account) { ?>
+                                <tr>
+                                    <td><?php echo $sl; ?></td>
+                                    <td><?php echo $account->accountName; ?></td>
+                                    <td><?php echo $account->accountType; ?></td>
+                                    <td><?php echo $account->accountNumber; ?></td>
+                                    <td><?php echo $account->accountBranchName; ?></td>
+                                    <td class="text-center"><span class="badge bg-light-gray-active"><?php echo (!empty($account->openingBal)
+                                                ?$account->openingBal:'0.00'); ?></span></td>
+                                    <td class="text-center"><span class="badge bg-blue-active"><?php echo (!empty
+                                            ($account->balance)
+                                                ?$account->balance:'0.00'); ?></span></td>
+                                    <td><?php echo ($account->softDelete==0)?'<span class="badge bg-green-active"> 
+                                    Active</span>':'<span class="badge bg-red-active">Inactive';
+                                    ?></td>
+                                    <td>
+    <!--                                    <a href="--><?php //echo base_url('cashbook/Accountshow'); ?><!--/--><?php //echo $account->accountID; ?><!--"-->
+    <!--                                       class="btn btn-success btn-sm"><i class="glyphicon glyphicon-share-alt"></i>-->
+    <!--                                        View</a>-->
+                                        <a href="<?php echo base_url('cashbook/Accountedit'); ?>/<?php echo $account->accountID; ?>"
+                                           class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
 
-                        </tfoot>
-                    </table>
+                                        <a href="<?php echo base_url('cashbook/accountsStatement'); ?>/<?php echo
+                                        $account->accountID; ?>"
+                                           class="btn btn-info btn-sm"><i class="glyphicon glyphicon-share-alt"></i>
+                                            Ledger</a>
+
+                                    </td>
+                                </tr>
+                                <?php $sl++; ?>
+                            <?php } } ?>
+                            </tbody>
+                            <tfoot>
+
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
                 <!-- /.box-body -->
             </div>

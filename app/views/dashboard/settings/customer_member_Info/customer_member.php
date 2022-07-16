@@ -25,27 +25,29 @@
                             </div>
                         </div>
                     </div>
-                    <table id="customerMemberInfo" class='display dataTable table table-bordered table-hover' >
-                        <thead>
-                        <tr>
-                            <th style="width:5%;">SL.</th>
-                            <th>Name</th>
-                            <th>Mobile</th>
-                            <th>Email</th>
-                            <th>Address</th>
-                            <th>Remarks</th>
-                            <th>Current Due Amount</th>
-                            <th>Status</th>
-                            <th style="width:15%;">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
+                    <div class="table-responsive">
+                        <table id="customerMemberInfo" class='display dataTable table table-bordered table-hover' >
+                            <thead>
+                            <tr>
+                                <th style="width:5%;">SL.</th>
+                                <th>Name</th>
+                                <th>Mobile</th>
+                                <th>Email</th>
+                                <th>Address</th>
+                                <th>Remarks</th>
+                                <th>Current Due Amount</th>
+                                <th>Status</th>
+                                <th style="width:15%;">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
 
-                        </tbody>
-                        <tfoot>
+                            </tbody>
+                            <tfoot>
 
-                        </tfoot>
-                    </table>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
                 <!-- /.box-body -->
             </div>
