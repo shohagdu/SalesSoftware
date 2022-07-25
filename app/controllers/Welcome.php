@@ -23,6 +23,8 @@ class Welcome extends CI_Controller {
         $param['firstDate']         =    date('Y-m-d');
         $param['toDate']            =    date('Y-m-d');
         $data['todaySalesInfo']     =    $this->REPORT->todaySalesInfo($param);
+        $data['todayExpenseInfo']   =    $this->REPORT->todayExpenseInfo($param);
+
         $view = array();
         $data['title'] = "Dashboard";
         $view['content'] = $this->load->view('dashboard/welcome', $data, TRUE);

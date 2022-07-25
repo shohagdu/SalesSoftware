@@ -386,13 +386,22 @@ COUNT(CASE WHEN success_status = 2 THEN success_status ELSE NULL END) failed_sms
         $i=1;
         if(!empty($records)) {
             foreach ($records as $key => $record) {
+                $action='';
                 $data[] = $record;
                 $data[$key]->serial_no = (int) $i++;
                 $data[$key]->is_active =  ($record->is_active==1)?"<span class='badge bg-green'>Active</span>":"<span class='badge bg-red'>Inactive</span>";
                 if($record->type==1) {
-                    $data[$key]->current_due = (!empty($record->current_due)) ? "<span class='badge' style='background-color:red;'>"
-                        . $record->current_due . "</span>" : "<span class='badge'>0.00</span>";
-                    $data[$key]->action = '<button  class="btn btn-primary  btn-sm" data-toggle="modal" onclick="updateCustomerMemberInfo(' . $record->id . ' )" data-target="#myModal"><i  class="glyphicon glyphicon-pencil"></i> Edit</button> <button  class="btn btn-danger  btn-sm" onclick="deleteCustomerMemberInfo(' . $record->id . ',1 )" ><i  class="glyphicon glyphicon-remove"></i> Delete</button>  <a  class="btn btn-info  btn-sm"  href="' . base_url('reports/details_customer_member_info/' . $record->id) . ' " ><i  class="glyphicon glyphicon-share-alt"></i> Ledger</a> ';
+                    $cuDue= $record->total_debit- $record->total_credit;
+                    $data[$key]->current_due = (!empty($cuDue)) ? "<span class='badge' style='background-color:red;'>"
+                        . number_format($cuDue,2) . "</span>" : "<span class='badge'>0.00</span>";
+
+                    $action .= '<button  class="btn btn-primary  btn-xs" data-toggle="modal" onclick="updateCustomerMemberInfo(' . $record->id . ' )" data-target="#myModal"><i  class="glyphicon glyphicon-pencil"></i> Edit</button>   <a  class="btn btn-info  btn-xs"  href="' . base_url('reports/details_customer_member_info/' . $record->id) . ' " ><i  class="glyphicon glyphicon-share-alt"></i> Ledger</a> ';
+                    if ($this->session->userdata('abhinvoiser_1_1_role') == 'superadmin') {
+                        $action .= ' <button  class="btn btn-danger  btn-xs" onclick="deleteCustomerMemberInfo(' .
+                            $record->id . ',1 )" ><i  class="glyphicon glyphicon-remove"></i> Delete</button>';
+                    }
+
+                    $data[$key]->action = $action;
                 }else{
                     // This is for member
                     $data[$key]->current_due = '0.00';
@@ -572,8 +581,8 @@ COUNT(CASE WHEN success_status = 2 THEN success_status ELSE NULL END) failed_sms
             $query_result = $this->db->get();
             if($query_result->num_rows()>0) {
                 $data= $query_result->row();
-                if(!empty($data->balance)) {
-                    return $data->balance;
+                if(!empty($data->total_debit-$data->total_credit)) {
+                    return number_format($data->total_debit-$data->total_credit,2,'.','');
                 }else{
                     return '0.00';
                 }
@@ -636,14 +645,21 @@ COUNT(CASE WHEN success_status = 2 THEN success_status ELSE NULL END) failed_sms
         $i=1;
         if(!empty($records)) {
             foreach ($records as $key => $record) {
+                $action='';
                 $data[] = $record;
                 $data[$key]->serial_no = (int) $i++;
                 $data[$key]->typeTitle =  ($record->type==3)?"Due Collection":($record->type==7?"Manual Due Add":"");
                 $data[$key]->credit_amount =  ($record->type==3)?$record->credit_amount:
                     ($record->type==7?$record->debit_amount:"0.00");
                 $data[$key]->is_active =  ($record->is_active==1)?"<span class='badge bg-green'>Active</span>":"<span class='badge bg-red'>Inactive</span>";
-                $data[$key]->action = '<button  class="btn btn-primary  btn-sm" data-toggle="modal" onclick="updateDueCollectInfo('.$record->id.' )" data-target="#myModal"><i  class="glyphicon glyphicon-pencil"></i> Edit</button> <button  class="btn btn-danger  btn-sm" onclick="deleteMemberDueCollectionInfo('.$record->id.' )" ><i  class="glyphicon glyphicon-remove"></i> Delete</button>';
 
+                $action .= '<button  class="btn btn-primary  btn-sm" data-toggle="modal" onclick="updateDueCollectInfo('.$record->id.' )" data-target="#myModal"><i  class="glyphicon glyphicon-pencil"></i> Edit</button>';
+                if ($this->session->userdata('abhinvoiser_1_1_role') == 'superadmin') {
+                    $action .= ' <button  class="btn btn-danger  btn-sm" onclick="deleteMemberDueCollectionInfo('
+                        . $record->id . ' )" ><i  class="glyphicon glyphicon-remove"></i> Delete</button>';
+                }
+
+                $data[$key]->action =$action;
 
             }
         }
