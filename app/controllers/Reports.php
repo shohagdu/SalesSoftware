@@ -81,6 +81,7 @@ class Reports extends CI_Controller {
         $data['customer_info']=$this->SETTINGS->get_single_customer_member_info(['id'=>$id]);
         $data['title']=(($data['customer_info']->type==1)?"Customer Ledger":"Member Ledger"). ' Information';
         $data['info']= $this->REPORT->get_transaction_info(['transaction_info.customer_member_id'=>$id]);
+
         $view['content'] = $this->load->view('dashboard/reports/customer_member/details_customer_member_info', $data, TRUE);
         $this->load->view('dashboard/index', $view);
     }

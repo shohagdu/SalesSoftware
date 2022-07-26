@@ -122,6 +122,7 @@ class Pos extends CI_Controller
                     'sales_id'              =>  $insert_id,
                     'payment_by'            =>  NULL,
                     'debit_amount'          =>  $totalAmount,
+                    'credit_amount'         =>  '0.00',
                     'created_by'            =>  $this->userId,
                     'created_time'          =>  $this->dateTime,
                     'created_ip'            =>  $this->ipAddress,
@@ -136,6 +137,7 @@ class Pos extends CI_Controller
                     'sales_id'                  =>  $insert_id,
                     'payment_by'                =>  (!empty($payment_byInfo)?json_encode($payment_byInfo):''),
                     'credit_amount'             =>  $paidNow,
+                    'debit_amount'              =>  '0.00',
                     'created_by'                =>  $this->userId,
                     'created_time'              =>  $this->dateTime,
                     'created_ip'                =>  $this->ipAddress,
@@ -150,6 +152,7 @@ class Pos extends CI_Controller
                     'sales_id'              => $insert_id,
                     'bank_id'               => $account_id,
                     'debit_amount'          => $paidNow,
+                    'credit_amount'         => '0.00',
                     'parent_id'             => $credit_acc_id,
                     'created_by'            => $this->userId,
                     'created_time'          => $this->dateTime,
@@ -245,6 +248,7 @@ class Pos extends CI_Controller
                     'customer_member_id'    =>  $customer,
                     'payment_by'            =>  NULL,
                     'debit_amount'          =>  $totalAmount,
+                    'credit_amount'         =>  '0.00',
                     'updated_by'            =>  $this->userId,
                     'updated_time'          =>  $this->dateTime,
                     'updated_ip'            =>  $this->ipAddress,
@@ -256,6 +260,7 @@ class Pos extends CI_Controller
                     'payment_date'              =>  (!empty($saleDate)?date('Y-m-d',strtotime($saleDate)):''),
                     'customer_member_id'        =>  $customer,
                     'payment_by'                =>  (!empty($payment_byInfo)?json_encode($payment_byInfo):''),
+                    'debit_amount'              =>  '0.00',
                     'credit_amount'             =>  $paidNow,
                     'updated_by'                =>  $this->userId,
                     'updated_time'              =>  $this->dateTime,
@@ -270,6 +275,7 @@ class Pos extends CI_Controller
                     'payment_date'          =>  (!empty($saleDate)?date('Y-m-d',strtotime($saleDate)):''),
                     'bank_id'               => $account_id,
                     'debit_amount'          => $paidNow,
+                    'credit_amount'         =>  '0.00',
                     'updated_by'            => $this->userId,
                     'updated_time'          => $this->dateTime,
                     'updated_ip'            => $this->ipAddress,
@@ -441,6 +447,14 @@ class Pos extends CI_Controller
         $this->db->where('sales_id', $id);
         $this->db->where('stock_type', 2);
         $this->db->update("stock_info", $info);
+
+
+        $this->db->where('sales_id', $id);
+        $this->db->where_in('type', [1,2,4]);
+        $this->db->update("transaction_info", $info);
+
+
+
 
 
         $message = 'Successfully Delete this Information';

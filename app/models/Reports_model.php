@@ -341,5 +341,25 @@ class Reports_model extends CI_Model {
             return '0.00';
         }
     }
+    function todayDueCollection($where=NULL){
+        $this->db->select('sum(credit_amount) as amount',true);
+        if(!empty($where['firstDate'])){
+            $this->db->where("transaction_info.payment_date >=", $where['firstDate']);
+            $this->db->where("transaction_info.payment_date <=", $where['toDate']);
+        }
+        $this->db->where('transaction_info.type', 3);
+        $this->db->where('transaction_info.is_active', 1);
+
+        $records = $this->db->get('transaction_info');
+        if($records->num_rows()>0) {
+            $result = $records->row();
+            if(!empty($result)) {
+                return (!empty($result->amount)?$result->amount:'0.00');
+            }
+        }else{
+            return '0.00';
+        }
+    }
+
 
 }

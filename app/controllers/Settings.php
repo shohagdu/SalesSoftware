@@ -568,7 +568,8 @@ class Settings extends CI_Controller
             echo json_encode(['status'=>'error','message'=>'Type is required','data'=>'']);exit;
         }
         $info = $this->SETTINGS->checkingDueExitMember(['t.customer_member_id'=>$id]);
-        if(!empty($info) && ($info->current_due >0 )){
+
+        if(!empty($info) && ($info > 0 )){
             echo json_encode(['status'=>'error','message'=>'Sorry, This member Contains  Due Qty or Due Amount, You are not Authorised  to Delete this member.','data'=>'']);exit;
         }else {
             $info = array(

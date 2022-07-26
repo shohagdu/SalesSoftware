@@ -377,7 +377,7 @@ COUNT(CASE WHEN success_status = 2 THEN success_status ELSE NULL END) failed_sms
             $this->db->where($searchQuery);
         }
         $this->db->join('outlet_setup', 'outlet_setup.id = customer_shipment_member_info.outlet_id', 'left');
-        $this->db->join('transaction_info as t', 't.customer_member_id = customer_shipment_member_info.id', 'left');
+        $this->db->join('transaction_info as t', 't.customer_member_id = customer_shipment_member_info.id AND t.is_active=1', 'left');
         $this->db->order_by("customer_shipment_member_info.name", "ASC");
         $this->db->limit($rowperpage, $start);
         $this->db->group_by("customer_shipment_member_info.id");
@@ -425,9 +425,15 @@ COUNT(CASE WHEN success_status = 2 THEN success_status ELSE NULL END) failed_sms
         if($param != ''){
             $this->db->where($param);
         }
+        $this->db->where('t.is_active',1);
         $records = $this->db->get('transaction_info as t');
         if($records->num_rows()>0){
-            return $records->row();
+             $row=$records->row();
+             if(!empty($row)){
+                 return $row->total_debit-$row->total_credit;
+             }else{
+                 return false;
+             }
         }else{
             return false;
         }
