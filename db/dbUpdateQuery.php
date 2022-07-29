@@ -154,3 +154,9 @@ UPDATE `acl_menu_info` SET `title` = 'Detail Sales (Profit/Lose)' WHERE `acl_men
 INSERT INTO `acl_menu_info` (`id`, `glyphicon_icon`, `title`, `link`, `is_main_menu`, `parent_id`, `display_position`, `is_active`, `created_by`, `created_time`, `created_ip`, `updated_by`, `updated_time`, `updated_ip`) VALUES (NULL, '', 'Daily Sales', 'reports/dailySalesReports', '3', '56', '3', '1', '2', '2020-05-07 08:22:54', '127.0.0.55', '56', '2020-05-07 08:22:54', '127.0.0.55');
 
 INSERT INTO `acl_menu_info` (`id`, `glyphicon_icon`, `title`, `link`, `is_main_menu`, `parent_id`, `display_position`, `is_active`, `created_by`, `created_time`, `created_ip`, `updated_by`, `updated_time`, `updated_ip`) VALUES (NULL, '', 'Detail Sales', 'reports/detailsSalesReport', '3', '56', '4', '1', '2', '2020-05-07 08:22:54', '127.0.0.55', '56', '2020-05-07 08:22:54', '127.0.0.55');
+
+
+// 28 July 2022
+INSERT INTO `acl_menu_info` (`id`, `glyphicon_icon`, `title`, `link`, `is_main_menu`, `parent_id`, `display_position`, `is_active`, `created_by`, `created_time`, `created_ip`, `updated_by`, `updated_time`, `updated_ip`) VALUES (NULL, '', 'Bank Transaction', 'Cashbook/bankTransaction', '2', '200', '1', '1', '2', '2020-05-07 08:22:01', '127.0.0.2', '3', '2020-05-07 08:22:01', '127.0.0.2')
+
+ALTER TABLE `transaction_info` ADD `is_bank_transaction` TINYINT(1) NULL DEFAULT '1' COMMENT '1 = Regular Trans 2 = Transaction' AFTER `transCode`;

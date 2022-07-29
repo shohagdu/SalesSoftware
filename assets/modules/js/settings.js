@@ -40,6 +40,7 @@ $(function () {
         }
     });
 
+    $(".dateRangeReservation").val('');
 });
 function get_element_id(id_arr){
     var id = id_arr.split("_");
@@ -500,7 +501,33 @@ $(document).ready(function(){
     $('#expenseCtg,#bankID,#reservation').change(function(){
         transferHitoryTBL.draw();
     });
-    
+
+    // Transaction
+    var transactionTBL = $('#transactionTBL').DataTable({
+        'processing': true,
+        'serverSide': true,
+        'serverMethod': 'post',
+        //'searching': false, // Remove default Search Control
+        'ajax': {
+            'url':  base_url +"Cashbook/showTransactionInfo",
+            'data': function(data){
+                data.bankID         = $('#bankID').val();
+                data.dateRange      = $('#reservation').val();
+            }
+        },
+        'columns': [
+            { data: 'serial_no', orderable: true, searchable: false  },
+            { data: 'accountName', name: 'tbl_pos_accounts.accountName' },
+            { data: 'payment_date_title', name: 'transaction_info.payment_date' },
+            { data: 'transType', name: 'transaction_info.type' },
+            { data: 'transAmount', name: 'transaction_info.debit_amount' },
+            { data: 'remarks', name: 'transaction_info.remarks'},
+            { data: 'action',orderable: false, searchable: false },
+        ]
+    });
+    $('#bankID,#reservation').change(function(){
+        transactionTBL.draw();
+    });
 
     //outlet information....
     var outletInfoTable = $('#outletInfo').DataTable({
@@ -2297,3 +2324,134 @@ $('#accountType').change(function(){
         $('.branchName').fadeOut();
     }
 })
+
+function addTransactionInfo() {
+    $("#transactionInfoForm")[0].reset();
+    $("#upId").val('');
+    $("#show_label").html('Save');
+    $(".submit_btn").attr("disabled", false);
+    $("#alert").hide();
+    $("#show_message").html('');
+    $(".updatedHideDiv").show();
+    $(".bank_id").val('').trigger("change");
+}
+function checkAvailableTransaction() {
+    var x = document.getElementById("availableAmount").value;
+    var y = document.getElementById("transAmount").value;
+    var z = document.getElementById("transType").value;
+    if ((parseInt(x) < parseInt(y)) && z==5  ) {
+        alert('Amount can not be greater then bank amount');
+        $("#transAmount").val('');
+        $("#accountCurrentAmount").val('');
+        return false;
+    }
+    if(z==5) {
+        var remainingVal = parseInt(x) - parseInt(y);
+        $("#accountCurrentAmount").val(remainingVal.toFixed(2));
+    }else if(z==4){
+        var remainingVal = parseInt(x) + parseInt(y);
+        $("#accountCurrentAmount").val(remainingVal.toFixed(2));
+    }
+}
+$('#transType').change(function(){
+    $("#transAmount").val('');
+    $("#accountCurrentAmount").val('');
+});
+
+function saveTransactionInfo() {
+     $(".submit_btn").attr("disabled", true);
+    $.ajax({
+        url:  base_url +"Cashbook/bankTransactionAction/",
+        data: $('#transactionInfoForm').serialize(),
+        type: "POST",
+        dataType:'JSON',
+        success: function (response) {
+            $(".submit_btn").attr("disabled", false);
+            if(response.status=='error'){
+                $("#alert_error").show();
+                $("#show_error_save").html(response.message);
+            }else{
+                $(".submit_btn").attr("disabled", true);
+                $("#transactionInfoForm")[0].reset();
+
+                $("#alert").show();
+                $("#show_message").html(response.message);
+                setTimeout(function(){
+                    $("#alert").hide();
+                    $("#show_message").html('');
+
+                    $('#transactionModal').modal('hide');
+                    $('#transactionTBL').DataTable().ajax.reload();
+                },1500);
+
+            }
+        }
+    });
+}
+
+function deleteTransactionInformation(id) {
+    var confirmation = confirm("Are you sure you want to remove this Member?");
+    if (confirmation) {
+        $.ajax({
+            url: base_url + "Cashbook/deleteTransactionInfo",
+            data: {id: id},
+            type: "POST",
+            dataType: 'JSON',
+            success: function (response) {
+                if (response.status == 'success') {
+                    $("#alert_delete").show();
+                    $("#show_message_delete").html(response.message);
+                    setTimeout(function () {
+                        $("#alert_delete").hide();
+                        $("#show_message_delete").html('');
+                        $('#transactionTBL').DataTable().ajax.reload();
+                    }, 1500);
+                } else {
+                    $("#alert_delete").show();
+                    $("#show_message_delete").html(response.message);
+                    setTimeout(function () {
+                        $("#alert_delete").hide();
+                        $("#show_message_delete").html('');
+                    }, 3500);
+                }
+            }
+        });
+    }
+}
+
+function updateTransactionInfo(id) {
+    $("#transactionInfoForm")[0].reset();
+    $("#upId").val('');
+    $("#show_label").html('Update');
+    $(".submit_btn").attr("disabled", true);
+    $("#alert").hide();
+    $("#show_message").html('');
+    $(".updatedHideDiv").hide();
+    $(".bank_id").val('').trigger("change");
+
+    $.ajax({
+        url: base_url +"settings/getSingleTransactionInfo",
+        data: {id: id},
+        type: "POST",
+        dataType:'JSON',
+        success: function (response) {
+            if(response.status=='success'){
+                $(".submit_btn").attr("disabled", false);
+                var data=response.data;
+                if(data.type==4){
+                    $("#transAmount").val(data.debit_amount);
+                }else if(data.type==5){
+                    $("#transAmount").val(data.credit_amount);
+                }
+                $(".bank_id").val(data.bank_id).trigger("change");
+                $("#transType").val(data.type);
+                $("#payment_date").val(data.payment_date_title);
+                $("#note").val(data.remarks);
+                $("#upId").val(data.id);
+            }
+        }
+    });
+
+
+
+}

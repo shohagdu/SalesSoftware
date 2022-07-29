@@ -1,110 +1,167 @@
 <section class="content">
     <div class="row">
         <div class="col-md-12">
-            <div class="box-body" id="alert" style="display: none;"> <div class="callout callout-info"><span    id="show_message"></span></div></div>
             <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Account</h3>
+                <div class="box-body" id="alert_delete" style="display: none;">      <div  class="callout
+                callout-success">
+                        <span id="show_message_delete"></span>
+                    </div>
                 </div>
-                <div class="box-body">
-                    <form action="<?php echo base_url('cashbook/transactionHistory'); ?>" method="post">
-                        <div class="col-sm-5">
-                            <label>Account Name</label>
-                            <select name="accountID" class="form-control select2" style="width: 100%;">
-                                <option value="">Select Account</option>
-                                <?php foreach ($accounts as $account) {
-                                    $selected=(isset($accountID)&&!empty($accountID) && $accountID==$account->accountID )?"selected":"";
-                                    ?>
-
-                                    <option value="<?php echo $account->accountID; ?>" <?php echo $selected; ?>><?php echo $account->accountName; ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <div class="col-xs-5">
-                            <div class="form-group has-feedback">
-                                <label>Date</label>
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
-                                    </div>
-                                    <input type="text" value="<?php echo (isset($date)&&!empty($date)  )?$date:"";; ?>" name="date" class="form-control pull-right" id="reservation">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <br/>
-                            <div class="col-xs-2">
-                                <button type="submit" name="searchBtn" class="btn btn-primary btn-sm btn-sm"><i class="fa fa-search"></i>&nbsp;Search</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">Transaction History</h3>
-                    <?php if ($this->session->flashdata('msg')) { ?>
-
-                        <?php echo $this->session->flashdata('msg'); ?>
-
-                    <?php } ?>
+                    <button type="button" class="btn btn-primary btn-sm
+                    pull-right"  data-toggle="modal" onclick="addTransactionInfo()"
+                            data-target="#transactionModal" title="Record"><i class="glyphicon glyphicon-plus"></i> Add New</button>
                 </div>
                 <div class="box-body">
-                    <table id="tbl1" class="table table-bordered table-hover">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <select  id="bankID" class="form-control select2"  style="width: 100%;">
+                                    <option value="">-- Select Account --</option>
+                                    <?php
+                                    if(!empty($account)){
+                                        foreach ($account as $eachaccount) {
+                                            ?>
+                                            <option value="<?php echo $eachaccount->accountID; ?>"><?php echo $eachaccount->accountName; ?></option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" id="reservation" placeholder="Date" class="form-control
+                                dateRangeReservation">
+                            </div>
+                        </div>
+                    </div>
+<!--                    <div class="col-sm-12" style="height: 10px"></div>-->
+                    <table id="transactionTBL" class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>SL.</th>
-                                <th>Account Name</th>
-                                <th>Card Number</th>
-                                <th>Ref No</th>
-                                <th>Type</th>
+                                <th>Account Info</th>
+                                <th>Date</th>
+                                <th>Trans. Type</th>
                                 <th>Amount</th>
-<!--                                <th>Balance</th>-->
-                                <th>Time</th>
+                                <th>Note</th>
+                                <th>#</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php $sl = 1;  $total = 0;
-                            if(!empty($transactions)){
-                            foreach ($transactions as $transaction) { ?>
-                                <?php $total = $transaction->transactionAmount + $total; ?>
-                                <tr>
-                                    <td><?php echo $sl; ?></td>
-                                    <td><?php echo $transaction->accountName; ?></td>
-                                    <td><?php echo $transaction->CardNum; ?></td>
-                                    <td><?php echo $transaction->refNo; ?></td>
-                                    <td><?php echo $transaction->transactionType; ?></td>
-                                    <td><?php echo $transaction->transactionAmount; ?></td>
-<!--                                    <td>--><?php //echo $transaction->transactionAmount; ?><!--</td>-->
-                                    <td><?php echo $transaction->date; ?></td>
-                                </tr>
-                                <?php $sl++; ?>
-                            <?php } }?>
                         </tbody>
-                        <tfoot>
-
-                        </tfoot>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Total Amount:</h3>
-                    <small class="pull-right" id="today"><b><?php echo $total; ?></b></small>
-                </div>
-
-            </div>
-        </div>
-        <div class="col-md-4"></div>
-    </div>
 </section>
+
+<div class="modal fade" id="transactionModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Transaction Information</h4>
+            </div>
+            <form action="#"  id="transactionInfoForm" class="form-horizontal"
+                  enctype="multipart/form-data"
+                  method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-sm-3 text-right">Account</label>
+                        <div class=" col-sm-9 ">
+                            <select required name="account_id" class="form-control select2 bank_id"  style="width: 100%;">
+                            <option value="">-- Select Account --</option>
+                            <?php
+                                if(!empty($account)){
+                                    foreach ($account as $eachaccount) {
+                            ?>
+                                    <option value="<?php echo $eachaccount->accountID; ?>"><?php echo $eachaccount->accountName; ?></option>
+                            <?php
+                                    }
+                                }
+                            ?>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback updatedHideDiv">
+                        <label class="col-sm-3 text-right">Remaining Amount</label>
+                        <div class=" col-sm-9 ">
+                            <input readonly id="availableAmount"
+                               class="form-control
+                                av_amount"
+                               placeholder="Remaining Amount">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 text-right">Trans. Type</label>
+                        <div class="col-sm-9 ">
+                            <select  name="transType" id="transType" class="form-control " >
+                                <option value="">Trans. Type</option>
+                                <option value="4">Debit (+)</option>
+                                        <!--   bank Debit Expense Ctg Credit -->
+                                <option value="5">Credit (-)</option>
+                                        <!--   bank Credit Expense Ctg Debit -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <label class="col-sm-3 text-right">Amount</label>
+                        <div class=" col-sm-9 ">
+                            <input required="" id="transAmount" onkeyup="checkAvailableTransaction()" name="amount"
+                               class="form-control " placeholder="Amount">
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback updatedHideDiv">
+                        <label class="col-sm-3 text-right">Current Amount</label>
+                        <div class=" col-sm-9 ">
+                            <input  readonly id="accountCurrentAmount"  name="accountCurrentAmount"
+                               class="form-control " placeholder="Current Amount">
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <label class="col-sm-3 text-right">Date</label>
+                        <div class=" col-sm-9 ">
+                            <input required="" value="<?php echo date('Y-m-d'); ?>" id="payment_date" name="date"
+                               class="form-control" placeholder="YYYY-MM-DD">
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label class="col-sm-3 text-right">Note/Remarks</label>
+                        <div class=" col-sm-9 ">
+                            <textarea name="note" colspan="2" id="note"  placeholder="Enter Note/Remarks........."  class="form-control clearInput"></textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-sm-12 text-left">
+                        <div class="box-body" id="alert_error" style="display: none;">      <div  class="callout callout-danger">
+                                <span id="show_error_save_info"></span>
+                            </div>
+                        </div>
+                        <div class="box-body" id="alert" style="display: none;">      <div  class="callout
+                                callout-info">
+                                <span id="show_message"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-sm-12">
+                        <input type="hidden" name="upId" id="upId" >
+                        <button type="button" onclick="saveTransactionInfo()" name="saveBtn" id="saveBtn" class="btn
+                                btn-success submit_btn"><i class="glyphicon glyphicon-ok-sign"></i> <span id="show_label"></span></button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="glyphicon
+                        glyphicon-remove"></i> Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

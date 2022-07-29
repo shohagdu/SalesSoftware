@@ -368,4 +368,89 @@ class Cashbook_model extends CI_Model {
             return false;
         }
     }
+
+    public function showExpensesInfo($postData){
+        $draw = $postData['draw'];
+        $start = $postData['start'];
+        $rowperpage = $postData['length'];
+        $searchInfo = (!empty($postData['search']['value'])?$postData['search']['value']:'');
+
+        //all default searching
+        $search_arr[] = " transaction_info.type IN (4,5) ";
+        $search_arr[] = " transaction_info.is_active = 1 ";
+        $search_arr[] = " transaction_info.is_bank_transaction = 2 ";
+
+        // Custom search filter
+        $bankID             = !empty($postData['bankID'])?$postData['bankID']:'';
+        $dateRange          = !empty($postData['dateRange'])?$postData['dateRange']:'';
+
+        if (!empty($bankID)) {
+            $search_arr[] = " transaction_info.bank_id = '" . $bankID."'" ;
+        }
+        if (!empty($dateRange)) {
+            $exp_date=explode("-",$dateRange);
+            $firstDate      =    $exp_date[0];
+            $toDate         =    $exp_date[1];
+            $search_arr[] = " transaction_info.payment_date >='". $firstDate."'" ;
+            $search_arr[] = " transaction_info.payment_date <='". $toDate."'" ;
+        }
+        if(count($search_arr) > 0){
+            $searchQuery = implode(" and ",$search_arr);
+        }
+        //return $searchQuery;
+        ## Total number of records without filtering
+        $totalRecords=$this->__get_count_row('transaction_info',$searchQuery);
+        ## Total number of record with filtering
+        $totalRecordwithFilter=$this->__get_count_row('transaction_info',$searchQuery);
+        ## Fetch records
+        $this->db->select("transaction_info.*, tbl_pos_accounts.accountName,tbl_pos_accounts.accountNumber",
+            FALSE);
+        if($searchQuery != ''){
+            $this->db->where($searchQuery);
+        }
+        if($searchInfo != ''){
+            $this->db->like('transCode', $searchInfo);
+            $this->db->or_like('debit_amount', $searchInfo);
+            $this->db->or_like('credit_amount', $searchInfo);
+        }
+        $this->db->join('tbl_pos_accounts', 'tbl_pos_accounts.accountID = transaction_info.bank_id', 'left');
+        $this->db->order_by("transaction_info.id", "DESC");
+        $this->db->limit($rowperpage, $start);
+        $records = $this->db->get('transaction_info')->result();
+        $data = array();
+        $i=(!empty($start)?$start+1:1);
+        if(!empty($records)) {
+            foreach ($records as $key => $record) {
+                $action='';
+                $data[] = $record;
+                $data[$key]->serial_no = (int) $i++;
+                $data[$key]->payment_date_title = date('d M, Y',strtotime($record->payment_date));
+                $data[$key]->transType = ($record->type==4)?"<span class='badge bg-green-active'> Debit (+)</span>":(
+                    ($record->type==5)?"<span class='badge bg-red'>Credit (-)
+                </span>":"");
+                $data[$key]->transAmount = ($record->type==4)?$record->debit_amount:(
+                    ($record->type==5)?"$record->credit_amount":"0.00");
+
+                $action .= ' <button type="button" class="btn btn-info btn-xs
+                  "  data-toggle="modal" onclick="updateTransactionInfo(' . $record->id . ')"
+                            data-target="#transactionModal" title="Record"><i class="glyphicon glyphicon-pencil"></i> Edit</button> ';
+
+                if ($this->session->userdata('abhinvoiser_1_1_role') == 'superadmin') {
+                    $action .= ' <button onclick="deleteTransactionInformation(' . $record->id . ')"  type="button" class="btn btn-danger  btn-xs"   ><i  class="glyphicon glyphicon-remove"></i> Delete</button> ';
+
+
+                }
+
+                $data[$key]->action = $action;
+            }
+        }
+        ## Response
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordwithFilter,
+            "aaData" => $data
+        );
+        return $response;
+    }
 }
