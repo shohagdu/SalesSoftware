@@ -148,6 +148,7 @@ class Pos extends CI_Controller
             if(!empty($account_id)) {
                 $credit_transaction = [
                     'payment_date'          =>  (!empty($saleDate)?date('Y-m-d',strtotime($saleDate)):''),
+                    'customer_member_id'    =>  NULL,
                     'type'                  => 4,
                     'sales_id'              => $insert_id,
                     'bank_id'               => $account_id,
@@ -273,6 +274,7 @@ class Pos extends CI_Controller
             if(!empty($account_id)) {
                 $credit_transaction = [
                     'payment_date'          =>  (!empty($saleDate)?date('Y-m-d',strtotime($saleDate)):''),
+                    'customer_member_id'    =>  NULL,
                     'bank_id'               => $account_id,
                     'debit_amount'          => $paidNow,
                     'credit_amount'         =>  '0.00',
