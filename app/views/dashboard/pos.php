@@ -183,7 +183,7 @@
                                                            class="form-control">
                                                 </p>
                                                 <p>
-                                                    <input tabindex="-1" name="discount" id="discount"
+                                                    <input  name="discount" id="discount"
                                                            class="form-control inputStyle"
                                                            value="0.00">
                                                 </p>
@@ -328,13 +328,14 @@
                                                 <input tabindex="-1" id="totalCustomerDue" readonly placeholder="0.00" value='0.00'  type="text"  class="form-control inputStyle"  name="totalCustomerDue" >
                                             </th>
                                         </tr>
+                                        <!--
                                         <tr>
                                             <th class="thStyleNew"> </th>
                                             <th class="thStyleNew"  >
                                                 <label class="radio-inline"> <input type="checkbox"  id="isRemainingDueMakesWithDiscount" value="1" tabindex="-1" name="isRemainingDueMakesWithDiscount" ><b> Remaining Due Make as  Discount </b></label>
                                             </th>
                                         </tr>
-
+                                           -->
                                         <tr id="div5">
                                             <th colspan="4">
                                                 <button type="button" id="confirmModal" class="btn btn-block btn-success"   >SALES NOW </button>

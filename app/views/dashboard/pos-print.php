@@ -220,7 +220,7 @@
                                 ($sales->remaining_due_make_discount,2):'0.00';   ?></th>
                         </tr>
                     <?php
-                    }else{
+                    }
                     ?>
                         <tr>
                             <th  colspan="4"  style="text-align:right">Current Due AMT</th>
@@ -228,7 +228,6 @@
                                 ($sales->current_due_amt,2):'0.00';   ?></th>
                         </tr>
                     <?php
-                    }
                      if(!empty($sales->customer_id)){
                     ?>
 
@@ -239,7 +238,8 @@
                         </tr>
                         <tr>
                             <th  colspan="4"  style="text-align:right">Total Payable AMT</th>
-                            <th class="text-right"><?php echo !empty($sales->total_due)? number_format($sales->total_due,
+                            <th class="text-right"><?php echo !empty($sales->total_due+$sales->previous_due)? number_format
+                                ($sales->total_due+$sales->previous_due,
                                     2):'0
                             .00';   ?></th>
                         </tr>

@@ -62,7 +62,8 @@ class Pos extends CI_Controller
         if(empty($productID[0])){
             echo json_encode(['status'=>'error','message'=>'Minimum one product is required','data'=>'']);exit;
         }
-        if((isset($allAreRunningCustomer) && $allAreRunningCustomer==1) && empty($isRemainingDueMakesWithDiscount)  && ($totalAmount!= $paidNow) ){
+        if((isset($allAreRunningCustomer) && $allAreRunningCustomer==1)
+            && ($totalAmount!= $paidNow) && empty($customer) ){
             echo json_encode(['status'=>'error','message'=>'Invoice and Paid amount must be equal. Because Running Customer.','data'=>'']);exit;
         }
         if(empty($upId)){
@@ -145,7 +146,7 @@ class Pos extends CI_Controller
                 $this->db->insert("transaction_info",$payment_transaction);
                 $credit_acc_id  =   $this->db->insert_id();
             }
-            if(!empty($account_id)) {
+            if(!empty($account_id) && $paidNow > 0) {
                 $credit_transaction = [
                     'payment_date'          =>  (!empty($saleDate)?date('Y-m-d',strtotime($saleDate)):''),
                     'customer_member_id'    =>  NULL,
@@ -254,9 +255,10 @@ class Pos extends CI_Controller
                     'updated_time'          =>  $this->dateTime,
                     'updated_ip'            =>  $this->ipAddress,
                 ];
-                $this->db->where('sha1(sales_id)',$insert_id)->update("transaction_info",$total_transaction);
+                $this->db->where('sha1(sales_id)',$insert_id)->where('type',1)->update("transaction_info",
+                    $total_transaction);
             }
-            if(!empty($paidNow)){
+            //if(!empty($paidNow) && $paidNow>0){
                 $payment_transaction=[
                     'payment_date'              =>  (!empty($saleDate)?date('Y-m-d',strtotime($saleDate)):''),
                     'customer_member_id'        =>  $customer,
@@ -269,7 +271,7 @@ class Pos extends CI_Controller
                 ];
                 $this->db->where('sha1(sales_id)',$insert_id)->where('type',2)->update("transaction_info",
                     $payment_transaction);
-            }
+            //}
 
             if(!empty($account_id)) {
                 $credit_transaction = [

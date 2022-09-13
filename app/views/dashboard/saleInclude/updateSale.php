@@ -350,13 +350,14 @@ include ('salesHeader.php')
                                         <input tabindex="-1" id="totalCustomerDue" readonly placeholder="0.00" value='<?php echo (!empty($sales->total_due)?$sales->total_due:'0.00'); ?>'   type="text"  class="form-control inputStyle"  name="totalCustomerDue" >
                                     </th>
                                 </tr>
+                                <!--
                                 <tr>
                                     <th class="thStyleNew"> </th>
                                     <th class="thStyleNew"  >
                                         <label class="radio-inline"> <input type="checkbox"  id="isRemainingDueMakesWithDiscount" value="1" tabindex="-1" name="isRemainingDueMakesWithDiscount" ><b> Remaining Due Make as  Discount </b></label>
                                     </th>
-
                                 </tr>
+                                -->
 
 
                                 <tr id="div5">
