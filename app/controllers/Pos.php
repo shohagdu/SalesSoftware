@@ -172,6 +172,7 @@ class Pos extends CI_Controller
                 echo json_encode(['status'=>'error','message'=>'Fetch a problem, data not update','redirect_page'=>$redierct_page]);exit;
             }
         }else{
+            $getTransactionInfo    =   $this->POS->get_single_sales_infoSha1($upId);
 
             $sales_info=[
                 'sales_date'                        => !empty($saleDate)?date('Y-m-d',strtotime($saleDate)):'',
@@ -269,8 +270,22 @@ class Pos extends CI_Controller
                     'updated_time'              =>  $this->dateTime,
                     'updated_ip'                =>  $this->ipAddress,
                 ];
-                $this->db->where('sha1(sales_id)',$insert_id)->where('type',2)->update("transaction_info",
-                    $payment_transaction);
+                // checking existing..
+                $checkCredit    =   $this->POS->checkingTransactionExist(['sha1(sales_id)'=>$insert_id,'type'=>2]);
+
+                if($checkCredit['status'] == 'error'){
+                    $payment_transaction['type']            =  2;
+                    $payment_transaction['sales_id']        =  $getTransactionInfo->id;
+                    $payment_transaction['created_by']      =  $this->userId;
+                    $payment_transaction['created_time']    =  $this->dateTime;
+                    $payment_transaction['created_ip']      =  $this->ipAddress;
+
+                    $this->db->insert("transaction_info", $payment_transaction);
+
+                }elseif($checkCredit['status'] == 'success') {
+                    $this->db->where('sha1(sales_id)', $insert_id)->where('type', 2)->update("transaction_info",
+                        $payment_transaction);
+                }
             //}
 
             if(!empty($account_id)) {
@@ -284,8 +299,22 @@ class Pos extends CI_Controller
                     'updated_time'          => $this->dateTime,
                     'updated_ip'            => $this->ipAddress,
                 ];
-                $this->db->where('sha1(sales_id)',$insert_id)->where('type',4)->update("transaction_info",
-                    $credit_transaction);
+                $checkBankAcc    =   $this->POS->checkingTransactionExist(['sha1(sales_id)'=>$insert_id,'type'=>4]);
+                if($checkBankAcc['status']=='error'){
+                    $credit_transaction['type']            =  4;
+                    $credit_transaction['sales_id']        =  $getTransactionInfo->id;
+                    $credit_transaction['created_by']      =  $this->userId;
+                    $credit_transaction['created_time']    =  $this->dateTime;
+                    $credit_transaction['created_ip']      =  $this->ipAddress;
+
+                    $this->db->insert("transaction_info", $credit_transaction);
+
+                }elseif($checkBankAcc['status']=='success') {
+                    $this->db->where('sha1(sales_id)',$insert_id)->where('type',4)->update("transaction_info",
+                        $credit_transaction);
+                }
+
+
             }
             $redierct_page="pos/show/".$updatedID;
 

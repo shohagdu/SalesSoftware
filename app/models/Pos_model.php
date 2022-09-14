@@ -164,6 +164,19 @@ class Pos_model extends CI_Model {
 #--------------------------------------------------------------------- ------------------------------------------------
 #------------------------------------------------update for SK Fashion ------------------------------------------------
 #--------------------------------------------------------------------- ------------------------------------------------
-    
+    public function checkingTransactionExist($where)
+    {
+        $this->db->select('transaction_info.*');
+        $this->db->where($where);
+        $this->db->where("is_active",1);
+        $query = $this->db->get("transaction_info");
+        if ($query->num_rows() > 0){
+            return ['status'=>'success','message'=>"Successfully Data Found",'data'=>$query->row()];
+        }
+        else{
+            return ['status'=>'error','message'=>"No Data Found",'data'=>''];
+        }
+
+    }
 
 }

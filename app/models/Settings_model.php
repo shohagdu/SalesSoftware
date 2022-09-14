@@ -378,6 +378,7 @@ COUNT(CASE WHEN success_status = 2 THEN success_status ELSE NULL END) failed_sms
         }
         $this->db->join('outlet_setup', 'outlet_setup.id = customer_shipment_member_info.outlet_id', 'left');
         $this->db->join('transaction_info as t', 't.customer_member_id = customer_shipment_member_info.id AND t.is_active=1', 'left');
+        $this->db->order_by("current_due", "DESC");
         $this->db->order_by("customer_shipment_member_info.name", "ASC");
         $this->db->limit($rowperpage, $start);
         $this->db->group_by("customer_shipment_member_info.id");
@@ -556,6 +557,7 @@ COUNT(CASE WHEN success_status = 2 THEN success_status ELSE NULL END) failed_sms
         }else {
             $this->db->where(['c.type' => 1]);
         }
+        $this->db->where(['c.is_active' => 1]);
         $this->db->order_by("c.name","ASC");
         $this->db->limit(10);
         $query_result = $this->db->get();
