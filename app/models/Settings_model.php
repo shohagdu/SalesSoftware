@@ -734,4 +734,68 @@ COUNT(CASE WHEN success_status = 2 THEN success_status ELSE NULL END) failed_sms
     }
 
 
+    function customerDueReports(){
+
+
+
+
+        // Custom search filter
+        $outletID = !empty($postData['outletID'])?$postData['outletID']:'';
+        $typeID = !empty($postData['typeID'])?$postData['typeID']:'';
+        $customerName = !empty($postData['customerName'])?$postData['customerName']:'';
+
+        if (!empty($outletID)) {
+            $search_arr[] = " customer_shipment_member_info.outlet_id='" . $outletID . "' ";
+        }
+        if (!empty($typeID)) {
+            $search_arr[] = " customer_shipment_member_info.type='" . $typeID . "' ";
+        }
+        if (!empty($customerName)) {
+            $search_arr[] = " customer_shipment_member_info.name like '%" . $customerName . "%' ";
+        }
+
+        $search_arr[] = " customer_shipment_member_info.is_active != 0 ";
+        if(count($search_arr) > 0){
+            $searchQuery = implode(" and ",$search_arr);
+        }
+
+        $this->db->select("customer_shipment_member_info.*,outlet_setup.name as outlet_name,outlet_setup.address as outlet_address ,sum(t.debit_amount) as total_debit,sum(t.credit_amount)  as total_credit,(sum(t.debit_amount) - sum(t.credit_amount)) as current_due",false);
+        if($searchQuery != ''){
+            $this->db->where($searchQuery);
+        }
+        $this->db->join('outlet_setup', 'outlet_setup.id = customer_shipment_member_info.outlet_id', 'left');
+        $this->db->join('transaction_info as t', 't.customer_member_id = customer_shipment_member_info.id AND t.is_active=1', 'left');
+        $this->db->order_by("current_due", "DESC");
+        $this->db->order_by("customer_shipment_member_info.name", "ASC");
+        $this->db->group_by("customer_shipment_member_info.id");
+        $this->db->having('current_due>0');
+        $records = $this->db->get('customer_shipment_member_info')->result();
+        $data = array();
+        $i=1;
+        if(!empty($records)) {
+            foreach ($records as $key => $record) {
+                $action='';
+                $data[] = $record;
+                $data[$key]->serial_no = (int) $i++;
+                $data[$key]->is_active =  ($record->is_active==1)?"<span class='badge bg-green'>Active</span>":"<span class='badge bg-red'>Inactive</span>";
+
+                    $cuDue= $record->total_debit- $record->total_credit;
+                    $data[$key]->current_due = (!empty($cuDue)) ? "<span class='badge' style='background-color:red;'>"
+                        . number_format($cuDue,2) . "</span>" : "<span class='badge'>0.00</span>";
+                    $data[$key]->current_due_cal = (!empty($cuDue)) ?  $cuDue : '0.00';
+
+
+                    $action .= '  <a  class="btn btn-info  btn-xs"  href="' . base_url('reports/details_customer_member_info/' . $record->id) . ' " ><i  class="glyphicon glyphicon-share-alt"></i> Ledger</a> ';
+
+
+                    $data[$key]->action = $action;
+
+
+            }
+        }
+        //
+
+        return $data;
+    }
+
 }

@@ -425,8 +425,8 @@ class Cashbook_model extends CI_Model {
                 $data[] = $record;
                 $data[$key]->serial_no = (int) $i++;
                 $data[$key]->payment_date_title = date('d M, Y',strtotime($record->payment_date));
-                $data[$key]->transType = ($record->type==4)?"<span class='badge bg-green-active'> Debit (+)</span>":(
-                    ($record->type==5)?"<span class='badge bg-red'>Credit (-)
+                $data[$key]->transType = ($record->type==4)?"<span class='badge bg-green-active'> Deposit (+)</span>":(
+                    ($record->type==5)?"<span class='badge bg-red'>Withdraw (-)
                 </span>":"");
                 $data[$key]->transAmount = ($record->type==4)?$record->debit_amount:(
                     ($record->type==5)?"$record->credit_amount":"0.00");

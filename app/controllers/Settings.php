@@ -930,4 +930,14 @@ class Settings extends CI_Controller
         $this->load->view('dashboard/index', $view);
     }
 
+    public function customerDueReports(){
+
+        $data = array();
+        $view = array();
+        $data['title']      = "Customer Due Reports";
+        $data['info']       = $this->SETTINGS->customerDueReports();
+        $view['content']    = $this->load->view('dashboard/reports/customer_member/customerDueReports', $data, TRUE);
+        $this->load->view('dashboard/index', $view);
+    }
+
 }

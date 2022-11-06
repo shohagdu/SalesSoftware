@@ -100,9 +100,9 @@
                         <div class="col-sm-9 ">
                             <select  name="transType" id="transType" class="form-control " >
                                 <option value="">Trans. Type</option>
-                                <option value="4">Debit (+)</option>
+                                <option value="4">Deposit (+)</option>
                                         <!--   bank Debit Expense Ctg Credit -->
-                                <option value="5">Credit (-)</option>
+                                <option value="5">Withdraw (-)</option>
                                         <!--   bank Credit Expense Ctg Debit -->
                             </select>
                         </div>
