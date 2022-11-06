@@ -768,7 +768,7 @@ COUNT(CASE WHEN success_status = 2 THEN success_status ELSE NULL END) failed_sms
         $this->db->order_by("current_due", "DESC");
         $this->db->order_by("customer_shipment_member_info.name", "ASC");
         $this->db->group_by("customer_shipment_member_info.id");
-        $this->db->having('current_due>0');
+//        $this->db->having('current_due>0');
         $records = $this->db->get('customer_shipment_member_info')->result();
         $data = array();
         $i=1;
