@@ -238,8 +238,8 @@
                         </tr>
                         <tr>
                             <th  colspan="4"  style="text-align:right">Total Payable AMT</th>
-                            <th class="text-right"><?php echo !empty($sales->total_due+$sales->previous_due)? number_format
-                                ($sales->total_due+$sales->previous_due,
+                            <th class="text-right"><?php echo !empty($sales->current_due_amt+$sales->previous_due)? number_format
+                                ($sales->current_due_amt+$sales->previous_due,
                                     2):'0
                             .00';   ?></th>
                         </tr>
