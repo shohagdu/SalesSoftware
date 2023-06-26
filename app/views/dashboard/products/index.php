@@ -130,13 +130,16 @@
                      <div class="form-group">
                          <label class="col-sm-3 text-right"> Type</label>
                          <div class=" col-sm-3 ">
-                            <select name="productType" id="productType" class="form-control" required >
-                                <option value="">Select Type</option>
-                                <?php if(!empty($typeInfo)){ foreach ($typeInfo as $type) { ?>
-                                    <option value="<?php echo $type->id; ?>"><?php echo $type->title; ?></option>
-                                <?php } } ?>
+                             <input required="" name="productType"  placeholder="Product Type" class="customer form-control"  id="productType">
+                             <input type="hidden" name="productTypeID" id="productTypeID"/>
 
-                            </select>
+<!--                            <select name="productType" id="productType" class="form-control" required >-->
+<!--                                <option value="">Select Type</option>-->
+<!--                                --><?php //if(!empty($typeInfo)){ foreach ($typeInfo as $type) { ?>
+<!--                                    <option value="--><?php //echo $type->id; ?><!--">--><?php //echo $type->title; ?><!--</option>-->
+<!--                                --><?php //} } ?>
+<!---->
+<!--                            </select>-->
                          </div>
                          <label class="col-sm-2 text-right">Unit</label>
                          <div class=" col-sm-4 ">
@@ -237,4 +240,3 @@
         </div>
     </div>
 </div>
-

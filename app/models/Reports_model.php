@@ -158,18 +158,18 @@ class Reports_model extends CI_Model {
         }
     }
     function todaySalesInfo($where=NULL){
-        $this->db->select('sum(net_total) as totalBill, sum(payment_amount) as totalCollectionAmt',true);
+        $this->db->select('sum(debit_amount) as totalBill',true);
         if(!empty($where['firstDate'])){
-            $this->db->where("sales_date >=", $where['firstDate']);
-            $this->db->where("sales_date <=", $where['toDate']);
+            $this->db->where("payment_date >=", $where['firstDate']);
+            $this->db->where("payment_date <=", $where['toDate']);
         }
-        $this->db->where('sales_info.is_active', 1);
-
-        $records = $this->db->get('sales_info');
+        $this->db->where('transaction_info.is_active', 1);
+        $this->db->where_in('transaction_info.type', 4);
+        $records = $this->db->get('transaction_info');
         if($records->num_rows()>0) {
             $result = $records->row();
             if(!empty($result)) {
-                return (!empty($result->totalCollectionAmt)?$result->totalCollectionAmt:'0.00');
+                return (!empty($result->totalBill)?$result->totalBill:'0.00');
             }
         }else{
             return '0.00';

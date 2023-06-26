@@ -47,7 +47,7 @@ class Products extends CI_Controller {
     public function get_single_product_info(){
         $postData = $this->input->post();
         if(!empty($postData)) {
-            $products = $this->COMMON_MODEL->get_single_data_by_single_column('product_info', 'id', $postData['id']);
+            $products = $this->PRODUCTS->singleProductInfo(['product_info.id'=>$postData['id']]);
             if(!empty($products)){
                 echo json_encode(['status'=>'success','message'=>'Successfully Data Found','data'=>$products]); exit;
             }else{
@@ -75,6 +75,23 @@ class Products extends CI_Controller {
 
         if(empty($productType)){
             echo json_encode(['status'=>'error','message'=>'Product Type is required','data'=>'']);exit;
+        }else{
+            $existProductType   =   $this->SETTINGS->get_single_settings_info(['title'=>$productType,'type'=>4]);
+
+            if(empty($existProductType)){
+                $settingInfo = array(
+                    'type'          => 4,
+                    'title'         => $productType,
+                    'is_active'     =>  1,
+                    'created_by'    => $this->userId,
+                    'created_time'  => $this->dateTime,
+                    'created_ip'    => $this->ipAddress,
+                );
+                $this->db->insert("all_settings_info", $settingInfo);
+                $productTypeId  =   $this->db->insert_id();
+            }else{
+                $productTypeId  =   $existProductType->id;
+            }
         }
         if(empty($productUnit)){
             echo json_encode(['status'=>'error','message'=>'Product Unit is required','data'=>'']);exit;
@@ -89,6 +106,10 @@ class Products extends CI_Controller {
         if(empty($status)){
             echo json_encode(['status'=>'error','message'=>'Status is required','data'=>'']);exit;
         }
+        if(empty($productTypeId)){
+            echo json_encode(['status'=>'error','message'=>'Product Type ID is required','data'=>'']);exit;
+        }
+
 
         // checking product unique info check
 
@@ -96,7 +117,6 @@ class Products extends CI_Controller {
 
 
         if(empty($upId)) {
-
             // Checking Product Code Unique
             $checkProductCode=$this->PRODUCTS->checkProductUniqueInfo(['productCode'=> $productCode],'Product Code');
             if(!empty($checkProductCode['status']) && $checkProductCode['status']=='error'){
@@ -146,7 +166,7 @@ class Products extends CI_Controller {
                 'name' => $productName,
                 'band_id' => $productBrand,
                 'source_id' => $productSource,
-                'product_type' => $productType,
+                'product_type' => $productTypeId,
                 'unit_id' => $productUnit,
                 'unit_sale_price' => $productPrice,
                 'purchase_price' => $productPurchasePrice,
@@ -183,7 +203,7 @@ class Products extends CI_Controller {
                 'name' => $productName,
                 'band_id' => $productBrand,
                 'source_id' => $productSource,
-                'product_type' => $productType,
+                'product_type' => $productTypeId,
                 'unit_id' => $productUnit,
                 'unit_sale_price' => $productPrice,
                 'purchase_price' => $productPurchasePrice,
@@ -319,6 +339,12 @@ class Products extends CI_Controller {
         }
     }
 
+    function productTypeSuggestions() {
+        if (isset($_GET['term'])) {
+            $q = strtolower($_GET['term']);
+            echo json_encode($this->PRODUCTS->productTypeSuggest($q,4));
+        }
+    }
 
 
 

@@ -333,4 +333,47 @@ class Products_model extends CI_Model {
         }
     }
 
+    function productTypeSuggest($q,$type=4) {
+
+        $this->db->select('*');
+        $this->db->from('all_settings_info');
+        $this->db->where('is_active',1);
+        if(!empty($q)){
+            $this->db->like('title', $q, 'after');
+        }
+        $this->db->where('type',$type);
+        $this->db->order_by("id","DESC");
+        $this->db->limit(20);
+        $records = $this->db->get();
+        if($records->num_rows()>0) {
+            $result= $records->result_array();
+            $data = array();
+            foreach ($result as $key => $value) {
+                $data[$key]['id']           = $result[$key]['id'];
+                $data[$key]['value']        = $result[$key]['title'];
+            }
+            return $data;
+        }else{
+            return  false;
+        }
+    }
+
+    public function singleProductInfo($where=NULL){
+        $this->db->select('product_info.*,band.title as bandTitle,source.title as sourceTitle,productType.title as ProductTypeTitle,unitInfo.title as unitTitle');
+        if(!empty($where)){
+            $this->db->where($where);
+        }
+        $this->db->join(' all_settings_info as band', 'band.id = product_info.band_id', 'left');
+        $this->db->join('all_settings_info as source', 'source.id = product_info.source_id', 'left');
+        $this->db->join(' all_settings_info as productType', 'productType.id = product_info.product_type', 'left');
+        $this->db->join(' all_settings_info as unitInfo', 'unitInfo.id = product_info.unit_id', 'left');
+        $this->db->order_by("name", "ASC");
+        $records = $this->db->get('product_info');
+        if($records->num_rows()>0) {
+            return $records->row();
+        }else{
+            return  false;
+        }
+    }
+
 }

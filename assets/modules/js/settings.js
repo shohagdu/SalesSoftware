@@ -189,7 +189,7 @@ function updateProductInfo(productid) {
                 $("#productNameShow").val(data.name);
                 $("#productBrand").val(data.band_id);
                 $("#productSource").val(data.source_id);
-                $("#productType").val(data.product_type);
+                $("#productType").val(data.ProductTypeTitle);
                 $("#productUnit").val(data.unit_id);
                 $("#productPrice").val(data.unit_sale_price);
                 $("#productPurchasePrice").val(data.purchase_price);
@@ -2451,7 +2451,13 @@ function updateTransactionInfo(id) {
             }
         }
     });
-
-
-
 }
+
+$("#productType").autocomplete({
+    source: base_url+ "Products/productTypeSuggestions",
+    select: function (event, ui) {
+        $("#productType").val(ui.item.value);
+        $("#productTypeID").val(ui.item.id);
+        return false;
+    }
+});
