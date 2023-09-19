@@ -168,7 +168,4 @@ INSERT INTO `acl_menu_info` (`id`, `glyphicon_icon`, `title`, `link`, `is_main_m
 
 UPDATE `acl_menu_info` SET `link` = 'Reports/expOverviewReports' WHERE `acl_menu_info`.`id` = 205;
 
-SELECT year(payment_date) as year , month(payment_date) as months, sum(`debit_amount`) as amount
-FROM transaction_info
-WHERE type=8
-GROUP BY year(`payment_date`), month(payment_date);
+
