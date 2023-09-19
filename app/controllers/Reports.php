@@ -294,4 +294,52 @@ function dailySalesReports() {
 
         return  $this->load->view('dashboard/reports/expense/searchingexpReports', $data);
     }
+
+    function bestSales() {
+        $data = array();
+        $view = array();
+
+        $data['title']                  =   "Best Sales Reports";
+        $outlet_id                      =   $this->outletID;
+        $data['outlet_info']            =   $this->SETTINGS->outlet_info();
+        $data['info']                   =   $this->REPORT->bestSalesReport(['firstDate'=>date('Y-m-01'),'toDate'=>date('Y-m-d')],$outlet_id);
+        $view['content']                =   $this->load->view('dashboard/reports/sales/bestSales', $data, TRUE);
+        $this->load->view('dashboard/index', $view);
+    }
+    function searchingBestSales() {
+        extract($_POST);
+        $data = array();
+        $param=[];
+        $date=$this->input->post('searchingDate');
+        if($date!=''){
+            $exp_date=explode("-",$date);
+            $param['firstDate']      =    $exp_date[0];
+            $param['toDate']         =    $exp_date[1];
+        }
+        if(!empty($salesID)){
+            unset($param['firstDate']);
+            unset($param['toDate']);
+        }
+        $data['info']=$this->REPORT->bestSalesReport($param);
+        return   $this->load->view('dashboard/reports/sales/searchingBestSales', $data);
+    }
+    function expOverviewReports() {
+        $data = array();
+        $view = array();
+        $data['title']          = "Month Wise Expense Reports";
+        $data['info']           = $this->REPORT->getExpenseOverview();
+        $view['content']        = $this->load->view('dashboard/reports/expense/expOverviewReports', $data, TRUE);
+        $this->load->view('dashboard/index', $view);
+    }
+
+    function salesOverview() {
+        $data = array();
+        $view = array();
+        $data['title']      = "Sales Overview Reports";
+        $outlet_id          =   $this->outletID;
+        $data['outlet_info']=   $this->SETTINGS->outlet_info();
+        $data['info']       =   $this->REPORT->salesOverview('',$outlet_id);
+        $view['content']    =   $this->load->view('dashboard/reports/sales/salesOverview', $data, TRUE);
+        $this->load->view('dashboard/index', $view);
+    }
 }

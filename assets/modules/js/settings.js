@@ -2461,3 +2461,18 @@ $("#productType").autocomplete({
         return false;
     }
 });
+
+function searchingBestSales () {
+    $(".submit_btn").attr("disabled", true);
+    $.ajax({
+        url:  base_url +"reports/searchingBestSales/",
+        data: $('#salesReportForm').serialize(),
+        type: "POST",
+        success: function (response) {
+            $(".submit_btn").attr("disabled", false);
+            if(response!=''){
+                $("#stock_info_data").html(response);
+            }
+        }
+    });
+}

@@ -160,3 +160,15 @@ INSERT INTO `acl_menu_info` (`id`, `glyphicon_icon`, `title`, `link`, `is_main_m
 INSERT INTO `acl_menu_info` (`id`, `glyphicon_icon`, `title`, `link`, `is_main_menu`, `parent_id`, `display_position`, `is_active`, `created_by`, `created_time`, `created_ip`, `updated_by`, `updated_time`, `updated_ip`) VALUES (NULL, '', 'Bank Transaction', 'Cashbook/bankTransaction', '2', '200', '1', '1', '2', '2020-05-07 08:22:01', '127.0.0.2', '3', '2020-05-07 08:22:01', '127.0.0.2')
 
 ALTER TABLE `transaction_info` ADD `is_bank_transaction` TINYINT(1) NULL DEFAULT '1' COMMENT '1 = Regular Trans 2 = Transaction' AFTER `transCode`;
+
+// 18 Sep 2023
+INSERT INTO `acl_menu_info` (`id`, `glyphicon_icon`, `title`, `link`, `is_main_menu`, `parent_id`, `display_position`, `is_active`, `created_by`, `created_time`, `created_ip`, `updated_by`, `updated_time`, `updated_ip`) VALUES (NULL, '', 'Best Sales ', 'reports/bestSales', '3', '56', '1', '1', '2', '2020-05-07 08:22:53', '127.0.0.54', '55', '2020-05-07 08:22:53', '127.0.0.54');
+
+INSERT INTO `acl_menu_info` (`id`, `glyphicon_icon`, `title`, `link`, `is_main_menu`, `parent_id`, `display_position`, `is_active`, `created_by`, `created_time`, `created_ip`, `updated_by`, `updated_time`, `updated_ip`) VALUES (NULL, '', 'Sales Overview', 'reports/salesOverview', '3', '56', '1', '1', '2', '2020-05-07 08:22:53', '127.0.0.54', '55', '2020-05-07 08:22:53', '127.0.0.54');
+
+UPDATE `acl_menu_info` SET `link` = 'Reports/expOverviewReports' WHERE `acl_menu_info`.`id` = 205;
+
+SELECT year(payment_date) as year , month(payment_date) as months, sum(`debit_amount`) as amount
+FROM transaction_info
+WHERE type=8
+GROUP BY year(`payment_date`), month(payment_date);

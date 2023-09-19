@@ -361,5 +361,88 @@ class Reports_model extends CI_Model {
         }
     }
 
+    function bestSalesReport($where=NULL){
+        $this->db->select('product_info.id as productID,sum(total_item) as totalCountItems,product_info.name,product_info.productCode,band.title as bandTitle,source.title as sourceTitle,productType.title as ProductTypeTitle,unitInfo.title as unitTitle',true);
+        if(!empty($where['firstDate'])){
+            $this->db->where("sales_date >=", $where['firstDate']);
+            $this->db->where("sales_date <=", $where['toDate']);
+            unset($where['firstDate']);
+            unset($where['toDate']);
+        }else{
+            if(empty($where['sales_info.invoice_no'])) {
+                $this->db->where("sales_date >=", date('Y-m-01'));
+                $this->db->where("sales_date <=", date('Y-m-d'));
+            }
+        }
+        if(!empty($where)) {
+            $this->db->where($where);
+        }
+        $this->db->where('sales_info.is_active', 1);
+        $this->db->where('product_info.is_active', 1);
+        $this->db->join('stock_info', 'stock_info.sales_id = sales_info.id AND stock_info.stock_type=2 AND stock_info.is_active=1', 'left');
+        $this->db->join('product_info', 'product_info.id = stock_info.product_id', 'left');
+        $this->db->join('all_settings_info as band', 'band.id = product_info.band_id', 'left');
+        $this->db->join('all_settings_info as source', 'source.id = product_info.source_id', 'left');
+        $this->db->join('all_settings_info as productType', 'productType.id = product_info.product_type', 'left');
+        $this->db->join('all_settings_info as unitInfo', 'unitInfo.id = product_info.unit_id', 'left');
+        $this->db->group_by("product_info.id");
+        $this->db->order_by("totalCountItems", "DESC");
+
+        $records = $this->db->get('sales_info');
+        if($records->num_rows()>0) {
+            $result = $records->result();
+            return $result;
+        }else{
+            return false;
+        }
+    }
+    function getExpenseOverview($where=NULL){
+        $this->db->select('year(payment_date) as year , month(payment_date) as months, sum(`debit_amount`) as amount',true);
+        if(!empty($where['firstDate'])){
+            $this->db->where("transaction_info.payment_date >=", $where['firstDate']);
+            $this->db->where("transaction_info.payment_date <=", $where['toDate']);
+        }
+        $this->db->where('transaction_info.type', 8);
+        $this->db->where('transaction_info.is_active', 1);
+        $this->db->group_by('year(payment_date)');
+        $this->db->group_by('month(payment_date)');
+        $records = $this->db->get('transaction_info');
+        if($records->num_rows()>0) {
+            return $records->result();
+        }else{
+            return false;
+        }
+    }
+
+    function salesOverview($where=NULL){
+        $this->db->select('year(sales_date) as year , month(sales_date) as months, sum(`sub_total`) as sum_sub_total,sum(discount) as sum_discount, sum(net_total) as sum_net_total
+        ',true);
+        if(!empty($where['firstDate'])){
+            $this->db->where("sales_date >=", $where['firstDate']);
+            $this->db->where("sales_date <=", $where['toDate']);
+            unset($where['firstDate']);
+            unset($where['toDate']);
+        }else{
+            if(empty($where['sales_info.invoice_no'])) {
+                $this->db->where("sales_date >=", date('2022-m-d'));
+                $this->db->where("sales_date <=", date('Y-m-d'));
+            }
+        }
+        if(!empty($where)) {
+            $this->db->where($where);
+        }
+        $this->db->where('sales_info.is_active', 1);
+        $this->db->group_by('year(sales_date)');
+        $this->db->group_by('month(sales_date)');
+
+        $records = $this->db->get('sales_info');
+        if($records->num_rows()>0) {
+            $result = $records->result();
+            return $result;
+        }else{
+            return false;
+        }
+    }
+
 
 }
