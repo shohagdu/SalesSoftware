@@ -336,9 +336,22 @@ function dailySalesReports() {
         $data = array();
         $view = array();
         $data['title']      = "Sales Overview Reports";
-        $outlet_id          =   $this->outletID;
-        $data['outlet_info']=   $this->SETTINGS->outlet_info();
-        $data['info']       =   $this->REPORT->salesOverview('',$outlet_id);
+        extract($_POST);
+        $param=[];
+        if(isset($searchBtn)) {
+            if (!empty($fromDate)) {
+                $param['fromDate'] = date('Y-m-01',strtotime($fromDate));
+            }
+            if (!empty($toDate)) {
+                $param['toDate'] = date('Y-m-t',strtotime($toDate));
+            }
+            $data['searchDateRange']    =   "Report date Range: ".(!empty($param['fromDate'])?date('d M, Y',strtotime($param['fromDate'])):'')." to ".(!empty($param['toDate'])?date('d M, Y',strtotime($param['toDate'])):'');
+        }
+
+
+
+        $data['info']       =   $this->REPORT->salesOverview($param);
+
         $view['content']    =   $this->load->view('dashboard/reports/sales/salesOverview', $data, TRUE);
         $this->load->view('dashboard/index', $view);
     }

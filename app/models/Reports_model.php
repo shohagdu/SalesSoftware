@@ -415,22 +415,14 @@ class Reports_model extends CI_Model {
     }
 
     function salesOverview($where=NULL){
-        $this->db->select('year(sales_date) as year , month(sales_date) as months, sum(`sub_total`) as sum_sub_total,sum(discount) as sum_discount, sum(net_total) as sum_net_total
+
+        $this->db->select('year(sales_date) as year , month(sales_date) as months, sum(`sub_total`) as sum_sub_total,sum(discount) as sum_discount, sum(net_total) as sum_net_total,sum(payment_amount) as sum_payment_amount
         ',true);
-        if(!empty($where['firstDate'])){
-            $this->db->where("sales_date >=", $where['firstDate']);
+        if(!empty($where['fromDate'])){
+            $this->db->where("sales_date >=", $where['fromDate']);
             $this->db->where("sales_date <=", $where['toDate']);
-            unset($where['firstDate']);
-            unset($where['toDate']);
-        }else{
-            if(empty($where['sales_info.invoice_no'])) {
-                $this->db->where("sales_date >=", date('2022-m-d'));
-                $this->db->where("sales_date <=", date('Y-m-d'));
-            }
         }
-        if(!empty($where)) {
-            $this->db->where($where);
-        }
+
         $this->db->where('sales_info.is_active', 1);
         $this->db->group_by('year(sales_date)');
         $this->db->group_by('month(sales_date)');
@@ -438,10 +430,37 @@ class Reports_model extends CI_Model {
         $records = $this->db->get('sales_info');
         if($records->num_rows()>0) {
             $result = $records->result();
+            if(!empty($result)) {
+                foreach ($result as $key => $row) {
+                    $result[$key]->getPurchaseInfo=self::getMonthsWiseProfit($row->months,$row->year);
+
+                }
+                return $result;
+            }
+        }else{
+            return false;
+        }
+    }
+
+    function getMonthsWiseProfit($month,$year){
+        $this->db->select(' sum(total_price)  as totalAmnt, sum(total_item*purchaseAmtForSales) totalPurchasePrice, sum(total_price-(total_item*purchaseAmtForSales)) totalProfit, year(sales_date) as year_s, month(sales_date) as months_s ',true);
+
+        $this->db->where('month(sales_date)', $month);
+        $this->db->where('year(sales_date)', $year);
+        $this->db->where('sales_info.is_active', 1);
+        $this->db->join('sales_info', 'stock_info.sales_id = sales_info.id', 'inner');
+        $this->db->group_by('year(sales_date)');
+        $this->db->group_by('month(sales_date)');
+        $records = $this->db->get('stock_info');
+        if($records->num_rows()>0) {
+            $result = $records->row();
             return $result;
         }else{
             return false;
         }
+
+//        select sum(total_price)  as totalAmnt, sum(total_item*purchaseAmtForSales) totalPurchasePrice, sum(total_price-(total_item*purchaseAmtForSales)) totalProfit, year(sales_date) as year, month(sales_date) as months from stock_info INNER JOIN  `sales_info` s ON stock_info.sales_id = s.id  WHERE s.`sales_date` >= '2019-11-01' AND s.`sales_date` <= '2023-11-19' AND s.`is_active` = 1 AND stock_info.is_active=1 AND stock_info.stock_type=2  GROUP BY year(s.sales_date), month(s.sales_date);
+
     }
 
 
