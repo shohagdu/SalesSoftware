@@ -11,8 +11,8 @@ $db['default'] = array(
     'dsn'	=> '',
     'hostname' => 'localhost',
     'username' => 'root',
-        'password' => '',
-        'database' => 'sk_fashion_db',
+	'password' => 'zaq123',
+	'database' => 'red_green_bazzar_db',
     'dbdriver' => 'mysqli',
     'dbprefix' => '',
     'pconnect' => FALSE,
@@ -28,4 +28,3 @@ $db['default'] = array(
     'failover' => array(),
     'save_queries' => TRUE
 );
-
