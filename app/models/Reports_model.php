@@ -448,6 +448,7 @@ class Reports_model extends CI_Model {
         $this->db->where('month(sales_date)', $month);
         $this->db->where('year(sales_date)', $year);
         $this->db->where('sales_info.is_active', 1);
+        $this->db->where('stock_info.is_active', 1);
         $this->db->join('sales_info', 'stock_info.sales_id = sales_info.id', 'inner');
         $this->db->group_by('year(sales_date)');
         $this->db->group_by('month(sales_date)');

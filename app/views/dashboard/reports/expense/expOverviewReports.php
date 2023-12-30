@@ -8,7 +8,26 @@
                     <h3 class="box-title">  <?php echo !empty($title)?$title:'' ?></h3>
                     <button class="btn btn-primary btn-sm pull-right no-print" onclick="window.print()"><i
                             class="glyphicon glyphicon-print"></i> Print</button>
+                    <a href="<?php base_url('Reports/expOverviewReports') ?>" class="btn btn-warning btn-sm pull-right no-print" style="margin-right: 5px;" ><i
+                            class="glyphicon glyphicon-refresh"></i> Refresh</a>
                 </div>
+                <div class="clearfix"></div>
+                <form action="" method="post" id="expReportForm">
+                    <div class="form-group no-print">
+                        <div class="col-sm-3">
+                            <label>Date</label>
+                            <div class="clearfix"></div>
+                            <input type="text" id="reservation" name="searchingDate" placeholder="Date" class="form-control">
+                        </div>
+
+                        <div class="col-sm-2" style="margin-top:25px;">
+                            <button type="button" onclick="searchingExpenseOverviewReports()" class="btn btn-info search_btn" ><i
+                                    class="glyphicon
+                            glyphicon-search" ></i> Search</button>
+                        </div>
+
+                    </div>
+                </form>
                 <div class="clearfix"></div>
                 <!-- /.box-header -->
                 <div class="box-body">

@@ -2300,6 +2300,20 @@ function searchingAccountsStatementReports () {
     });
 }
 
+function searchingExpenseOverviewReports () {
+    // $(".search_btn").attr("disabled", true);
+    $.ajax({
+        url:  base_url +"reports/searchingExpOverviewReports/",
+        data: $('#expReportForm').serialize(),
+        type: "POST",
+        success: function (response) {
+            $(".search_btn").attr("disabled", false);
+            if(response!=''){
+                $("#infoDataShow").html(response);
+            }
+        }
+    });
+}
 function searchingExpenseReports () {
     $(".search_btn").attr("disabled", true);
     $.ajax({

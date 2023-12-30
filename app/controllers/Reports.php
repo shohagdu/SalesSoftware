@@ -332,6 +332,23 @@ function dailySalesReports() {
         $this->load->view('dashboard/index', $view);
     }
 
+    function searchingExpOverviewReports() {
+        extract($_POST);
+        $data = array();
+        $param=[];
+        $date=$this->input->post('searchingDate');
+        if($date!=''){
+            $exp_date=explode("-",$date);
+            $param['firstDate']      =    $exp_date[0];
+            $param['toDate']         =    $exp_date[1];
+        }else{
+            return "Date is required.";
+        }
+        $data['info']           = $this->REPORT->getExpenseOverview($param);
+
+        return  $this->load->view('dashboard/reports/expense/searchingExpOverviewReports', $data);
+    }
+
     function salesOverview() {
         $data = array();
         $view = array();
@@ -348,10 +365,7 @@ function dailySalesReports() {
             $data['searchDateRange']    =   "Report date Range: ".(!empty($param['fromDate'])?date('d M, Y',strtotime($param['fromDate'])):'')." to ".(!empty($param['toDate'])?date('d M, Y',strtotime($param['toDate'])):'');
         }
 
-
-
         $data['info']       =   $this->REPORT->salesOverview($param);
-
         $view['content']    =   $this->load->view('dashboard/reports/sales/salesOverview', $data, TRUE);
         $this->load->view('dashboard/index', $view);
     }
