@@ -105,7 +105,7 @@
                                     <th><i class="badge"><?php echo !empty($paymentAmt)? number_format($paymentAmt,2):'0.00'; ?></i></th>
 
                                     <th><i class="badge"><?php echo !empty($tCosting)? number_format($tCosting,2):'0.00'; ?></i></th>
-                                    <th><i class="badge"><?php echo !empty($tNetTotal-$tCosting)? number_format($tNetTotal-$tCosting,2):'0.00'; ?></i></th>
+                                    <th><i class="badge"><?php echo !empty($tProfitLose)? number_format($tProfitLose,2):'0.00'; ?></i></th>
 
                                 </tr>
                                 </tfoot>
