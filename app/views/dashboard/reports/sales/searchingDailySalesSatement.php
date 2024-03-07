@@ -49,7 +49,7 @@
                 <td><i class="badge"><?php echo $netTotal=(!empty($row->net_total)?$row->net_total:'0.00');  $tNetTotal+=$row->net_total; ?></i></td>
                 <td><i class="badge"><?php echo $ajustmentTotal=(!empty($row->remaining_due_make_discount)?$row->remaining_due_make_discount:'0.00');  $tAjustTotal+=$ajustmentTotal; ?></i></td>
 
-                <td><i class="badge"><?php echo $payment=(!empty($row->payment_amount)?$row->payment_amount:'0.00'); $paymentAmt+=$row->payment_amount; ?></i></td>
+                <td><i class="<?php echo  (($netTotal != $row->payment_amount)?'badge bg-red':'badge bg-green'); ?>"   ><?php echo $payment=(!empty($row->payment_amount)?$row->payment_amount:'0.00'); $paymentAmt+=$row->payment_amount; ?></i></td>
                 <td><i class="badge"><?php echo $purchaseAmt=(!empty($row->getPurchaseAmount)?$row->getPurchaseAmount:'0.00'); $tCosting+=$row->getPurchaseAmount; ?></i></td>
                 <td><i class="badge">
                         <?php echo $profitLose=(!empty($row->net_total)?($netTotal-$purchaseAmt):'0.00');  $tProfitLose+=$profitLose; ?>
